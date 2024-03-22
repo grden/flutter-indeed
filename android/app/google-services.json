@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "585150937230",
+    "project_id": "extracurricular-project",
+    "storage_bucket": "extracurricular-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:585150937230:android:575016834f5a30ddd571df",
+        "android_client_info": {
+          "package_name": "com.example.self_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFqLlDl6rWDW-C8LZFPG_JzB08uwHn-Qo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
