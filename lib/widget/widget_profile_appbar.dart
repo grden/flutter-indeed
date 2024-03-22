@@ -25,6 +25,5 @@
 //   }
 //
 //   @override
-//   // TODO: implement preferredSize
 //   Size get preferredSize => const Size(double.infinity, appBarHeight);
 // }
