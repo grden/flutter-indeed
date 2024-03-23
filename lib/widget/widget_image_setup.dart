@@ -2,7 +2,6 @@ import 'dart:typed_data';
 
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
@@ -14,7 +13,6 @@ import 'package:self_project/common/widget/widget_tap.dart';
 import 'package:self_project/provider/provider_user.dart';
 import 'package:self_project/screen/screen_setup.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:self_project/model/model_teacher.dart';
 
 class ImageSetup extends ConsumerStatefulWidget {
   const ImageSetup(
@@ -133,13 +131,14 @@ class _ImageSetupState extends ConsumerState<ImageSetup> {
   Future addSetup() async {
     final userCredential = ref.watch(userCredentialProvider);
     final setupList = ref.read(setupProvider);
+    String? downloadLink;
 
     if (imageData != null) {
       final storageRef = storage.ref().child(
           "${DateTime.now().millisecondsSinceEpoch}_${image?.name ?? "??"}.jpg");
       final compressedData = await imageCompressList(imageData!);
       await storageRef.putData(compressedData);
-      final downloadLink = await storageRef.getDownloadURL();
+      downloadLink = await storageRef.getDownloadURL();
     }
     await db
         .collection('users')
@@ -148,11 +147,14 @@ class _ImageSetupState extends ConsumerState<ImageSetup> {
         .doc('teacher')
         .set({
       'displayName': setupList[0][0].toString(),
-      'univ' : setupList[1][0].toString(),
-      'major' : setupList[1][1].toString(),
-      'studentID' : int.parse(setupList[1][2].toString()),
+      'univ' : setupList[1][0].toString() != '' ? setupList[1][0].toString() : null,
+      'major' : setupList[1][1].toString() != '' ? setupList[1][1].toString() : null,
+      'studentID' : setupList[1][2].toString() != '' ? setupList[1][2].toString() : null,
       'subjects': setupList[2],
-      'budget' : setupList[3][0].toString()
+      'budget' : setupList[3][0].toString() != '' ? setupList[3][0].toString() : null,
+      'profileImagePath' : downloadLink,
     });
+    
+    await db.collection('users').doc(userCredential?.user?.email).update({'initialSetup' : true});
   }
 }

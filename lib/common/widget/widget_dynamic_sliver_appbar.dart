@@ -129,7 +129,7 @@ class _DynamicSliverAppBarState extends State<DynamicSliverAppBar> {
             Padding(
               // Padding which centers the flexible space within the app bar
               padding: EdgeInsets.symmetric(vertical: MediaQuery.paddingOf(context).top / 2),
-              child: Container(key: _childKey, child: widget.flexibleSpace ?? SizedBox(height: kToolbarHeight)),
+              child: Container(key: _childKey, child: widget.flexibleSpace ?? const SizedBox(height: kToolbarHeight)),
             ),
             Positioned.fill(
               // 10 is the magic number which the app bar is pushed down within the sliver app bar. Couldnt find exactly where this number

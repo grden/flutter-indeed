@@ -9,12 +9,11 @@ class CustomThemeHolder extends InheritedWidget {
   final CustomTheme theme;
 
   CustomThemeHolder({
-    required Widget child,
+    required super.child,
     required this.theme,
-    Key? key,
+    super.key,
   })  : appColors = theme.appColors,
-        appShadows = theme.appShadows,
-        super(key: key, child: child);
+        appShadows = theme.appShadows;
 
   @override
   bool updateShouldNotify(covariant InheritedWidget oldWidget) {

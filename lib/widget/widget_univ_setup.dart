@@ -49,7 +49,7 @@ class _UnivSetupState extends State<UnivSetup> {
                   children: [
                     Row(
                       children: [
-                        Flexible(flex: 3, child: UnivTextFormField(context)),
+                        Flexible(flex: 3, child: univTextFormField(context)),
                         const Width(8),
                         const Flexible(
                           flex: 1,
@@ -65,7 +65,7 @@ class _UnivSetupState extends State<UnivSetup> {
                     const Height(16),
                     Row(
                       children: [
-                        Flexible(flex: 3, child: MajorTextFormField(context)),
+                        Flexible(flex: 3, child: majorTextFormField(context)),
                         const Width(8),
                         const Flexible(
                           flex: 1,
@@ -81,7 +81,7 @@ class _UnivSetupState extends State<UnivSetup> {
                     Row(
                       children: [
                         Flexible(
-                            flex: 3, child: StudentIDTextFormField(context)),
+                            flex: 3, child: studentIDTextFormField(context)),
                         const Width(8),
                         const Flexible(
                           flex: 1,
@@ -137,7 +137,7 @@ class _UnivSetupState extends State<UnivSetup> {
     );
   }
 
-  TextFormField UnivTextFormField(BuildContext context) => TextFormField(
+  TextFormField univTextFormField(BuildContext context) => TextFormField(
         controller: univTextController,
         style: const TextStyle(fontSize: 19),
         decoration: InputDecoration(
@@ -165,7 +165,7 @@ class _UnivSetupState extends State<UnivSetup> {
         // },
       );
 
-  TextFormField MajorTextFormField(BuildContext context) => TextFormField(
+  TextFormField majorTextFormField(BuildContext context) => TextFormField(
         controller: majorTextController,
         style: const TextStyle(fontSize: 19),
         decoration: InputDecoration(
@@ -193,7 +193,7 @@ class _UnivSetupState extends State<UnivSetup> {
         // },
       );
 
-  TextFormField StudentIDTextFormField(BuildContext context) => TextFormField(
+  TextFormField studentIDTextFormField(BuildContext context) => TextFormField(
         controller: studentIDTextController,
         style: const TextStyle(fontSize: 19),
         keyboardType: TextInputType.number,

@@ -11,13 +11,11 @@ import 'package:self_project/object/object_teacher_profile.dart';
 import 'package:self_project/widget/widget_teacher_card.dart';
 
 class TeacherProfileFragment extends StatefulWidget {
-  final SimpleTeacherProfile? simpleTeacher;
   final ExtendedTeacherProfile extendedTeacher;
 
   const TeacherProfileFragment(
     final String id, {
     super.key,
-    this.simpleTeacher,
     required this.extendedTeacher,
   });
 
@@ -95,12 +93,10 @@ class _TeacherProfileFragmentState extends State<TeacherProfileFragment>
 }
 
 class _ProfileBox extends StatelessWidget {
-  final SimpleTeacherProfile? simpleTeacher;
   final ExtendedTeacherProfile extendedTeacher;
 
   const _ProfileBox({
     super.key,
-    this.simpleTeacher,
     required this.extendedTeacher,
   });
 

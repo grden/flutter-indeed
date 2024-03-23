@@ -124,6 +124,7 @@ class _SigninCardState extends State<SigninCard> {
 
                           ref.read(userCredentialProvider.notifier).state =
                               userCredential;
+
                           final UserData? user =
                               (await ref.read(userDatabaseProvider).get())
                                   .data();
@@ -131,10 +132,10 @@ class _SigninCardState extends State<SigninCard> {
                             if (user?.accountType == null) {
                               context.go('/login/initial');
                             } else {
-                              if(user?.initialSetup == false) {
+                              if (user?.initialSetup == false) {
                                 context.go('/login/initial/setup');
-                              }
-                              else context.go('/');
+                              } else
+                                context.go('/');
                             }
                           }
                         }
