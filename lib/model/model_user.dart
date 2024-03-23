@@ -15,6 +15,7 @@ sealed class UserData with _$UserData {
     required int age,
     required Location locations,
     required bool? accountType, //true = teacher, false = student
+    required bool initialSetup,
     @JsonKey(fromJson: _onlineTimeFromJson) required DateTime onlineTime,
   }) = _UserData;
 

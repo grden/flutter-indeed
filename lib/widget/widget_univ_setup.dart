@@ -29,11 +29,12 @@ class _UnivSetupState extends State<UnivSetup> {
       padding: const EdgeInsets.all(24),
       color: context.appColors.backgroundColor,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           const Height(48),
           Column(
             children: [
+              const Height(40),
               const Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -41,7 +42,7 @@ class _UnivSetupState extends State<UnivSetup> {
                   style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
                 ),
               ),
-              const Height(16),
+              const Height(24),
               Form(
                 key: _formKey,
                 child: Column(
@@ -98,6 +99,7 @@ class _UnivSetupState extends State<UnivSetup> {
               ),
             ],
           ),
+          const Spacer(),
           Consumer(builder: (context, ref, child) {
             return MaterialButton(
               onPressed: () {

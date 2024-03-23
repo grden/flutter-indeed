@@ -30,7 +30,7 @@ class _SubjectSetupState extends State<SubjectSetup> {
     Subject.essay,
     Subject.others
   ];
-  List<Subject> setupList = [];
+  List<String> setupList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -38,18 +38,19 @@ class _SubjectSetupState extends State<SubjectSetup> {
       padding: const EdgeInsets.all(24),
       color: context.appColors.backgroundColor,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           const Height(48),
           Column(
             children: [
+              const Height(40),
               const Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
                     '가르치고자 하는\n과목을 선택해주세요.',
                     style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
                   )),
-              const Height(16),
+              const Height(24),
               SizedBox(
                 width: double.infinity,
                 height: 300,
@@ -115,6 +116,7 @@ class _SubjectSetupState extends State<SubjectSetup> {
               )
             ],
           ),
+          const Spacer(),
           Consumer(builder: (context, ref, child) {
             return MaterialButton(
               onPressed: () {
@@ -124,7 +126,7 @@ class _SubjectSetupState extends State<SubjectSetup> {
 
                 for(int i=0; i < subjectList.length; i++) {
                   if(isSelected[i] == true) {
-                    setupList.add(subjectList[i]);
+                    setupList.add(subjectList[i].subjectString);
                   }
                 }
                 return ref.read(setupProvider.notifier).addSetup(setupList);

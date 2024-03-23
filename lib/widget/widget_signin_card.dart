@@ -26,34 +26,6 @@ class _SigninCardState extends State<SigninCard> {
   TextEditingController emailTextController = TextEditingController();
   TextEditingController pwdTextController = TextEditingController();
 
-  Future<UserCredential?> signin(String email, String password) async {
-    try {
-      final credential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
-      return credential;
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        if (context.mounted) {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(errorSnackbar('해당 계정을 찾을 수 없습니다.'));
-        }
-      } else if (e.code == 'wrong-password') {
-        if (context.mounted) {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(errorSnackbar('비밀번호가 틀렸습니다.'));
-        }
-      } else if (e.code == 'invalid-email') {
-        if (context.mounted) {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(errorSnackbar('올바른 이메일 형식을 입력해주세요.'));
-        }
-      }
-    } catch (e) {
-      if (!context.mounted) return null;
-      ScaffoldMessenger.of(context).showSnackBar(errorSnackbar(e.toString()));
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -143,7 +115,7 @@ class _SigninCardState extends State<SigninCard> {
                         if (_formKey.currentState!.validate()) {
                           _formKey.currentState!.save();
 
-                          final userCredential = await signin(
+                          final userCredential = await signIn(
                               emailTextController.text.trim(),
                               pwdTextController.text.trim());
                           if (userCredential == null) {
@@ -159,7 +131,10 @@ class _SigninCardState extends State<SigninCard> {
                             if (user?.accountType == null) {
                               context.go('/login/initial');
                             } else {
-                              context.go('/');
+                              if(user?.initialSetup == false) {
+                                context.go('/login/initial/setup');
+                              }
+                              else context.go('/');
                             }
                           }
                         }
@@ -224,4 +199,32 @@ class _SigninCardState extends State<SigninCard> {
         ),
         backgroundColor: context.appColors.errorColor,
       );
+
+  Future<UserCredential?> signIn(String email, String password) async {
+    try {
+      final credential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+      return credential;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(errorSnackbar('해당 계정을 찾을 수 없습니다.'));
+        }
+      } else if (e.code == 'wrong-password') {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(errorSnackbar('비밀번호가 틀렸습니다.'));
+        }
+      } else if (e.code == 'invalid-email') {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(errorSnackbar('올바른 이메일 형식을 입력해주세요.'));
+        }
+      }
+    } catch (e) {
+      if (!context.mounted) return null;
+      ScaffoldMessenger.of(context).showSnackBar(errorSnackbar(e.toString()));
+    }
+  }
 }

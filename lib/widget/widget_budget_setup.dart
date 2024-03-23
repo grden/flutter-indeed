@@ -1,7 +1,6 @@
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:self_project/common/extension/extension_context.dart';
 import 'package:self_project/common/widget/widget_sizedbox.dart';
 import 'package:self_project/screen/screen_setup.dart';
@@ -28,15 +27,16 @@ class _BudgetSetupState extends State<BudgetSetup> {
       padding: const EdgeInsets.all(24),
       color: context.appColors.backgroundColor,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           const Height(48),
           Column(
             children: [
+              const Height(40),
               const Align(
                   alignment: Alignment.centerLeft,
                   child: Text('예상 시급을 입력해주세요.', style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),)),
-              const Height(16),
+              const Height(24),
               Form(
                 key: _formKey,
                 child: Row(
@@ -75,18 +75,18 @@ class _BudgetSetupState extends State<BudgetSetup> {
               ),
             ],
           ),
+          const Spacer(),
           Consumer(builder: (context, ref, child) {
             return MaterialButton(
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
-                  widget.buttonCarouselController
-                      .nextPage(duration: const Duration(milliseconds: 240));
                   ref.read(indexStateProvider.notifier).state++;
 
-                  context.go('/');
+                  widget.buttonCarouselController
+                      .nextPage(duration: const Duration(milliseconds: 240));
 
-                  return ref.read(setupProvider.notifier).addSetup(budgetTextController.text.trim());
+                  return ref.read(setupProvider.notifier).addSetup([budgetTextController.text.trim()]);
                 }
               },
               height: 48,
@@ -95,7 +95,7 @@ class _BudgetSetupState extends State<BudgetSetup> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12)),
               child: Text(
-                '설정 완료하기',
+                '다음',
                 style: TextStyle(
                     color: context.appColors.inverseText,
                     fontSize: 19,

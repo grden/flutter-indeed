@@ -22,56 +22,16 @@ class SignupCard extends StatefulWidget {
 class _SignupCardState extends State<SignupCard> {
   final _formKey = GlobalKey<FormState>();
 
+  final FirebaseFirestore db = FirebaseFirestore.instance;
+
   TextEditingController emailTextController = TextEditingController();
   TextEditingController pwdTextController = TextEditingController();
   TextEditingController nameTextController = TextEditingController();
   TextEditingController ageTextController = TextEditingController();
   String? genderDropdownValue;
   String? locationDropdownValue;
-  DateTime? onlineTime;
 
-  Future<bool> signUp(String emailAddress, String password, String name,
-      int age, String gender, String locations, DateTime onlineTime) async {
-    try {
-      final credential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(
-              email: emailAddress, password: password);
-      FirebaseFirestore.instance.collection('users').doc(emailAddress).set({
-        'id': credential.user?.uid ?? '',
-        'email': credential.user?.email ?? '',
-        'name': name,
-        'age': age,
-        'gender': gender,
-        'locations': locations,
-        'onlineTime': Timestamp.fromDate(onlineTime),
-        'accountType': null,
-      });
-      return true;
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        if (context.mounted) {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(errorSnackbar('비밀번호가 약합니다.'));
-        }
-      } else if (e.code == 'email-already-in-use') {
-        if (context.mounted) {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(errorSnackbar('이미 정보가 존재합니다.'));
-        }
-      } else if (e.code == 'invalid-email') {
-        if (context.mounted) {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(errorSnackbar('올바른 이메일 형식을 입력해주세요.'));
-        }
-      }
-      return false;
-    } catch (e) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(errorSnackbar(e.toString()));
-      }
-      return false;
-    }
-  }
+  //DateTime? onlineTime;
 
   @override
   Widget build(BuildContext context) {
@@ -112,9 +72,9 @@ class _SignupCardState extends State<SignupCard> {
                   const Height(16),
                   MaterialButton(
                     onPressed: () async {
-                      setState(() {
-                        onlineTime = DateTime.now();
-                      });
+                      // setState(() {
+                      //   onlineTime = DateTime.now();
+                      // });
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
                         final result = await signUp(
@@ -124,7 +84,6 @@ class _SignupCardState extends State<SignupCard> {
                           int.parse(ageTextController.text.trim()),
                           genderDropdownValue!.trim(),
                           locationDropdownValue!.trim(),
-                          onlineTime!,
                         );
                         if (result) {
                           if (context.mounted) {
@@ -390,4 +349,50 @@ class _SignupCardState extends State<SignupCard> {
         ),
         backgroundColor: context.appColors.errorColor,
       );
+
+  Future<bool> signUp(String emailAddress, String password, String name,
+      int age, String gender, String locations) async {
+    try {
+      final credential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+              email: emailAddress, password: password);
+
+      db.collection('users').doc(emailAddress).set({
+        'id': credential.user?.uid ?? '',
+        'email': credential.user?.email ?? '',
+        'name': name,
+        'age': age,
+        'gender': gender,
+        'locations': locations,
+        'onlineTime': Timestamp.fromDate(DateTime.now()),
+        //'onlineTime': DateTime.now().millisecondsSinceEpoch,
+        'accountType': null,
+        'initialSetup': false
+      });
+      return true;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(errorSnackbar('비밀번호가 약합니다.'));
+        }
+      } else if (e.code == 'email-already-in-use') {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(errorSnackbar('이미 정보가 존재합니다.'));
+        }
+      } else if (e.code == 'invalid-email') {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(errorSnackbar('올바른 이메일 형식을 입력해주세요.'));
+        }
+      }
+      return false;
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(errorSnackbar(e.toString()));
+      }
+      return false;
+    }
+  }
 }

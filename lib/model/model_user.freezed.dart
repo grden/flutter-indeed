@@ -30,9 +30,11 @@ mixin _$UserData {
   bool? get accountType => throw _privateConstructorUsedError;
   set accountType(bool? value) =>
       throw _privateConstructorUsedError; //true = teacher, false = student
-  @JsonKey(fromJson: _onlineTimeFromJson)
-  DateTime get onlineTime =>
+  bool get initialSetup =>
       throw _privateConstructorUsedError; //true = teacher, false = student
+  set initialSetup(bool value) => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: _onlineTimeFromJson)
+  DateTime get onlineTime => throw _privateConstructorUsedError;
   @JsonKey(fromJson: _onlineTimeFromJson)
   set onlineTime(DateTime value) => throw _privateConstructorUsedError;
 
@@ -54,6 +56,7 @@ abstract class $UserDataCopyWith<$Res> {
       int age,
       Location locations,
       bool? accountType,
+      bool initialSetup,
       @JsonKey(fromJson: _onlineTimeFromJson) DateTime onlineTime});
 }
 
@@ -76,6 +79,7 @@ class _$UserDataCopyWithImpl<$Res, $Val extends UserData>
     Object? age = null,
     Object? locations = null,
     Object? accountType = freezed,
+    Object? initialSetup = null,
     Object? onlineTime = null,
   }) {
     return _then(_value.copyWith(
@@ -103,6 +107,10 @@ class _$UserDataCopyWithImpl<$Res, $Val extends UserData>
           ? _value.accountType
           : accountType // ignore: cast_nullable_to_non_nullable
               as bool?,
+      initialSetup: null == initialSetup
+          ? _value.initialSetup
+          : initialSetup // ignore: cast_nullable_to_non_nullable
+              as bool,
       onlineTime: null == onlineTime
           ? _value.onlineTime
           : onlineTime // ignore: cast_nullable_to_non_nullable
@@ -126,6 +134,7 @@ abstract class _$$UserDataImplCopyWith<$Res>
       int age,
       Location locations,
       bool? accountType,
+      bool initialSetup,
       @JsonKey(fromJson: _onlineTimeFromJson) DateTime onlineTime});
 }
 
@@ -146,6 +155,7 @@ class __$$UserDataImplCopyWithImpl<$Res>
     Object? age = null,
     Object? locations = null,
     Object? accountType = freezed,
+    Object? initialSetup = null,
     Object? onlineTime = null,
   }) {
     return _then(_$UserDataImpl(
@@ -173,6 +183,10 @@ class __$$UserDataImplCopyWithImpl<$Res>
           ? _value.accountType
           : accountType // ignore: cast_nullable_to_non_nullable
               as bool?,
+      initialSetup: null == initialSetup
+          ? _value.initialSetup
+          : initialSetup // ignore: cast_nullable_to_non_nullable
+              as bool,
       onlineTime: null == onlineTime
           ? _value.onlineTime
           : onlineTime // ignore: cast_nullable_to_non_nullable
@@ -191,6 +205,7 @@ class _$UserDataImpl implements _UserData {
       required this.age,
       required this.locations,
       required this.accountType,
+      required this.initialSetup,
       @JsonKey(fromJson: _onlineTimeFromJson) required this.onlineTime});
 
   factory _$UserDataImpl.fromJson(Map<String, dynamic> json) =>
@@ -210,12 +225,14 @@ class _$UserDataImpl implements _UserData {
   bool? accountType;
 //true = teacher, false = student
   @override
+  bool initialSetup;
+  @override
   @JsonKey(fromJson: _onlineTimeFromJson)
   DateTime onlineTime;
 
   @override
   String toString() {
-    return 'UserData(id: $id, name: $name, gender: $gender, age: $age, locations: $locations, accountType: $accountType, onlineTime: $onlineTime)';
+    return 'UserData(id: $id, name: $name, gender: $gender, age: $age, locations: $locations, accountType: $accountType, initialSetup: $initialSetup, onlineTime: $onlineTime)';
   }
 
   @JsonKey(ignore: true)
@@ -240,6 +257,7 @@ abstract class _UserData implements UserData {
       required int age,
       required Location locations,
       required bool? accountType,
+      required bool initialSetup,
       @JsonKey(fromJson: _onlineTimeFromJson)
       required DateTime onlineTime}) = _$UserDataImpl;
 
@@ -262,8 +280,11 @@ abstract class _UserData implements UserData {
   bool? get accountType;
   set accountType(bool? value);
   @override //true = teacher, false = student
+  bool get initialSetup; //true = teacher, false = student
+  set initialSetup(bool value);
+  @override
   @JsonKey(fromJson: _onlineTimeFromJson)
-  DateTime get onlineTime; //true = teacher, false = student
+  DateTime get onlineTime;
   @JsonKey(fromJson: _onlineTimeFromJson)
   set onlineTime(DateTime value);
   @override

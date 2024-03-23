@@ -14,6 +14,7 @@ _$UserDataImpl _$$UserDataImplFromJson(Map<String, dynamic> json) =>
       age: json['age'] as int,
       locations: $enumDecode(_$LocationEnumMap, json['locations']),
       accountType: json['accountType'] as bool?,
+      initialSetup: json['initialSetup'] as bool,
       onlineTime: _onlineTimeFromJson(json['onlineTime'] as Timestamp),
     );
 
@@ -25,6 +26,7 @@ Map<String, dynamic> _$$UserDataImplToJson(_$UserDataImpl instance) =>
       'age': instance.age,
       'locations': _$LocationEnumMap[instance.locations]!,
       'accountType': instance.accountType,
+      'initialSetup': instance.initialSetup,
       'onlineTime': instance.onlineTime.toIso8601String(),
     };
 

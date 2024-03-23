@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:self_project/model/model_user.dart';
 
-// FirebasAuth, FirebaseFirestore의 user 정보에 대한 provider
+/// FirebasAuth, FirebaseFirestore의 user 정보에 대한 provider
 
 // Firestore database 저장
 final FirebaseFirestore db = FirebaseFirestore.instance;
@@ -22,8 +22,6 @@ final userDatabaseProvider = StateProvider((ref) {
           toFirestore: (userData, _) => userData.toJson());
   return userDatabase;
 });
-
-
 
 // // FirebaseAuth instance에 접근하기 위한 provider
 // final firebaseAuthProvider =

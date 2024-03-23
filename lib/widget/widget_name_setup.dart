@@ -27,15 +27,15 @@ class _NameSetupState extends State<NameSetup> {
       padding: const EdgeInsets.all(24),
       color: context.appColors.backgroundColor,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           const Height(48),
           Column(
             children: [
+              const Height(40),
               const Align(
                   alignment: Alignment.centerLeft,
-                  child: Text('학생들에게 보여질\n닉네임을 입력해주세요.', style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),)),
-              const Height(16),
+                  child: Text('학생들에게 보여질\n닉네임을 입력해주세요.', style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),)),
+              const Height(24),
               Form(
                 key: _formKey,
                 child: TextFormField(
@@ -66,6 +66,7 @@ class _NameSetupState extends State<NameSetup> {
               ),
             ],
           ),
+          const Spacer(),
           Consumer(builder: (context, ref, child) {
             return MaterialButton(
               onPressed: () {
@@ -74,7 +75,7 @@ class _NameSetupState extends State<NameSetup> {
                   widget.buttonCarouselController
                       .nextPage(duration: const Duration(milliseconds: 240));
                   ref.read(indexStateProvider.notifier).state++;
-                  return ref.read(setupProvider.notifier).addSetup(nameTextController.text.trim());
+                  return ref.read(setupProvider.notifier).addSetup([nameTextController.text.trim()]);
                 }
               },
               height: 48,

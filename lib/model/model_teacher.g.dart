@@ -44,16 +44,16 @@ Map<String, dynamic> _$$TeacherImplToJson(_$TeacherImpl instance) =>
     };
 
 const _$SubjectEnumMap = {
-  Subject.math: 'math',
-  Subject.english: 'english',
-  Subject.korean: 'korean',
-  Subject.science: 'science',
-  Subject.society: 'society',
-  Subject.essay: 'essay',
-  Subject.others: 'others',
+  Subject.math: '수학',
+  Subject.english: '영어',
+  Subject.korean: '국어',
+  Subject.science: '과탐',
+  Subject.society: '사탐',
+  Subject.essay: '논술',
+  Subject.others: '기타',
 };
 
 const _$LectureMethodEnumMap = {
-  LectureMethod.online: 'online',
-  LectureMethod.offline: 'offline',
+  LectureMethod.online: '온라인',
+  LectureMethod.offline: '오프라인',
 };

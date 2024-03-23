@@ -8,6 +8,7 @@ import 'package:self_project/common/extension/extension_context.dart';
 import 'package:self_project/common/widget/widget_arrow.dart';
 import 'package:self_project/common/widget/widget_tap.dart';
 import 'package:self_project/widget/widget_budget_setup.dart';
+import 'package:self_project/widget/widget_image_setup.dart';
 import 'package:self_project/widget/widget_name_setup.dart';
 import 'package:self_project/widget/widget_subject_setup.dart';
 import 'package:self_project/widget/widget_univ_setup.dart';
@@ -31,6 +32,7 @@ class _SetupScreenState extends ConsumerState<SetupScreen> {
     UnivSetup(buttonCarouselController),
     SubjectSetup(buttonCarouselController),
     BudgetSetup(buttonCarouselController),
+    ImageSetup(buttonCarouselController),
   ];
 
   @override
@@ -50,15 +52,16 @@ class _SetupScreenState extends ConsumerState<SetupScreen> {
                 children: [
                   Center(
                     child: SizedBox(
-                        width: 240,
-                        child: FAProgressBar(
-                          currentValue: index.toDouble(),
-                          maxValue: 4,
-                          size: 10,
-                          backgroundColor: context.appColors.textFieldColor,
-                          progressColor: context.appColors.primaryColor,
-                          animatedDuration: const Duration(milliseconds: 160),
-                        )),
+                      width: 240,
+                      child: FAProgressBar(
+                        currentValue: index.toDouble(),
+                        maxValue: 4,
+                        size: 10,
+                        backgroundColor: context.appColors.textFieldColor,
+                        progressColor: context.appColors.primaryColor,
+                        animatedDuration: const Duration(milliseconds: 160),
+                      ),
+                    ),
                   ),
                   if (index != 0) ...[
                     Align(
@@ -98,15 +101,15 @@ class _SetupScreenState extends ConsumerState<SetupScreen> {
 }
 
 final setupProvider =
-    NotifierProvider<SetupNotifier, List<Object>>(() => SetupNotifier());
+    NotifierProvider<SetupNotifier, List<List<Object>>>(() => SetupNotifier());
 
-class SetupNotifier extends Notifier<List<Object>> {
+class SetupNotifier extends Notifier<List<List<Object>>> {
   @override
-  List<Object> build() {
+  List<List<Object>> build() {
     return [];
   }
 
-  void addSetup(Object setup) {
+  void addSetup(List<Object> setup) {
     state = [...state, setup];
     print(state);
   }

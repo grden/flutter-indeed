@@ -35,6 +35,7 @@ enum Subject {
   const Subject({required this.subjectString});
 
   final String subjectString;
+  String getSubjectString(Subject subject) => subject.subjectString;
 }
 
 enum LectureMethod {

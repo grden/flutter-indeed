@@ -39,7 +39,7 @@ class _ClassifyScreenState extends ConsumerState<ClassifyScreen> {
                     .doc(userCredential?.user?.email)
                     .collection('type')
                     .doc('teacher')
-                    .set({});
+                    .set({'displayName' : ''});
                 context.go('/login/initial/setup');
               },
               child: Container(
@@ -68,7 +68,7 @@ class _ClassifyScreenState extends ConsumerState<ClassifyScreen> {
                     .doc(userCredential?.user?.email)
                     .collection('type')
                     .doc('student')
-                    .set({});
+                    .set({'displayName' : ''});
                 context.go('login/initial/setup');
               },
               child: Container(
