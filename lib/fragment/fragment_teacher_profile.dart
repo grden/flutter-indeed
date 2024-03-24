@@ -7,7 +7,6 @@ import 'package:self_project/common/widget/widget_sizedbox.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:self_project/object/object_extended_teacher_profile.dart';
 import 'package:self_project/object/object_profile.dart';
-import 'package:self_project/object/object_teacher_profile.dart';
 import 'package:self_project/widget/widget_teacher_card.dart';
 
 class TeacherProfileFragment extends StatefulWidget {
@@ -96,7 +95,6 @@ class _ProfileBox extends StatelessWidget {
   final ExtendedTeacherProfile extendedTeacher;
 
   const _ProfileBox({
-    super.key,
     required this.extendedTeacher,
   });
 

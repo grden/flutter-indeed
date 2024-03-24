@@ -1,7 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:self_project/model/model_user.dart';
-import 'package:velocity_x/velocity_x.dart';
 
 part 'model_teacher.freezed.dart';
 
