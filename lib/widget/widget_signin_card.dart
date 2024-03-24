@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_controller.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -134,8 +135,13 @@ class _SigninCardState extends State<SigninCard> {
                             } else {
                               if (user?.initialSetup == false) {
                                 context.go('/login/initial/setup');
-                              } else
+                              } else {
+                                db
+                                    .collection('users')
+                                    .doc(userCredential.user?.email)
+                                    .update({'onlineTime': Timestamp.fromDate(DateTime.now())});
                                 context.go('/');
+                              }
                             }
                           }
                         }
@@ -193,7 +199,7 @@ class _SigninCardState extends State<SigninCard> {
     );
   }
 
-  SnackBar errorSnackbar(String errorText) => SnackBar(
+  SnackBar errorSnackBar(String errorText) => SnackBar(
         content: Text(
           errorText,
           style: TextStyle(color: context.appColors.inverseText, fontSize: 19),
@@ -210,22 +216,22 @@ class _SigninCardState extends State<SigninCard> {
       if (e.code == 'user-not-found') {
         if (context.mounted) {
           ScaffoldMessenger.of(context)
-              .showSnackBar(errorSnackbar('해당 계정을 찾을 수 없습니다.'));
+              .showSnackBar(errorSnackBar('해당 계정을 찾을 수 없습니다.'));
         }
       } else if (e.code == 'wrong-password') {
         if (context.mounted) {
           ScaffoldMessenger.of(context)
-              .showSnackBar(errorSnackbar('비밀번호가 틀렸습니다.'));
+              .showSnackBar(errorSnackBar('비밀번호가 틀렸습니다.'));
         }
       } else if (e.code == 'invalid-email') {
         if (context.mounted) {
           ScaffoldMessenger.of(context)
-              .showSnackBar(errorSnackbar('올바른 이메일 형식을 입력해주세요.'));
+              .showSnackBar(errorSnackBar('올바른 이메일 형식을 입력해주세요.'));
         }
       }
     } catch (e) {
       if (!context.mounted) return null;
-      ScaffoldMessenger.of(context).showSnackBar(errorSnackbar(e.toString()));
+      ScaffoldMessenger.of(context).showSnackBar(errorSnackBar(e.toString()));
     }
   }
 }

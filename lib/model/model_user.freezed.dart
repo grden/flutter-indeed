@@ -21,6 +21,7 @@ UserData _$UserDataFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$UserData {
   String get id => throw _privateConstructorUsedError;
+  String get email => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   Gender get gender => throw _privateConstructorUsedError;
   int get age => throw _privateConstructorUsedError;
@@ -51,6 +52,7 @@ abstract class $UserDataCopyWith<$Res> {
   @useResult
   $Res call(
       {String id,
+      String email,
       String name,
       Gender gender,
       int age,
@@ -74,6 +76,7 @@ class _$UserDataCopyWithImpl<$Res, $Val extends UserData>
   @override
   $Res call({
     Object? id = null,
+    Object? email = null,
     Object? name = null,
     Object? gender = null,
     Object? age = null,
@@ -86,6 +89,10 @@ class _$UserDataCopyWithImpl<$Res, $Val extends UserData>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      email: null == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
               as String,
       name: null == name
           ? _value.name
@@ -129,6 +136,7 @@ abstract class _$$UserDataImplCopyWith<$Res>
   @useResult
   $Res call(
       {String id,
+      String email,
       String name,
       Gender gender,
       int age,
@@ -150,6 +158,7 @@ class __$$UserDataImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
+    Object? email = null,
     Object? name = null,
     Object? gender = null,
     Object? age = null,
@@ -162,6 +171,10 @@ class __$$UserDataImplCopyWithImpl<$Res>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      email: null == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
               as String,
       name: null == name
           ? _value.name
@@ -200,6 +213,7 @@ class __$$UserDataImplCopyWithImpl<$Res>
 class _$UserDataImpl implements _UserData {
   _$UserDataImpl(
       {required this.id,
+      required this.email,
       required this.name,
       required this.gender,
       required this.age,
@@ -213,6 +227,8 @@ class _$UserDataImpl implements _UserData {
 
   @override
   final String id;
+  @override
+  final String email;
   @override
   final String name;
   @override
@@ -232,7 +248,7 @@ class _$UserDataImpl implements _UserData {
 
   @override
   String toString() {
-    return 'UserData(id: $id, name: $name, gender: $gender, age: $age, locations: $locations, accountType: $accountType, initialSetup: $initialSetup, onlineTime: $onlineTime)';
+    return 'UserData(id: $id, email: $email, name: $name, gender: $gender, age: $age, locations: $locations, accountType: $accountType, initialSetup: $initialSetup, onlineTime: $onlineTime)';
   }
 
   @JsonKey(ignore: true)
@@ -252,6 +268,7 @@ class _$UserDataImpl implements _UserData {
 abstract class _UserData implements UserData {
   factory _UserData(
       {required final String id,
+      required final String email,
       required final String name,
       required final Gender gender,
       required int age,
@@ -266,6 +283,8 @@ abstract class _UserData implements UserData {
 
   @override
   String get id;
+  @override
+  String get email;
   @override
   String get name;
   @override

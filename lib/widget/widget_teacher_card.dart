@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:self_project/common/extension/extension_context.dart';
-import 'package:self_project/object/object_profile.dart';
-import 'package:self_project/object/object_teacher_profile.dart';
+import 'package:self_project/model/model_teacher.dart';
 import 'package:self_project/common/widget/widget_sizedbox.dart';
+import 'package:self_project/model/model_user.dart';
 
 class BuildTeacherCard extends StatelessWidget {
-  final List<SimpleTeacherProfile> teacherProfiles;
-  final int index;
+  final Teacher teacher;
 
-  const BuildTeacherCard(this.teacherProfiles, this.index, {super.key});
+  const BuildTeacherCard(this.teacher, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    final teacher = teacherProfiles[index];
+    //final teacher = teacherProfile;
 
     return Container(
       padding: const EdgeInsets.all(8),
@@ -31,12 +30,15 @@ class BuildTeacherCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image(
-                  image: AssetImage(teacher.profileImagePath ??
-                      'assets/image/default_profile.png'),
-                ),
-              ),
+                  borderRadius: BorderRadius.circular(8),
+                  child: teacher.profileImagePath != null
+                      ? Image(
+                          image: NetworkImage(teacher.profileImagePath!),
+                    fit: BoxFit.fill,
+                        )
+                      : const Image(
+                          image:
+                              AssetImage('assets/image/default_profile.png'))),
             ),
           ),
           const Height(8),
@@ -44,7 +46,7 @@ class BuildTeacherCard extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  teacher.nickname,
+                  teacher.displayName,
                   style: TextStyle(
                       color: context.appColors.primaryText,
                       fontSize: 17,
@@ -60,12 +62,12 @@ class BuildTeacherCard extends StatelessWidget {
                 height: 18,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(6),
-                    color: teacher.profile.gender != Gender.male
+                    color: teacher.user.gender != Gender.male
                         ? context.appColors.womanBadge
                         : context.appColors.manBadge),
                 child: Center(
                   child: Text(
-                    teacher.profile.gender.genderString,
+                    teacher.user.gender.genderString,
                     style: TextStyle(
                       color: context.appColors.cardColor,
                       fontSize: 13,
@@ -76,7 +78,7 @@ class BuildTeacherCard extends StatelessWidget {
               ),
               const Width(4),
               Text(
-                '${teacher.profile.age}',
+                '${teacher.user.age}',
                 style: TextStyle(
                     color: context.appColors.secondaryText,
                     fontSize: 15,
@@ -120,7 +122,8 @@ class BuildTeacherCard extends StatelessWidget {
                 ),
               ),
               Text(
-                ' ∙ ${teacher.profile.locations.map((e) => e.locationString).join(',')}',
+                //' ∙ ${teacher.user.locations.map((e) => e.locationString).join(',')}',
+                ' ∙ ${teacher.user.locations.locationString}',
                 style: TextStyle(
                   color: context.appColors.secondaryText,
                   fontSize: 15,

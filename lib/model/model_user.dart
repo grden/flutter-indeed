@@ -10,6 +10,7 @@ DateTime _onlineTimeFromJson(Timestamp timestamp) => timestamp.toDate();
 sealed class UserData with _$UserData {
   factory UserData({
     required final String id,
+    required final String email,
     required final String name,
     required final Gender gender,
     required int age,

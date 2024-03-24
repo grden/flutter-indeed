@@ -25,8 +25,8 @@ mixin _$Teacher {
   set displayName(String value) => throw _privateConstructorUsedError;
   List<Subject> get subjects => throw _privateConstructorUsedError;
   set subjects(List<Subject> value) => throw _privateConstructorUsedError;
-  String get profileImagePath => throw _privateConstructorUsedError;
-  set profileImagePath(String value) => throw _privateConstructorUsedError;
+  String? get profileImagePath => throw _privateConstructorUsedError;
+  set profileImagePath(String? value) => throw _privateConstructorUsedError;
   String? get univ => throw _privateConstructorUsedError;
   set univ(String? value) => throw _privateConstructorUsedError;
   String? get major => throw _privateConstructorUsedError;
@@ -34,11 +34,10 @@ mixin _$Teacher {
   String? get studentID => throw _privateConstructorUsedError;
   set studentID(String? value) => throw _privateConstructorUsedError;
   String? get budget => throw _privateConstructorUsedError;
-  set budget(String? value) => throw _privateConstructorUsedError;
-  List<LectureMethod>? get lectureMethods => throw _privateConstructorUsedError;
-  set lectureMethods(List<LectureMethod>? value) =>
-      throw _privateConstructorUsedError;
-  String? get info => throw _privateConstructorUsedError;
+  set budget(String? value) =>
+      throw _privateConstructorUsedError; //List<LectureMethod>? lectureMethods,
+  String? get info =>
+      throw _privateConstructorUsedError; //List<LectureMethod>? lectureMethods,
   set info(String? value) => throw _privateConstructorUsedError;
   String? get experience => throw _privateConstructorUsedError;
   set experience(String? value) => throw _privateConstructorUsedError;
@@ -57,12 +56,11 @@ abstract class $TeacherCopyWith<$Res> {
       {UserData user,
       String displayName,
       List<Subject> subjects,
-      String profileImagePath,
+      String? profileImagePath,
       String? univ,
       String? major,
       String? studentID,
       String? budget,
-      List<LectureMethod>? lectureMethods,
       String? info,
       String? experience});
 
@@ -85,12 +83,11 @@ class _$TeacherCopyWithImpl<$Res, $Val extends Teacher>
     Object? user = null,
     Object? displayName = null,
     Object? subjects = null,
-    Object? profileImagePath = null,
+    Object? profileImagePath = freezed,
     Object? univ = freezed,
     Object? major = freezed,
     Object? studentID = freezed,
     Object? budget = freezed,
-    Object? lectureMethods = freezed,
     Object? info = freezed,
     Object? experience = freezed,
   }) {
@@ -107,10 +104,10 @@ class _$TeacherCopyWithImpl<$Res, $Val extends Teacher>
           ? _value.subjects
           : subjects // ignore: cast_nullable_to_non_nullable
               as List<Subject>,
-      profileImagePath: null == profileImagePath
+      profileImagePath: freezed == profileImagePath
           ? _value.profileImagePath
           : profileImagePath // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       univ: freezed == univ
           ? _value.univ
           : univ // ignore: cast_nullable_to_non_nullable
@@ -127,10 +124,6 @@ class _$TeacherCopyWithImpl<$Res, $Val extends Teacher>
           ? _value.budget
           : budget // ignore: cast_nullable_to_non_nullable
               as String?,
-      lectureMethods: freezed == lectureMethods
-          ? _value.lectureMethods
-          : lectureMethods // ignore: cast_nullable_to_non_nullable
-              as List<LectureMethod>?,
       info: freezed == info
           ? _value.info
           : info // ignore: cast_nullable_to_non_nullable
@@ -162,12 +155,11 @@ abstract class _$$TeacherImplCopyWith<$Res> implements $TeacherCopyWith<$Res> {
       {UserData user,
       String displayName,
       List<Subject> subjects,
-      String profileImagePath,
+      String? profileImagePath,
       String? univ,
       String? major,
       String? studentID,
       String? budget,
-      List<LectureMethod>? lectureMethods,
       String? info,
       String? experience});
 
@@ -189,12 +181,11 @@ class __$$TeacherImplCopyWithImpl<$Res>
     Object? user = null,
     Object? displayName = null,
     Object? subjects = null,
-    Object? profileImagePath = null,
+    Object? profileImagePath = freezed,
     Object? univ = freezed,
     Object? major = freezed,
     Object? studentID = freezed,
     Object? budget = freezed,
-    Object? lectureMethods = freezed,
     Object? info = freezed,
     Object? experience = freezed,
   }) {
@@ -211,10 +202,10 @@ class __$$TeacherImplCopyWithImpl<$Res>
           ? _value.subjects
           : subjects // ignore: cast_nullable_to_non_nullable
               as List<Subject>,
-      profileImagePath: null == profileImagePath
+      profileImagePath: freezed == profileImagePath
           ? _value.profileImagePath
           : profileImagePath // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       univ: freezed == univ
           ? _value.univ
           : univ // ignore: cast_nullable_to_non_nullable
@@ -231,10 +222,6 @@ class __$$TeacherImplCopyWithImpl<$Res>
           ? _value.budget
           : budget // ignore: cast_nullable_to_non_nullable
               as String?,
-      lectureMethods: freezed == lectureMethods
-          ? _value.lectureMethods
-          : lectureMethods // ignore: cast_nullable_to_non_nullable
-              as List<LectureMethod>?,
       info: freezed == info
           ? _value.info
           : info // ignore: cast_nullable_to_non_nullable
@@ -254,12 +241,11 @@ class _$TeacherImpl implements _Teacher {
       {required this.user,
       required this.displayName,
       required this.subjects,
-      this.profileImagePath = 'assets/image/default_profile.png',
+      this.profileImagePath,
       this.univ,
       this.major,
       this.studentID,
       this.budget,
-      this.lectureMethods,
       this.info,
       this.experience});
 
@@ -273,8 +259,7 @@ class _$TeacherImpl implements _Teacher {
   @override
   List<Subject> subjects;
   @override
-  @JsonKey()
-  String profileImagePath;
+  String? profileImagePath;
   @override
   String? univ;
   @override
@@ -283,8 +268,7 @@ class _$TeacherImpl implements _Teacher {
   String? studentID;
   @override
   String? budget;
-  @override
-  List<LectureMethod>? lectureMethods;
+//List<LectureMethod>? lectureMethods,
   @override
   String? info;
   @override
@@ -292,7 +276,7 @@ class _$TeacherImpl implements _Teacher {
 
   @override
   String toString() {
-    return 'Teacher(user: $user, displayName: $displayName, subjects: $subjects, profileImagePath: $profileImagePath, univ: $univ, major: $major, studentID: $studentID, budget: $budget, lectureMethods: $lectureMethods, info: $info, experience: $experience)';
+    return 'Teacher(user: $user, displayName: $displayName, subjects: $subjects, profileImagePath: $profileImagePath, univ: $univ, major: $major, studentID: $studentID, budget: $budget, info: $info, experience: $experience)';
   }
 
   @JsonKey(ignore: true)
@@ -314,12 +298,11 @@ abstract class _Teacher implements Teacher {
       {required final UserData user,
       required String displayName,
       required List<Subject> subjects,
-      String profileImagePath,
+      String? profileImagePath,
       String? univ,
       String? major,
       String? studentID,
       String? budget,
-      List<LectureMethod>? lectureMethods,
       String? info,
       String? experience}) = _$TeacherImpl;
 
@@ -334,8 +317,8 @@ abstract class _Teacher implements Teacher {
   List<Subject> get subjects;
   set subjects(List<Subject> value);
   @override
-  String get profileImagePath;
-  set profileImagePath(String value);
+  String? get profileImagePath;
+  set profileImagePath(String? value);
   @override
   String? get univ;
   set univ(String? value);
@@ -348,11 +331,8 @@ abstract class _Teacher implements Teacher {
   @override
   String? get budget;
   set budget(String? value);
-  @override
-  List<LectureMethod>? get lectureMethods;
-  set lectureMethods(List<LectureMethod>? value);
-  @override
-  String? get info;
+  @override //List<LectureMethod>? lectureMethods,
+  String? get info; //List<LectureMethod>? lectureMethods,
   set info(String? value);
   @override
   String? get experience;

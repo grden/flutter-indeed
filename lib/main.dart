@@ -44,7 +44,7 @@ class App extends StatefulWidget {
           path: 'teacher-profile/:id',
           builder: (context, state) => TeacherProfileFragment(
               state.pathParameters['id']!,
-              extendedTeacher: state.extra as ExtendedTeacherProfile),
+              teacher: state.extra as ExtendedTeacherProfile),
         )
       ]),
       GoRoute(

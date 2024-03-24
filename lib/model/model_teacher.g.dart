@@ -13,15 +13,11 @@ _$TeacherImpl _$$TeacherImplFromJson(Map<String, dynamic> json) =>
       subjects: (json['subjects'] as List<dynamic>)
           .map((e) => $enumDecode(_$SubjectEnumMap, e))
           .toList(),
-      profileImagePath: json['profileImagePath'] as String? ??
-          'assets/image/default_profile.png',
+      profileImagePath: json['profileImagePath'] as String?,
       univ: json['univ'] as String?,
       major: json['major'] as String?,
       studentID: json['studentID'] as String?,
       budget: json['budget'] as String?,
-      lectureMethods: (json['lectureMethods'] as List<dynamic>?)
-          ?.map((e) => $enumDecode(_$LectureMethodEnumMap, e))
-          .toList(),
       info: json['info'] as String?,
       experience: json['experience'] as String?,
     );
@@ -36,9 +32,6 @@ Map<String, dynamic> _$$TeacherImplToJson(_$TeacherImpl instance) =>
       'major': instance.major,
       'studentID': instance.studentID,
       'budget': instance.budget,
-      'lectureMethods': instance.lectureMethods
-          ?.map((e) => _$LectureMethodEnumMap[e]!)
-          .toList(),
       'info': instance.info,
       'experience': instance.experience,
     };
@@ -51,9 +44,4 @@ const _$SubjectEnumMap = {
   Subject.society: '사탐',
   Subject.essay: '논술',
   Subject.others: '기타',
-};
-
-const _$LectureMethodEnumMap = {
-  LectureMethod.online: '온라인',
-  LectureMethod.offline: '오프라인',
 };

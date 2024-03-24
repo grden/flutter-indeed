@@ -11,12 +11,12 @@ import 'package:self_project/object/object_teacher_profile.dart';
 import 'package:self_project/widget/widget_teacher_card.dart';
 
 class TeacherProfileFragment extends StatefulWidget {
-  final ExtendedTeacherProfile extendedTeacher;
+  final ExtendedTeacherProfile teacher;
 
   const TeacherProfileFragment(
     final String id, {
     super.key,
-    required this.extendedTeacher,
+    required this.teacher,
   });
 
   @override
@@ -43,7 +43,7 @@ class _TeacherProfileFragmentState extends State<TeacherProfileFragment>
               //physics: const ClampingScrollPhysics(),
               slivers: [
                 _ProfileBox(
-                  extendedTeacher: widget.extendedTeacher,
+                  extendedTeacher: widget.teacher,
                 ),
                 SliverStickyHeader(
                   header: Container(
