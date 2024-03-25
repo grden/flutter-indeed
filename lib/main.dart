@@ -11,7 +11,7 @@ import 'package:self_project/common/theme/custom_theme.dart';
 import 'package:self_project/common/theme/custom_theme_app.dart';
 import 'package:self_project/firebase_options.dart';
 import 'package:self_project/fragment/fragment_teacher_profile.dart';
-import 'package:self_project/object/object_extended_teacher_profile.dart';
+import 'package:self_project/model/model_teacher.dart';
 import 'package:self_project/screen/screen_classify.dart';
 import 'package:self_project/screen/screen_login.dart';
 import 'package:self_project/screen/screen_main.dart';
@@ -42,9 +42,9 @@ class App extends StatefulWidget {
       GoRoute(path: '/', builder: (context, state) => const MainScreen(), routes: [
         GoRoute(
           path: 'teacher-profile/:id',
-          builder: (context, state) => TeacherProfileFragment(
-              state.pathParameters['id']!,
-              teacher: state.extra as ExtendedTeacherProfile),
+          name: 'teacher-profile',
+          builder: (context, state) => TeacherProfileFragment(id: state.pathParameters['id']!,
+              teacher: state.extra as Teacher),
         )
       ]),
       GoRoute(

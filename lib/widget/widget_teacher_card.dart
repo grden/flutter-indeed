@@ -30,15 +30,15 @@ class BuildTeacherCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: teacher.profileImagePath != null
-                      ? Image(
-                          image: NetworkImage(teacher.profileImagePath!),
-                    fit: BoxFit.fill,
-                        )
-                      : const Image(
-                          image:
-                              AssetImage('assets/image/default_profile.png'))),
+                borderRadius: BorderRadius.circular(8),
+                child: teacher.profileImagePath != null
+                    ? Image(
+                        image: NetworkImage(teacher.profileImagePath!),
+                        fit: BoxFit.fill,
+                      )
+                    : const Image(
+                        image: AssetImage('assets/image/default_profile.png')),
+              ),
             ),
           ),
           const Height(8),

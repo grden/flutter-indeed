@@ -5,17 +5,18 @@ import 'package:self_project/common/widget/widget_contact_button.dart';
 import 'package:self_project/common/widget/widget_line.dart';
 import 'package:self_project/common/widget/widget_sizedbox.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
-import 'package:self_project/object/object_extended_teacher_profile.dart';
-import 'package:self_project/object/object_profile.dart';
+import 'package:self_project/model/model_teacher.dart';
+import 'package:self_project/model/model_user.dart';
 import 'package:self_project/widget/widget_teacher_card.dart';
 
 class TeacherProfileFragment extends StatefulWidget {
-  final ExtendedTeacherProfile teacher;
+  final String id;
+  final Teacher teacher;
 
-  const TeacherProfileFragment(
-    final String id, {
+  const TeacherProfileFragment({
     super.key,
     required this.teacher,
+    required this.id,
   });
 
   @override
@@ -29,73 +30,78 @@ class _TeacherProfileFragmentState extends State<TeacherProfileFragment>
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-        //appBar: const ProfileAppBar(),
-        children: [
-          AppBar(
-            backgroundColor: context.appColors.backgroundColor,
-            scrolledUnderElevation: 0,
-            toolbarHeight: appBarHeight,
-          ),
-          Expanded(
-            child: CustomScrollView(
-              //physics: const ClampingScrollPhysics(),
-              slivers: [
-                _ProfileBox(
-                  extendedTeacher: widget.teacher,
-                ),
-                SliverStickyHeader(
-                  header: Container(
-                    color: context.appColors.backgroundColor,
-                    height: 60,
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          TabBar(
-                            onTap: (index) {
-                              setState(() {
-                                currentIndex = index;
-                              });
-                            },
-                            controller: tabController,
-                            labelStyle: const TextStyle(
-                                fontSize: 17, fontWeight: FontWeight.w500),
-                            labelColor: context.appColors.primaryText,
-                            unselectedLabelColor:
-                                context.appColors.secondaryText,
-                            labelPadding:
-                                const EdgeInsets.symmetric(vertical: 10),
-                            indicatorColor: context.appColors.iconButton,
-                            indicatorSize: TabBarIndicatorSize.tab,
-                            indicatorPadding:
-                                const EdgeInsets.symmetric(horizontal: 16),
-                            tabs: const [
-                              Text('소개'),
-                              Text('경력'),
-                              Text('평가'),
-                            ],
-                          ),
-                          const Line(),
-                        ]),
-                  ),
-                  sliver: const SliverToBoxAdapter(
-                    child: Column(
-                      children: [Placeholder(), Placeholder()],
+    return Scaffold(
+      body: Container(
+        color: context.appColors.backgroundColor,
+        child: Column(
+            //appBar: const ProfileAppBar(),
+            children: [
+              AppBar(
+                backgroundColor: context.appColors.backgroundColor,
+                scrolledUnderElevation: 0,
+                toolbarHeight: appBarHeight,
+              ),
+              Expanded(
+                child: CustomScrollView(
+                  //physics: const ClampingScrollPhysics(),
+                  slivers: [
+                    _ProfileBox(
+                      teacher: widget.teacher,
                     ),
-                  ),
+                    SliverStickyHeader(
+                      header: Container(
+                        color: context.appColors.backgroundColor,
+                        height: 60,
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              TabBar(
+                                onTap: (index) {
+                                  setState(() {
+                                    currentIndex = index;
+                                  });
+                                },
+                                controller: tabController,
+                                labelStyle: const TextStyle(
+                                    fontSize: 17, fontWeight: FontWeight.w500),
+                                labelColor: context.appColors.primaryText,
+                                unselectedLabelColor:
+                                    context.appColors.secondaryText,
+                                labelPadding:
+                                    const EdgeInsets.symmetric(vertical: 10),
+                                indicatorColor: context.appColors.iconButton,
+                                indicatorSize: TabBarIndicatorSize.tab,
+                                indicatorPadding:
+                                    const EdgeInsets.symmetric(horizontal: 16),
+                                tabs: const [
+                                  Text('소개'),
+                                  Text('경력'),
+                                  Text('평가'),
+                                ],
+                              ),
+                              const Line(),
+                            ]),
+                      ),
+                      sliver: const SliverToBoxAdapter(
+                        child: Column(
+                          children: [Placeholder(), Placeholder()],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-        ]);
+              ),
+            ]),
+      ),
+    );
   }
 }
 
 class _ProfileBox extends StatelessWidget {
-  final ExtendedTeacherProfile extendedTeacher;
+  final Teacher teacher;
 
   const _ProfileBox({
-    required this.extendedTeacher,
+    required this.teacher,
   });
 
   @override
@@ -121,10 +127,14 @@ class _ProfileBox extends StatelessWidget {
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(8),
-                        child: Image(
-                          image: AssetImage(extendedTeacher.profileImagePath ??
-                              'assets/image/default_profile.png'),
-                        ),
+                        child: teacher.profileImagePath != null
+                            ? Image(
+                                image: NetworkImage(teacher.profileImagePath!),
+                                fit: BoxFit.fill,
+                              )
+                            : const Image(
+                                image: AssetImage(
+                                    'assets/image/default_profile.png')),
                       ),
                     ),
                     const Height(16),
@@ -133,7 +143,7 @@ class _ProfileBox extends StatelessWidget {
                       children: [
                         Flexible(
                           child: Text(
-                            extendedTeacher.nickname,
+                            teacher.displayName,
                             style: TextStyle(
                                 color: context.appColors.primaryText,
                                 fontSize: 19,
@@ -150,12 +160,12 @@ class _ProfileBox extends StatelessWidget {
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(6),
                               color:
-                                  extendedTeacher.profile.gender != Gender.male
+                                  teacher.user.gender != Gender.male
                                       ? context.appColors.womanBadge
                                       : context.appColors.manBadge),
                           child: Center(
                             child: Text(
-                              extendedTeacher.profile.gender.genderString,
+                              teacher.user.gender.genderString,
                               style: TextStyle(
                                 color: context.appColors.cardColor,
                                 fontSize: 16,
@@ -166,7 +176,7 @@ class _ProfileBox extends StatelessWidget {
                         ),
                         const Width(4),
                         Text(
-                          '${extendedTeacher.profile.age}',
+                          '${teacher.user.age}',
                           style: TextStyle(
                               color: context.appColors.secondaryText,
                               fontSize: 19,
@@ -177,7 +187,7 @@ class _ProfileBox extends StatelessWidget {
                     const Height(8),
                     Flexible(
                       child: Text(
-                        '${addString(extendedTeacher.univ, '대')} ${extendedTeacher.major ?? ''} ${addString(extendedTeacher.studentID, '학번')}',
+                        '${addString(teacher.univ, '대')} ${teacher.major ?? ''} ${addString(teacher.studentID, '학번')}',
                         style: TextStyle(
                           color: context.appColors.secondaryText,
                           fontSize: 17,
@@ -191,8 +201,7 @@ class _ProfileBox extends StatelessWidget {
                     const Height(16),
                     ContactButton(
                         textColor: context.appColors.inverseText,
-                        backgroundColor:
-                            context.appColors.primaryColor,
+                        backgroundColor: context.appColors.primaryColor,
                         onTap: () {})
                   ],
                 ),

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:self_project/common/constant.dart';
 import 'package:self_project/common/extension/extension_context.dart';
 import 'package:self_project/dummy/dummy_teacher_profile.dart';
@@ -67,15 +68,7 @@ class _HomeFragmentState extends State<HomeFragment> {
                             final teacher = _teachersList[index];
                             return Tap(
                                 onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            TeacherProfileFragment(
-                                          teacherProfiles[index].profile.id,
-                                          teacher: teacherProfiles[index],
-                                        ),
-                                      ));
+                                  context.goNamed('teacher-profile', extra: teacher, pathParameters: {'id' : teacher.user.id});
                                 },
                                 child: BuildTeacherCard(teacher));
                           });
