@@ -10,7 +10,7 @@ import 'package:self_project/common/extension/extension_context.dart';
 import 'package:self_project/common/theme/custom_theme.dart';
 import 'package:self_project/common/theme/custom_theme_app.dart';
 import 'package:self_project/firebase_options.dart';
-import 'package:self_project/fragment/fragment_teacher_profile.dart';
+import 'package:self_project/screen/screen_teacher_profile.dart';
 import 'package:self_project/model/model_teacher.dart';
 import 'package:self_project/screen/screen_classify.dart';
 import 'package:self_project/screen/screen_login.dart';

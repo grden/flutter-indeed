@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:self_project/common/extension/extension_context.dart';
 import 'package:self_project/fragment/fragment_chat.dart';
-import 'package:self_project/fragment/fragment_profile.dart';
+import 'package:self_project/fragment/fragment_teacher_profile.dart';
 import 'package:self_project/fragment/fragment_home.dart';
 
 enum TabItem {

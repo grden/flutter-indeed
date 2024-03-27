@@ -5,7 +5,6 @@ import 'package:self_project/model/model_user.dart';
 
 /// FirebasAuth, FirebaseFirestore의 user 정보에 대한 provider
 
-// Firestore database 저장
 final FirebaseFirestore db = FirebaseFirestore.instance;
 
 // userCredential에 접근하기 위한 provider, 로그인 시 초기화 -> userCredential.user 프로퍼티를 통해 User에 접근

@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:self_project/common/constant.dart';
 import 'package:self_project/common/extension/extension_context.dart';
-import 'package:self_project/dummy/dummy_teacher_profile.dart';
-import 'package:self_project/fragment/fragment_teacher_profile.dart';
 import 'package:self_project/model/model_teacher.dart';
 import 'package:self_project/model/model_user.dart';
 import 'package:self_project/widget/widget_home_appbar.dart';
