@@ -1,24 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:self_project/common/extension/extension_context.dart';
+import 'package:self_project/provider/provider_user.dart';
 import 'package:self_project/tab/tab_item.dart';
 import 'package:self_project/tab/tab_navigator.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class MainScreen extends StatefulWidget {
+class MainScreen extends ConsumerStatefulWidget {
   const MainScreen({super.key});
 
   @override
-  State<MainScreen> createState() => MainScreenState();
+  ConsumerState<MainScreen> createState() => MainScreenState();
 }
 
-class MainScreenState extends State<MainScreen>
+class MainScreenState extends ConsumerState<MainScreen>
     with SingleTickerProviderStateMixin {
-  TabItem _currentTab = TabItem.home;
-  final tabs = [
-    TabItem.home,
-    TabItem.chat,
-    TabItem.profile,
-  ];
+  TabItem _currentTab = TabItem.studentHome;
+  List<TabItem> tabs = [TabItem.studentHome];
   final List<GlobalKey<NavigatorState>> navigatorKeys = [];
 
   int get _currentIndex => tabs.indexOf(_currentTab);
@@ -30,9 +28,21 @@ class MainScreenState extends State<MainScreen>
 
   static double get bottomNavigationBarBorderRadius => 0.0;
 
+  late bool accountType;
+
   @override
   void initState() {
     super.initState();
+
+    accountType = ref.read(accountTypeProvider)!;
+
+    if (accountType) {
+      tabs = [TabItem.studentHome, TabItem.chat, TabItem.teacherProfile];
+    } else {
+      tabs = [TabItem.teacherHome, TabItem.chat, TabItem.studentProfile];
+      _currentTab = TabItem.teacherHome;
+    }
+
     initNavigatorKeys();
   }
 
@@ -72,8 +82,8 @@ class MainScreenState extends State<MainScreen>
     final isFirstRouteInCurrentTab =
         (await _currentTabNavigationKey.currentState?.maybePop() == false);
     if (isFirstRouteInCurrentTab) {
-      if (_currentTab != TabItem.home) {
-        _changeTab(tabs.indexOf(TabItem.home));
+      if (_currentTab != TabItem.studentHome) {
+        _changeTab(tabs.indexOf(TabItem.studentHome));
         return false;
       }
     }

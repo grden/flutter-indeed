@@ -129,6 +129,7 @@ class _SigninCardState extends State<SigninCard> {
                           final UserData? user =
                               (await ref.read(userDatabaseProvider).get())
                                   .data();
+
                           if (context.mounted) {
                             if (user?.accountType == null) {
                               context.go('/login/initial');
@@ -140,6 +141,7 @@ class _SigninCardState extends State<SigninCard> {
                                     .collection('users')
                                     .doc(userCredential.user?.email)
                                     .update({'onlineTime': Timestamp.fromDate(DateTime.now())});
+                                ref.read(accountTypeProvider.notifier).state = user!.accountType;
                                 context.go('/');
                               }
                             }

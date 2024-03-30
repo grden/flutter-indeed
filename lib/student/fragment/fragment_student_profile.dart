@@ -12,17 +12,17 @@ import 'package:self_project/model/model_user.dart';
 import 'package:self_project/provider/provider_user.dart';
 import 'package:self_project/student/widget/widget_teacher_card.dart';
 
-class TeacherProfileFragment extends ConsumerStatefulWidget {
-  const TeacherProfileFragment({super.key});
+class StudentProfileFragment extends ConsumerStatefulWidget {
+  const StudentProfileFragment({super.key});
 
   @override
-  ConsumerState<TeacherProfileFragment> createState() => _MyProfileFragmentState();
+  ConsumerState<StudentProfileFragment> createState() => _MyProfileFragmentState();
 }
 
-class _MyProfileFragmentState extends ConsumerState<TeacherProfileFragment>
+class _MyProfileFragmentState extends ConsumerState<StudentProfileFragment>
     with SingleTickerProviderStateMixin {
   final _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
-  late final tabController = TabController(length: 3, vsync: this);
+  late final tabController = TabController(length: 2, vsync: this);
   int currentIndex = 0;
 
   late final UserCredential? userCred;
@@ -39,7 +39,7 @@ class _MyProfileFragmentState extends ConsumerState<TeacherProfileFragment>
   @override
   Widget build(BuildContext context) {
     return Column(
-        //appBar: const ProfileAppBar(),
+      //appBar: const ProfileAppBar(),
         children: [
           AppBar(
             backgroundColor: context.appColors.backgroundColor,
@@ -91,18 +91,17 @@ class _MyProfileFragmentState extends ConsumerState<TeacherProfileFragment>
                                           fontWeight: FontWeight.w500),
                                       labelColor: context.appColors.primaryText,
                                       unselectedLabelColor:
-                                          context.appColors.secondaryText,
+                                      context.appColors.secondaryText,
                                       labelPadding: const EdgeInsets.symmetric(
                                           vertical: 10),
                                       indicatorColor:
-                                          context.appColors.iconButton,
+                                      context.appColors.iconButton,
                                       indicatorSize: TabBarIndicatorSize.tab,
                                       indicatorPadding:
-                                          const EdgeInsets.symmetric(
-                                              horizontal: 16),
+                                      const EdgeInsets.symmetric(
+                                          horizontal: 16),
                                       tabs: const [
                                         Text('소개'),
-                                        Text('경력'),
                                         Text('평가'),
                                       ],
                                     ),
@@ -168,12 +167,12 @@ class _ProfileBox extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                         child: teacher.profileImagePath != null
                             ? Image(
-                                image: NetworkImage(teacher.profileImagePath!),
-                                fit: BoxFit.fill,
-                              )
+                          image: NetworkImage(teacher.profileImagePath!),
+                          fit: BoxFit.fill,
+                        )
                             : const Image(
-                                image: AssetImage(
-                                    'assets/image/default_profile.png')),
+                            image: AssetImage(
+                                'assets/image/default_profile.png')),
                       ),
                     ),
                     const Height(16),

@@ -22,6 +22,8 @@ final userDatabaseProvider = StateProvider((ref) {
   return userDatabase;
 });
 
+final accountTypeProvider = StateProvider<bool?>((ref) => null);
+
 // // FirebaseAuth instance에 접근하기 위한 provider
 // final firebaseAuthProvider =
 // Provider<FirebaseAuth>((ref) => FirebaseAuth.instance);

@@ -5,19 +5,19 @@ import 'package:self_project/common/constant.dart';
 import 'package:self_project/common/extension/extension_context.dart';
 import 'package:self_project/model/model_teacher.dart';
 import 'package:self_project/model/model_user.dart';
+import 'package:self_project/teacher/widget/widget_student_card.dart';
 import 'package:self_project/widget/widget_home_appbar.dart';
 import 'package:self_project/common/widget/widget_tap.dart';
-import 'package:self_project/student/widget/widget_teacher_card.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
-class TeacherHomeFragment extends StatefulWidget {
-  const TeacherHomeFragment({super.key});
+class StudentHomeFragment extends StatefulWidget {
+  const StudentHomeFragment({super.key});
 
   @override
-  State<TeacherHomeFragment> createState() => _TeacherHomeFragmentState();
+  State<StudentHomeFragment> createState() => _StudentHomeFragmentState();
 }
 
-class _TeacherHomeFragmentState extends State<TeacherHomeFragment> {
+class _StudentHomeFragmentState extends State<StudentHomeFragment> {
   final _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
   List<Teacher> _teachersList = [];
   late Future<void> _initTeachersData;
@@ -68,7 +68,7 @@ class _TeacherHomeFragmentState extends State<TeacherHomeFragment> {
                                 onTap: () {
                                   context.goNamed('teacher-profile', extra: teacher, pathParameters: {'id' : teacher.user.id});
                                 },
-                                child: BuildTeacherCard(teacher));
+                                child: BuildStudentCard(teacher));
                           });
                     }
                 }

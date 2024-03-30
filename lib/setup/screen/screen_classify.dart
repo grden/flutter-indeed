@@ -40,6 +40,7 @@ class _ClassifyScreenState extends ConsumerState<ClassifyScreen> {
                     .collection('type')
                     .doc('teacher')
                     .set({'displayName' : ''});
+                ref.read(accountTypeProvider.notifier).state = true;
                 context.go('/login/initial/setup');
               },
               child: Container(
@@ -69,6 +70,7 @@ class _ClassifyScreenState extends ConsumerState<ClassifyScreen> {
                     .collection('type')
                     .doc('student')
                     .set({'displayName' : ''});
+                ref.read(accountTypeProvider.notifier).state = false;
                 context.go('login/initial/setup');
               },
               child: Container(
