@@ -5,7 +5,7 @@ import 'package:self_project/common/extension/extension_context.dart';
 import 'package:self_project/common/widget/widget_sizedbox.dart';
 import 'package:self_project/common/widget/widget_tap.dart';
 import 'package:self_project/model/model_teacher.dart';
-import 'package:self_project/screen/screen_setup.dart';
+import 'package:self_project/setup/screen/screen_setup.dart';
 
 class SubjectSetup extends StatefulWidget {
   const SubjectSetup(

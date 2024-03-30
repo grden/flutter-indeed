@@ -12,10 +12,10 @@ import 'package:self_project/common/theme/custom_theme_app.dart';
 import 'package:self_project/firebase_options.dart';
 import 'package:self_project/screen/screen_teacher_profile.dart';
 import 'package:self_project/model/model_teacher.dart';
-import 'package:self_project/screen/screen_classify.dart';
-import 'package:self_project/screen/screen_login.dart';
+import 'package:self_project/setup/screen/screen_classify.dart';
+import 'package:self_project/login/screen/screen_login.dart';
 import 'package:self_project/screen/screen_main.dart';
-import 'package:self_project/screen/screen_setup.dart';
+import 'package:self_project/setup/screen/screen_setup.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

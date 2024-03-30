@@ -7,11 +7,11 @@ import 'package:self_project/common/constant.dart';
 import 'package:self_project/common/extension/extension_context.dart';
 import 'package:self_project/common/widget/widget_arrow.dart';
 import 'package:self_project/common/widget/widget_tap.dart';
-import 'package:self_project/widget/widget_budget_setup.dart';
-import 'package:self_project/widget/widget_image_setup.dart';
-import 'package:self_project/widget/widget_name_setup.dart';
-import 'package:self_project/widget/widget_subject_setup.dart';
-import 'package:self_project/widget/widget_univ_setup.dart';
+import 'package:self_project/setup/widget/widget_budget_setup.dart';
+import 'package:self_project/setup/widget/widget_image_setup.dart';
+import 'package:self_project/setup/widget/widget_name_setup.dart';
+import 'package:self_project/setup/widget/widget_subject_setup.dart';
+import 'package:self_project/setup/widget/widget_univ_setup.dart';
 
 final indexStateProvider = StateProvider<int>((ref) {
   return 0;
