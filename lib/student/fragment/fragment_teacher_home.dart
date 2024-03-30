@@ -66,7 +66,9 @@ class _TeacherHomeFragmentState extends State<TeacherHomeFragment> {
                             final teacher = _teachersList[index];
                             return Tap(
                                 onTap: () {
-                                  context.goNamed('teacher-profile', extra: teacher, pathParameters: {'id' : teacher.user.id});
+                                  context.goNamed('teacher-profile',
+                                      extra: teacher,
+                                      pathParameters: {'id': teacher.user.id});
                                 },
                                 child: BuildTeacherCard(teacher));
                           });
@@ -98,6 +100,7 @@ Future<List<Teacher>> fetchTeacherProfiles() async {
   final db = FirebaseFirestore.instance;
   final response = await db
       .collection('users')
+      .where('initialSetup', isEqualTo: true)
       .where('accountType', isEqualTo: true)
       .orderBy('onlineTime', descending: true)
       .get();
