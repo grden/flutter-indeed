@@ -7,7 +7,7 @@ import 'package:self_project/common/extension/extension_context.dart';
 import 'package:self_project/common/widget/widget_line.dart';
 import 'package:self_project/common/widget/widget_sizedbox.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
-import 'package:self_project/model/model_teacher.dart';
+import 'package:self_project/model/model_student.dart';
 import 'package:self_project/model/model_user.dart';
 import 'package:self_project/provider/provider_user.dart';
 import 'package:self_project/student/widget/widget_teacher_card.dart';
@@ -26,14 +26,14 @@ class _MyProfileFragmentState extends ConsumerState<StudentProfileFragment>
   int currentIndex = 0;
 
   late final UserCredential? userCred;
-  late Teacher _teacher;
-  late Future<void> _initTeacherData;
+  late Student _student;
+  late Future<void> _initStudentData;
 
   @override
   void initState() {
     super.initState();
     userCred = ref.read(userCredentialProvider);
-    _initTeacherData = _initTeacher(userCred);
+    _initStudentData = _initStudent(userCred);
   }
 
   @override
@@ -49,12 +49,12 @@ class _MyProfileFragmentState extends ConsumerState<StudentProfileFragment>
           Expanded(
             child: RefreshIndicator(
               key: _refreshIndicatorKey,
-              onRefresh: () => _refreshTeacher(userCred),
+              onRefresh: () => _refreshStudent(userCred),
               //edgeOffset: appBarHeight,
               color: context.appColors.primaryColor,
               backgroundColor: context.appColors.cardColor,
               child: FutureBuilder(
-                future: _initTeacherData,
+                future: _initStudentData,
                 builder: (context, snapshot) {
                   switch (snapshot.connectionState) {
                     case ConnectionState.none:
@@ -71,7 +71,7 @@ class _MyProfileFragmentState extends ConsumerState<StudentProfileFragment>
                     case ConnectionState.done:
                       {
                         return CustomScrollView(slivers: [
-                          _ProfileBox(teacher: _teacher),
+                          _ProfileBox(student: _student),
                           SliverStickyHeader(
                             header: Container(
                               color: context.appColors.backgroundColor,
@@ -124,23 +124,23 @@ class _MyProfileFragmentState extends ConsumerState<StudentProfileFragment>
         ]);
   }
 
-  Future<void> _initTeacher(userCredential) async {
-    final teacher = await getTeacher(userCredential: userCredential);
-    _teacher = teacher;
+  Future<void> _initStudent(userCredential) async {
+    final student = await getStudent(userCredential: userCredential);
+    _student = student;
   }
 
-  Future<void> _refreshTeacher(userCredential) async {
-    final teacher = await getTeacher(userCredential: userCredential);
+  Future<void> _refreshStudent(userCredential) async {
+    final student = await getStudent(userCredential: userCredential);
     setState(() {
-      _teacher = teacher;
+      _student = student;
     });
   }
 }
 
 class _ProfileBox extends StatelessWidget {
-  final Teacher teacher;
+  final Student student;
 
-  const _ProfileBox({required this.teacher});
+  const _ProfileBox({required this.student});
 
   @override
   Widget build(BuildContext context) {
@@ -157,31 +157,13 @@ class _ProfileBox extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Container(
-                      width: 160,
-                      height: 160,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: teacher.profileImagePath != null
-                            ? Image(
-                          image: NetworkImage(teacher.profileImagePath!),
-                          fit: BoxFit.fill,
-                        )
-                            : const Image(
-                            image: AssetImage(
-                                'assets/image/default_profile.png')),
-                      ),
-                    ),
                     const Height(16),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Flexible(
                           child: Text(
-                            teacher.displayName,
+                            student.user.name,
                             style: TextStyle(
                                 color: context.appColors.primaryText,
                                 fontSize: 19,
@@ -197,12 +179,12 @@ class _ProfileBox extends StatelessWidget {
                           height: 22,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(6),
-                              color: teacher.user.gender != Gender.male
+                              color: student.user.gender != Gender.male
                                   ? context.appColors.womanBadge
                                   : context.appColors.manBadge),
                           child: Center(
                             child: Text(
-                              teacher.user.gender.genderString,
+                              student.user.gender.genderString,
                               style: TextStyle(
                                 color: context.appColors.cardColor,
                                 fontSize: 16,
@@ -213,7 +195,7 @@ class _ProfileBox extends StatelessWidget {
                         ),
                         const Width(4),
                         Text(
-                          '${teacher.user.age}',
+                          '${student.user.age}',
                           style: TextStyle(
                               color: context.appColors.secondaryText,
                               fontSize: 19,
@@ -221,21 +203,6 @@ class _ProfileBox extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const Height(8),
-                    Flexible(
-                      child: Text(
-                        '${addString(teacher.univ, '대')} ${teacher.major ?? ''} ${addString(teacher.studentID, '학번')}',
-                        style: TextStyle(
-                          color: context.appColors.secondaryText,
-                          fontSize: 17,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        overflow: TextOverflow.fade,
-                        maxLines: 1,
-                        softWrap: false,
-                      ),
-                    ),
-                    //const Height(16),
                   ],
                 ),
               ),
@@ -270,45 +237,45 @@ class _ProfileBox extends StatelessWidget {
 //   yield teacherPf;
 // });
 
-Future<Teacher> getTeacher({required UserCredential userCredential}) async {
+Future<Student> getStudent({required UserCredential userCredential}) async {
   final UserCredential userCred = userCredential;
   final userDoc = await db
       .collection('users')
       .doc(userCred.user!.email!)
       .get()
       .then((DocumentSnapshot doc) => doc.data() as Map<String, dynamic>);
-  final teacherDoc = await db
+  final studentDoc = await db
       .collection('users')
       .doc(userCred.user!.email!)
       .collection('type')
-      .doc('teacher')
+      .doc('student')
       .get()
       .then((DocumentSnapshot doc) => doc.data() as Map<String, dynamic>);
 
   final user = UserData.fromJson(userDoc);
-  final teacher = Teacher.fromFirestore(user, teacherDoc);
-  return teacher;
+  final student = Student.fromFirestore(user, studentDoc);
+  return student;
 }
 
-Stream<Teacher> getTeacherStream({required UserCredential userCredential}) {
+Stream<Student> getStudentStream({required UserCredential userCredential}) {
   final UserCredential userCred = userCredential;
 
   final userDoc = db.collection('users').doc(userCred.user!.email!);
-  final teacherDoc = db
+  final studentDoc = db
       .collection('users')
       .doc(userCred.user!.email!)
       .collection('type')
-      .doc('teacher');
+      .doc('student');
 
-  return teacherDoc.snapshots().asyncMap((teacherSnapshot) async {
-    final teacherData = teacherSnapshot.data();
+  return studentDoc.snapshots().asyncMap((studentSnapshot) async {
+    final studentData = studentSnapshot.data();
 
     final userSnapshot = await userDoc.get();
     final userData = userSnapshot.data();
 
     final user = UserData.fromJson(userData!);
-    final teacher = Teacher.fromFirestore(
-        user, teacherData!); // 'user1' is a member object in user2
-    return teacher;
+    final student = Student.fromFirestore(
+        user, studentData!);
+    return student;
   });
 }

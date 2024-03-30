@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:self_project/common/extension/extension_context.dart';
 import 'package:self_project/common/widget/widget_sizedbox.dart';
 import 'package:self_project/provider/provider_user.dart';
-import 'package:self_project/setup/screen/screen_teacher_setup.dart';
+import 'package:self_project/setup/screen/screen_student_setup.dart';
 
 class InfoSetup extends ConsumerStatefulWidget {
   const InfoSetup(
