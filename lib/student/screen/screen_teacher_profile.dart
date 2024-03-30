@@ -7,7 +7,7 @@ import 'package:self_project/common/widget/widget_sizedbox.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:self_project/model/model_teacher.dart';
 import 'package:self_project/model/model_user.dart';
-import 'package:self_project/widget/widget_teacher_card.dart';
+import 'package:self_project/student/widget/widget_teacher_card.dart';
 
 class TeacherProfileFragment extends StatefulWidget {
   final String id;

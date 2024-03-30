@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:self_project/common/extension/extension_context.dart';
 import 'package:self_project/fragment/fragment_chat.dart';
-import 'package:self_project/fragment/fragment_teacher_profile.dart';
-import 'package:self_project/fragment/fragment_home.dart';
+import 'package:self_project/teacher/fragment/fragment_teacher_profile.dart';
+import 'package:self_project/student/fragment/fragment_teacher_home.dart';
 
 enum TabItem {
   home(CupertinoIcons.house_fill, '홈', HomeFragment(), inActiveIcon: CupertinoIcons.house),
