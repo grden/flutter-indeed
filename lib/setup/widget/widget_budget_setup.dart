@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:self_project/common/extension/extension_context.dart';
 import 'package:self_project/common/widget/widget_sizedbox.dart';
-import 'package:self_project/setup/screen/screen_setup.dart';
+import 'package:self_project/setup/screen/screen_teacher_setup.dart';
 
 class BudgetSetup extends StatefulWidget {
   const BudgetSetup(

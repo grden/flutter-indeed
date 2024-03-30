@@ -10,12 +10,13 @@ import 'package:self_project/common/extension/extension_context.dart';
 import 'package:self_project/common/theme/custom_theme.dart';
 import 'package:self_project/common/theme/custom_theme_app.dart';
 import 'package:self_project/firebase_options.dart';
+import 'package:self_project/setup/screen/screen_student_setup.dart';
 import 'package:self_project/student/screen/screen_teacher_profile.dart';
 import 'package:self_project/model/model_teacher.dart';
 import 'package:self_project/setup/screen/screen_classify.dart';
 import 'package:self_project/login/screen/screen_login.dart';
 import 'package:self_project/screen/screen_main.dart';
-import 'package:self_project/setup/screen/screen_setup.dart';
+import 'package:self_project/setup/screen/screen_teacher_setup.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -56,8 +57,12 @@ class App extends StatefulWidget {
                 builder: (context, state) => const ClassifyScreen(),
                 routes: [
                   GoRoute(
-                    path: 'setup',
-                    builder: (context, state) => const SetupScreen(),
+                    path: 'teacher-setup',
+                    builder: (context, state) => const TeacherSetupScreen(),
+                  ),
+                  GoRoute(
+                    path: 'student-setup',
+                    builder: (context, state) => const StudentSetupScreen(),
                   )
                 ]),
           ])

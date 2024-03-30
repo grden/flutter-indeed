@@ -41,7 +41,7 @@ class _ClassifyScreenState extends ConsumerState<ClassifyScreen> {
                     .doc('teacher')
                     .set({'displayName' : ''});
                 ref.read(accountTypeProvider.notifier).state = true;
-                context.go('/login/initial/setup');
+                context.go('/login/initial/teacher-setup');
               },
               child: Container(
                 color: context.appColors.primaryColor,
@@ -71,7 +71,7 @@ class _ClassifyScreenState extends ConsumerState<ClassifyScreen> {
                     .doc('student')
                     .set({'displayName' : ''});
                 ref.read(accountTypeProvider.notifier).state = false;
-                context.go('login/initial/setup');
+                context.go('/login/initial/student-setup');
               },
               child: Container(
                 decoration: BoxDecoration(

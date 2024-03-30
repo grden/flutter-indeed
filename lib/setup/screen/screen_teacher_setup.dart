@@ -17,20 +17,20 @@ final indexStateProvider = StateProvider<int>((ref) {
   return 0;
 });
 
-class SetupScreen extends ConsumerStatefulWidget {
-  const SetupScreen({super.key});
+class TeacherSetupScreen extends ConsumerStatefulWidget {
+  const TeacherSetupScreen({super.key});
 
   @override
-  ConsumerState<SetupScreen> createState() => _SetupScreenState();
+  ConsumerState<TeacherSetupScreen> createState() => _SetupScreenState();
 }
 
-class _SetupScreenState extends ConsumerState<SetupScreen> {
+class _SetupScreenState extends ConsumerState<TeacherSetupScreen> {
   final FirebaseFirestore db = FirebaseFirestore.instance;
   final CarouselController buttonCarouselController = CarouselController();
   late final List<Widget> widgetList = [
     NameSetup(buttonCarouselController),
     UnivSetup(buttonCarouselController),
-    SubjectSetup(buttonCarouselController),
+    SubjectSetupT(buttonCarouselController),
     BudgetSetup(buttonCarouselController),
     ImageSetup(buttonCarouselController),
   ];

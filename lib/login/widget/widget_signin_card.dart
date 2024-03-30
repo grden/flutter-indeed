@@ -135,13 +135,21 @@ class _SigninCardState extends State<SigninCard> {
                               context.go('/login/initial');
                             } else {
                               if (user?.initialSetup == false) {
-                                context.go('/login/initial/setup');
+                                if (user?.accountType == true) {
+                                  context.go('/login/initial/teacher-setup');
+                                } else {
+                                  context.go('/login/initial/student-setup');
+                                }
                               } else {
                                 db
                                     .collection('users')
                                     .doc(userCredential.user?.email)
-                                    .update({'onlineTime': Timestamp.fromDate(DateTime.now())});
-                                ref.read(accountTypeProvider.notifier).state = user!.accountType;
+                                    .update({
+                                  'onlineTime':
+                                      Timestamp.fromDate(DateTime.now())
+                                });
+                                ref.read(accountTypeProvider.notifier).state =
+                                    user!.accountType;
                                 context.go('/');
                               }
                             }

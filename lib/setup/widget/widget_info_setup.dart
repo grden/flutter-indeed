@@ -1,25 +1,27 @@
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:self_project/common/extension/extension_context.dart';
 import 'package:self_project/common/widget/widget_sizedbox.dart';
+import 'package:self_project/provider/provider_user.dart';
 import 'package:self_project/setup/screen/screen_teacher_setup.dart';
 
-class NameSetup extends StatefulWidget {
-  const NameSetup(
-    this.buttonCarouselController, {
-    super.key,
-  });
+class InfoSetup extends ConsumerStatefulWidget {
+  const InfoSetup(
+      this.buttonCarouselController, {
+        super.key,
+      });
 
   final CarouselController buttonCarouselController;
 
   @override
-  State<NameSetup> createState() => _NameSetupState();
+  ConsumerState<InfoSetup> createState() => _InfoSetupState();
 }
 
-class _NameSetupState extends State<NameSetup> {
+class _InfoSetupState extends ConsumerState<InfoSetup> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController nameTextController = TextEditingController();
+  TextEditingController infoTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -34,17 +36,21 @@ class _NameSetupState extends State<NameSetup> {
               const Height(40),
               const Align(
                   alignment: Alignment.centerLeft,
-                  child: Text('학생들에게 보여질\n닉네임을 입력해주세요.', style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),)),
+                  child: Text('본인에 대한 소개를 입력해주세요.', style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),)),
+              Height(4),
+              Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text('현재 점수, 목표, 선호하는 수업 방식, 성격 등의 정보를 입력하여 본인과 맞는 선생님을 만나세요', style: TextStyle(fontSize: 19, fontWeight: FontWeight.w400, color: context.appColors.secondaryText),)),
               const Height(24),
               Form(
                 key: _formKey,
                 child: TextFormField(
-                  controller: nameTextController,
+                  controller: infoTextController,
                   style: const TextStyle(fontSize: 19),
-                  maxLength: 16,
+                  maxLines: 8,
                   decoration: InputDecoration(
                     contentPadding:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                     filled: true,
                     fillColor: context.appColors.textFieldColor,
                     border: OutlineInputBorder(
@@ -72,10 +78,13 @@ class _NameSetupState extends State<NameSetup> {
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
-                  widget.buttonCarouselController
-                      .nextPage(duration: const Duration(milliseconds: 240));
                   ref.read(indexStateProvider.notifier).state++;
-                  return ref.read(setupProvider.notifier).addSetup([nameTextController.text.trim()]);
+
+                  ref.read(setupProvider.notifier).addSetup([infoTextController.text.trim()]);
+
+                  addSetup();
+
+                  context.go('/');
                 }
               },
               height: 48,
@@ -84,7 +93,7 @@ class _NameSetupState extends State<NameSetup> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12)),
               child: Text(
-                '다음',
+                '설정 완료하기',
                 style: TextStyle(
                     color: context.appColors.inverseText,
                     fontSize: 19,
@@ -95,5 +104,22 @@ class _NameSetupState extends State<NameSetup> {
         ],
       ),
     );
+  }
+
+  Future addSetup() async {
+    final userCredential = ref.watch(userCredentialProvider);
+    final setupList = ref.read(setupProvider);
+
+    await db
+        .collection('users')
+        .doc(userCredential?.user?.email)
+        .collection('type')
+        .doc('student')
+        .set({
+      'subjects': setupList[0],
+      'info' : setupList[1][0].toString(),
+    });
+
+    await db.collection('users').doc(userCredential?.user?.email).update({'initialSetup' : true});
   }
 }

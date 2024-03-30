@@ -5,22 +5,21 @@ import 'package:self_project/common/extension/extension_context.dart';
 import 'package:self_project/common/widget/widget_sizedbox.dart';
 import 'package:self_project/common/widget/widget_tap.dart';
 import 'package:self_project/model/enums.dart';
-import 'package:self_project/provider/provider_user.dart';
-import 'package:self_project/setup/screen/screen_teacher_setup.dart';
+import 'package:self_project/setup/screen/screen_student_setup.dart';
 
-class SubjectSetupT extends ConsumerStatefulWidget {
-  const SubjectSetupT(
-    this.buttonCarouselController, {
-    super.key,
-  });
+class SubjectSetupS extends ConsumerStatefulWidget {
+  const SubjectSetupS(
+      this.buttonCarouselController, {
+        super.key,
+      });
 
   final CarouselController buttonCarouselController;
 
   @override
-  ConsumerState<SubjectSetupT> createState() => _SubjectSetupState();
+  ConsumerState<SubjectSetupS> createState() => _SubjectSetupState();
 }
 
-class _SubjectSetupState extends ConsumerState<SubjectSetupT> {
+class _SubjectSetupState extends ConsumerState<SubjectSetupS> {
   List<bool> isSelected = [true, false, false, false, false, false, false];
   List<Subject> subjectList = [
     Subject.math,
@@ -48,8 +47,9 @@ class _SubjectSetupState extends ConsumerState<SubjectSetupT> {
               const Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  '가르치고자 하는\n과목을 선택해주세요.',
-                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
+                  '배우고자 하는\n과목을 선택해주세요.',
+                  style: TextStyle(
+                      fontSize: 28, fontWeight: FontWeight.w600),
                 ),
               ),
               const Height(24),
@@ -80,8 +80,8 @@ class _SubjectSetupState extends ConsumerState<SubjectSetupT> {
                           setState(() {
                             // looping through the list of booleans
                             for (int index = 0;
-                                index < isSelected.length;
-                                index++) {
+                            index < isSelected.length;
+                            index++) {
                               // checking for the index value
                               if (index == newIndex) {
                                 // toggle between the old index and new index value

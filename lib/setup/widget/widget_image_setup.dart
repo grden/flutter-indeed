@@ -11,7 +11,7 @@ import 'package:self_project/common/extension/extension_context.dart';
 import 'package:self_project/common/widget/widget_sizedbox.dart';
 import 'package:self_project/common/widget/widget_tap.dart';
 import 'package:self_project/provider/provider_user.dart';
-import 'package:self_project/setup/screen/screen_setup.dart';
+import 'package:self_project/setup/screen/screen_teacher_setup.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ImageSetup extends ConsumerStatefulWidget {
