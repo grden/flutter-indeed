@@ -7,8 +7,8 @@ import 'package:self_project/teacher/fragment/fragment_teacher_profile.dart';
 import 'package:self_project/student/fragment/fragment_teacher_home.dart';
 
 enum TabItem {
-  studentHome(CupertinoIcons.house_fill, '홈', StudentHomeFragment(), inActiveIcon: CupertinoIcons.house),
-  teacherHome(CupertinoIcons.house_fill, '홈', TeacherHomeFragment(), inActiveIcon: CupertinoIcons.house),
+  studentHome(CupertinoIcons.compass_fill, '선생님 찾기', StudentHomeFragment(), inActiveIcon: CupertinoIcons.compass),
+  teacherHome(CupertinoIcons.compass_fill, '학생 찾기', TeacherHomeFragment(), inActiveIcon: CupertinoIcons.compass),
   chat(CupertinoIcons.chat_bubble_2_fill, '채팅', ChatFragment(), inActiveIcon: CupertinoIcons.chat_bubble_2),
   teacherProfile(CupertinoIcons.person_fill, '내 정보', TeacherProfileFragment(), inActiveIcon: CupertinoIcons.person),
   studentProfile(CupertinoIcons.person_fill, '내 정보', StudentProfileFragment(), inActiveIcon: CupertinoIcons.person);

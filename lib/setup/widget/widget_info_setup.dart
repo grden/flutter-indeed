@@ -37,7 +37,7 @@ class _InfoSetupState extends ConsumerState<InfoSetup> {
               const Align(
                   alignment: Alignment.centerLeft,
                   child: Text('본인에 대한 소개를 입력해주세요.', style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),)),
-              Height(4),
+              const Height(4),
               Align(
                   alignment: Alignment.centerLeft,
                   child: Text('현재 점수, 목표, 선호하는 수업 방식, 성격 등의 정보를 입력하여 본인과 맞는 선생님을 만나세요', style: TextStyle(fontSize: 19, fontWeight: FontWeight.w400, color: context.appColors.secondaryText),)),
