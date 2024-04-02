@@ -5,25 +5,24 @@ import 'package:self_project/common/widget/widget_contact_button.dart';
 import 'package:self_project/common/widget/widget_line.dart';
 import 'package:self_project/common/widget/widget_sizedbox.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
-import 'package:self_project/model/model_teacher.dart';
+import 'package:self_project/model/model_student.dart';
 import 'package:self_project/model/model_user.dart';
-import 'package:self_project/student/widget/widget_teacher_card.dart';
 
-class TeacherProfileScreen extends StatefulWidget {
+class StudentProfileScreen extends StatefulWidget {
   final String id;
-  final Teacher teacher;
+  final Student student;
 
-  const TeacherProfileScreen({
+  const StudentProfileScreen({
     super.key,
-    required this.teacher,
+    required this.student,
     required this.id,
   });
 
   @override
-  State<TeacherProfileScreen> createState() => _TeacherProfileScreenState();
+  State<StudentProfileScreen> createState() => _StudentProfileScreenState();
 }
 
-class _TeacherProfileScreenState extends State<TeacherProfileScreen>
+class _StudentProfileScreenState extends State<StudentProfileScreen>
     with SingleTickerProviderStateMixin {
   late final tabController = TabController(length: 3, vsync: this);
   int currentIndex = 0;
@@ -34,7 +33,7 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen>
       body: Container(
         color: context.appColors.backgroundColor,
         child: Column(
-            //appBar: const ProfileAppBar(),
+          //appBar: const ProfileAppBar(),
             children: [
               AppBar(
                 backgroundColor: context.appColors.backgroundColor,
@@ -46,7 +45,7 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen>
                   //physics: const ClampingScrollPhysics(),
                   slivers: [
                     _ProfileBox(
-                      teacher: widget.teacher,
+                      student: widget.student,
                     ),
                     SliverStickyHeader(
                       header: Container(
@@ -66,13 +65,13 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen>
                                     fontSize: 17, fontWeight: FontWeight.w500),
                                 labelColor: context.appColors.primaryText,
                                 unselectedLabelColor:
-                                    context.appColors.secondaryText,
+                                context.appColors.secondaryText,
                                 labelPadding:
-                                    const EdgeInsets.symmetric(vertical: 10),
+                                const EdgeInsets.symmetric(vertical: 10),
                                 indicatorColor: context.appColors.iconButton,
                                 indicatorSize: TabBarIndicatorSize.tab,
                                 indicatorPadding:
-                                    const EdgeInsets.symmetric(horizontal: 16),
+                                const EdgeInsets.symmetric(horizontal: 16),
                                 tabs: const [
                                   Text('소개'),
                                   Text('경력'),
@@ -98,10 +97,10 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen>
 }
 
 class _ProfileBox extends StatelessWidget {
-  final Teacher teacher;
+  final Student student;
 
   const _ProfileBox({
-    required this.teacher,
+    required this.student,
   });
 
   @override
@@ -119,31 +118,13 @@ class _ProfileBox extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Container(
-                      width: 160,
-                      height: 160,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: teacher.profileImagePath != null
-                            ? Image(
-                                image: NetworkImage(teacher.profileImagePath!),
-                                fit: BoxFit.fill,
-                              )
-                            : const Image(
-                                image: AssetImage(
-                                    'assets/image/default_profile.png')),
-                      ),
-                    ),
                     const Height(16),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Flexible(
                           child: Text(
-                            teacher.displayName,
+                            student.user.name,
                             style: TextStyle(
                                 color: context.appColors.primaryText,
                                 fontSize: 19,
@@ -160,12 +141,12 @@ class _ProfileBox extends StatelessWidget {
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(6),
                               color:
-                                  teacher.user.gender != Gender.male
-                                      ? context.appColors.womanBadge
-                                      : context.appColors.manBadge),
+                              student.user.gender != Gender.male
+                                  ? context.appColors.womanBadge
+                                  : context.appColors.manBadge),
                           child: Center(
                             child: Text(
-                              teacher.user.gender.genderString,
+                              student.user.gender.genderString,
                               style: TextStyle(
                                 color: context.appColors.cardColor,
                                 fontSize: 16,
@@ -176,27 +157,13 @@ class _ProfileBox extends StatelessWidget {
                         ),
                         const Width(4),
                         Text(
-                          '${teacher.user.age}',
+                          '${student.user.age}',
                           style: TextStyle(
                               color: context.appColors.secondaryText,
                               fontSize: 19,
                               fontWeight: FontWeight.w500),
                         ),
                       ],
-                    ),
-                    const Height(8),
-                    Flexible(
-                      child: Text(
-                        '${addString(teacher.univ, '대')} ${teacher.major ?? ''} ${addString(teacher.studentID, '학번')}',
-                        style: TextStyle(
-                          color: context.appColors.secondaryText,
-                          fontSize: 17,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        overflow: TextOverflow.fade,
-                        maxLines: 1,
-                        softWrap: false,
-                      ),
                     ),
                     const Height(16),
                     ContactButton(

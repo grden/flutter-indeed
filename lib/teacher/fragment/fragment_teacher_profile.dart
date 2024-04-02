@@ -291,25 +291,25 @@ Future<Teacher> getTeacher({required UserCredential userCredential}) async {
   return teacher;
 }
 
-Stream<Teacher> getTeacherStream({required UserCredential userCredential}) {
-  final UserCredential userCred = userCredential;
-
-  final userDoc = db.collection('users').doc(userCred.user!.email!);
-  final teacherDoc = db
-      .collection('users')
-      .doc(userCred.user!.email!)
-      .collection('type')
-      .doc('teacher');
-
-  return teacherDoc.snapshots().asyncMap((teacherSnapshot) async {
-    final teacherData = teacherSnapshot.data();
-
-    final userSnapshot = await userDoc.get();
-    final userData = userSnapshot.data();
-
-    final user = UserData.fromJson(userData!);
-    final teacher = Teacher.fromFirestore(
-        user, teacherData!); // 'user1' is a member object in user2
-    return teacher;
-  });
-}
+// Stream<Teacher> getTeacherStream({required UserCredential userCredential}) {
+//   final UserCredential userCred = userCredential;
+//
+//   final userDoc = db.collection('users').doc(userCred.user!.email!);
+//   final teacherDoc = db
+//       .collection('users')
+//       .doc(userCred.user!.email!)
+//       .collection('type')
+//       .doc('teacher');
+//
+//   return teacherDoc.snapshots().asyncMap((teacherSnapshot) async {
+//     final teacherData = teacherSnapshot.data();
+//
+//     final userSnapshot = await userDoc.get();
+//     final userData = userSnapshot.data();
+//
+//     final user = UserData.fromJson(userData!);
+//     final teacher = Teacher.fromFirestore(
+//         user, teacherData!); // 'user1' is a member object in user2
+//     return teacher;
+//   });
+// }

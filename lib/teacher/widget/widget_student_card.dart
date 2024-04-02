@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:self_project/common/extension/extension_context.dart';
-import 'package:self_project/model/model_teacher.dart';
 import 'package:self_project/common/widget/widget_sizedbox.dart';
+import 'package:self_project/model/model_student.dart';
 import 'package:self_project/model/model_user.dart';
 
 class BuildStudentCard extends StatelessWidget {
-  final Teacher teacher;
+  final Student student;
 
-  const BuildStudentCard(this.teacher, {super.key});
+  const BuildStudentCard(this.student, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    //final teacher = teacherProfile;
-
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -26,7 +24,7 @@ class BuildStudentCard extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  teacher.displayName,
+                  student.user.name,
                   style: TextStyle(
                       color: context.appColors.primaryText,
                       fontSize: 17,
@@ -42,12 +40,12 @@ class BuildStudentCard extends StatelessWidget {
                 height: 18,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(6),
-                    color: teacher.user.gender != Gender.male
+                    color: student.user.gender != Gender.male
                         ? context.appColors.womanBadge
                         : context.appColors.manBadge),
                 child: Center(
                   child: Text(
-                    teacher.user.gender.genderString,
+                    student.user.gender.genderString,
                     style: TextStyle(
                       color: context.appColors.cardColor,
                       fontSize: 13,
@@ -58,7 +56,7 @@ class BuildStudentCard extends StatelessWidget {
               ),
               const Width(4),
               Text(
-                '${teacher.user.age}',
+                '${student.user.age}',
                 style: TextStyle(
                     color: context.appColors.secondaryText,
                     fontSize: 15,
@@ -72,7 +70,7 @@ class BuildStudentCard extends StatelessWidget {
             children: [
               Flexible(
                 child: Text(
-                  teacher.subjects.map((e) => e.subjectString).join(','),
+                  student.subjects.map((e) => e.subjectString).join(','),
                   style: TextStyle(
                     color: context.appColors.primaryText,
                     fontSize: 15,
@@ -85,15 +83,7 @@ class BuildStudentCard extends StatelessWidget {
               ),
               Text(
                 //' ∙ ${teacher.user.locations.map((e) => e.locationString).join(',')}',
-                ' ∙ ${teacher.user.locations.locationString}',
-                style: TextStyle(
-                  color: context.appColors.secondaryText,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              Text(
-                addString(teacher.budget, '만원', ' ∙ '),
+                ' ∙ ${student.user.locations.locationString}',
                 style: TextStyle(
                   color: context.appColors.secondaryText,
                   fontSize: 15,

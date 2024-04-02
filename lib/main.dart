@@ -10,6 +10,7 @@ import 'package:self_project/common/extension/extension_context.dart';
 import 'package:self_project/common/theme/custom_theme.dart';
 import 'package:self_project/common/theme/custom_theme_app.dart';
 import 'package:self_project/firebase_options.dart';
+import 'package:self_project/model/model_student.dart';
 import 'package:self_project/setup/screen/screen_student_setup.dart';
 import 'package:self_project/student/screen/screen_teacher_profile.dart';
 import 'package:self_project/model/model_teacher.dart';
@@ -17,6 +18,7 @@ import 'package:self_project/setup/screen/screen_classify.dart';
 import 'package:self_project/login/screen/screen_login.dart';
 import 'package:self_project/screen/screen_main.dart';
 import 'package:self_project/setup/screen/screen_teacher_setup.dart';
+import 'package:self_project/teacher/screen/screen_student_profile.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,8 +46,14 @@ class App extends StatefulWidget {
         GoRoute(
           path: 'teacher-profile/:id',
           name: 'teacher-profile',
-          builder: (context, state) => TeacherProfileFragment(id: state.pathParameters['id']!,
+          builder: (context, state) => TeacherProfileScreen(id: state.pathParameters['id']!,
               teacher: state.extra as Teacher),
+        ),
+        GoRoute(
+          path: 'student-profile/:id',
+          name: 'student-profile',
+          builder: (context, state) => StudentProfileScreen(id: state.pathParameters['id']!,
+              student: state.extra as Student),
         )
       ]),
       GoRoute(

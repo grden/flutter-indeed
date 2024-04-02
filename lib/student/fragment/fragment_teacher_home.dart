@@ -49,8 +49,8 @@ class _TeacherHomeFragmentState extends State<TeacherHomeFragment> {
                   case ConnectionState.waiting:
                   case ConnectionState.active:
                     {
-                      return const Center(
-                        child: Text('잠시만 기다려 주세요...'),
+                      return Center(
+                        child: CircularProgressIndicator(color: context.appColors.primaryColor,)
                       );
                     }
                   case ConnectionState.done:

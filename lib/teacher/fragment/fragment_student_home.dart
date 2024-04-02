@@ -1,33 +1,27 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:self_project/common/constant.dart';
 import 'package:self_project/common/extension/extension_context.dart';
-import 'package:self_project/model/model_teacher.dart';
+import 'package:self_project/model/model_student.dart';
 import 'package:self_project/model/model_user.dart';
 import 'package:self_project/teacher/widget/widget_student_card.dart';
 import 'package:self_project/widget/widget_home_appbar.dart';
 import 'package:self_project/common/widget/widget_tap.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
-class StudentHomeFragment extends StatefulWidget {
+class StudentHomeFragment extends ConsumerStatefulWidget {
   const StudentHomeFragment({super.key});
 
   @override
-  State<StudentHomeFragment> createState() => _StudentHomeFragmentState();
+  ConsumerState<StudentHomeFragment> createState() => _StudentHomeFragmentState();
 }
 
-class _StudentHomeFragmentState extends State<StudentHomeFragment> {
-  final _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
-  List<Teacher> _teachersList = [];
-  late Future<void> _initTeachersData;
-
-  // initstate로 teacherprofiles 최초 받기/ refresh때마다 다시 받기
-  @override
-  void initState() {
-    super.initState();
-    _initTeachersData = _initTeachers();
-  }
+class _StudentHomeFragmentState extends ConsumerState<StudentHomeFragment> {
+  final db = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -35,45 +29,81 @@ class _StudentHomeFragmentState extends State<StudentHomeFragment> {
       color: context.appColors.backgroundColor,
       child: Stack(
         children: [
-          RefreshIndicator(
-            key: _refreshIndicatorKey,
-            onRefresh: _refreshTeachers,
-            edgeOffset: appBarHeight,
-            color: context.appColors.primaryColor,
-            backgroundColor: context.appColors.cardColor,
-            child: FutureBuilder(
-              future: _initTeachersData,
-              builder: (context, snapshot) {
-                switch (snapshot.connectionState) {
-                  case ConnectionState.none:
-                  case ConnectionState.waiting:
-                  case ConnectionState.active:
-                    {
-                      return const Center(
-                        child: Text('잠시만 기다려 주세요...'),
-                      );
-                    }
-                  case ConnectionState.done:
-                    {
-                      return MasonryGridView.count(
-                          padding: const EdgeInsets.fromLTRB(
-                              16, appBarHeight + 16, 16, 60),
-                          crossAxisCount: 2,
-                          mainAxisSpacing: 16,
-                          crossAxisSpacing: 16,
-                          itemCount: _teachersList.length,
-                          itemBuilder: (context, index) {
-                            final teacher = _teachersList[index];
-                            return Tap(
-                                onTap: () {
-                                  context.goNamed('teacher-profile', extra: teacher, pathParameters: {'id' : teacher.user.id});
-                                },
-                                child: BuildStudentCard(teacher));
-                          });
-                    }
+          StreamBuilder(
+            stream: getStudentStream(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                List<Student> studentsList = snapshot.data!;
+                if (studentsList.isEmpty) {
+                  return Text('empty!');
+                } else {
+                  return MasonryGridView.count(
+                      padding: const EdgeInsets.fromLTRB(
+                          16, appBarHeight + 16, 16, 60),
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 16,
+                      crossAxisSpacing: 16,
+                      itemCount: studentsList.length,
+                      itemBuilder: (context, index) {
+                        final student = studentsList[index];
+                        return Tap(
+                            onTap: () {
+                              context.goNamed('student-profile',
+                                  extra: student,
+                                  pathParameters: {'id': student.user.id});
+                            },
+                            child: BuildStudentCard(student));
+                      });
                 }
-              },
-            ),
+              }
+              if (snapshot.hasError) {
+                print(snapshot.error);
+                return Center(child: Text('Error: ${snapshot.error}'));
+              }
+              if (!snapshot.hasData) {
+                return CircularProgressIndicator(
+                  color: context.appColors.primaryColor,
+                );
+              } else {
+                return CircularProgressIndicator(
+                  color: context.appColors.primaryColor,
+                );
+              }
+              // switch (snapshot.connectionState) {
+              //   case ConnectionState.none:
+              //     {
+              //       return Text('none');
+              //     }
+              //   case ConnectionState.waiting:
+              //   case ConnectionState.active:
+              //     {
+              //       return const Center(
+              //         child: Text('잠시 기다려 주세요'),
+              //       );
+              //     }
+              //   case ConnectionState.done:
+              //     {
+              //       List<Student> studentsList = snapshot.data!;
+              //       return MasonryGridView.count(
+              //           padding: const EdgeInsets.fromLTRB(
+              //               16, appBarHeight + 16, 16, 60),
+              //           crossAxisCount: 2,
+              //           mainAxisSpacing: 16,
+              //           crossAxisSpacing: 16,
+              //           itemCount: studentsList.length,
+              //           itemBuilder: (context, index) {
+              //             final student = studentsList[index];
+              //             return Tap(
+              //                 onTap: () {
+              //                   context.goNamed('student-profile',
+              //                       extra: student,
+              //                       pathParameters: {'id': student.user.id});
+              //                 },
+              //                 child: BuildStudentCard(student));
+              //           });
+              //     }
+              // }
+            },
           ),
           const HomeAppBar(),
         ],
@@ -81,38 +111,48 @@ class _StudentHomeFragmentState extends State<StudentHomeFragment> {
     );
   }
 
-  Future<void> _initTeachers() async {
-    final teacher = await fetchTeacherProfiles();
-    _teachersList = teacher;
-  }
+  Stream<List<UserData>> getUserStream() async* {
+    List<UserData> users = [];
 
-  Future<void> _refreshTeachers() async {
-    final teacher = await fetchTeacherProfiles();
-    setState(() {
-      _teachersList = teacher;
-    });
-  }
-}
-
-Future<List<Teacher>> fetchTeacherProfiles() async {
-  final db = FirebaseFirestore.instance;
-  final response = await db
-      .collection('users')
-      .where('accountType', isEqualTo: true)
-      .orderBy('onlineTime', descending: true)
-      .get();
-  List<Teacher> teacherProfiles = [];
-  for (var doc in response.docs) {
-    final user = UserData.fromJson(doc.data());
-    //final realUser = user.copyWith(id: doc.id);
-    final teacher = await db
+    final snapshot = db
         .collection('users')
-        .doc(user.email)
-        .collection('type')
-        .doc('teacher')
-        .get();
-    final teacherPf = Teacher.fromFirestore(user, teacher.data()!);
-    teacherProfiles.add(teacherPf);
+        .where('initialSetup', isEqualTo: true)
+        .where('accountType', isEqualTo: false)
+        .orderBy('onlineTime', descending: true)
+        .snapshots();
+
+    await for (final query in snapshot) {
+      users = [];
+      for (var doc in query.docs) {
+        final user = UserData.fromJson(doc.data());
+        print(user.name);
+        users.add(user);
+      }
+      print('users data list: ${users.map((e) => e.name).toList()}');
+      yield users;
+    }
   }
-  return teacherProfiles;
+
+  Stream<List<Student>> getStudentStream() async* {
+    List<Student> students = [];
+    final userStream = getUserStream();
+
+    await for (final users in userStream) {
+      students = [];
+      for (final user in users) {
+            final student = await db
+                .collection('users')
+                .doc(user.email)
+                .collection('type')
+                .doc('student')
+                .get();
+
+            final studentPF = Student.fromFirestore(user, student.data()!);
+            print(studentPF.user.name);
+            students.add(studentPF);
+      }
+      print("student profiles list: ${students.map((e) => e.user.name).toList()}");
+      yield students;
+    }
+  }
 }
