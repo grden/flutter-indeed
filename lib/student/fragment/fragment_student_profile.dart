@@ -15,7 +15,8 @@ class StudentProfileFragment extends ConsumerStatefulWidget {
   const StudentProfileFragment({super.key});
 
   @override
-  ConsumerState<StudentProfileFragment> createState() => _MyProfileFragmentState();
+  ConsumerState<StudentProfileFragment> createState() =>
+      _MyProfileFragmentState();
 }
 
 class _MyProfileFragmentState extends ConsumerState<StudentProfileFragment>
@@ -38,12 +39,23 @@ class _MyProfileFragmentState extends ConsumerState<StudentProfileFragment>
   @override
   Widget build(BuildContext context) {
     return Column(
-      //appBar: const ProfileAppBar(),
+        //appBar: const ProfileAppBar(),
         children: [
           AppBar(
             backgroundColor: context.appColors.backgroundColor,
             scrolledUnderElevation: 0,
             toolbarHeight: appBarHeight,
+            actions: [
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Icon(
+                  Icons.settings_outlined,
+                  size: 28,
+                  color: context.appColors.iconButton,
+                ),
+              ),
+              const Width(16),
+            ],
           ),
           Expanded(
             child: RefreshIndicator(
@@ -90,15 +102,15 @@ class _MyProfileFragmentState extends ConsumerState<StudentProfileFragment>
                                           fontWeight: FontWeight.w500),
                                       labelColor: context.appColors.primaryText,
                                       unselectedLabelColor:
-                                      context.appColors.secondaryText,
+                                          context.appColors.secondaryText,
                                       labelPadding: const EdgeInsets.symmetric(
                                           vertical: 10),
                                       indicatorColor:
-                                      context.appColors.iconButton,
+                                          context.appColors.iconButton,
                                       indicatorSize: TabBarIndicatorSize.tab,
                                       indicatorPadding:
-                                      const EdgeInsets.symmetric(
-                                          horizontal: 16),
+                                          const EdgeInsets.symmetric(
+                                              horizontal: 16),
                                       tabs: const [
                                         Text('소개'),
                                         Text('평가'),
@@ -156,7 +168,6 @@ class _ProfileBox extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Height(16),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -213,29 +224,6 @@ class _ProfileBox extends StatelessWidget {
   }
 }
 
-// final userStreamProvider = StreamProvider((ref) {
-//   final userCred = ref.watch(userCredentialProvider);
-//   return db.collection('users').doc(userCred!.user!.email).snapshots();
-// });
-//
-// final teacherStreamProvider = StreamProvider((ref) {
-//   final userCred = ref.watch(userCredentialProvider);
-//   return db
-//       .collection('users')
-//       .doc(userCred!.user!.email)
-//       .collection('type')
-//       .doc('teacher')
-//       .snapshots();
-// });
-//
-// final teacherPfStreamProvider = StreamProvider((ref) async* {
-//   final userSnapshot = ref.watch(userStreamProvider);
-//   final teacherSnapshot = ref.watch(teacherStreamProvider);
-//   final user = UserData.fromJson(userSnapshot.value!.data()!);
-//   final teacherPf = Teacher.fromFirestore(user, teacherSnapshot.value!.data()!);
-//   yield teacherPf;
-// });
-
 Future<Student> getStudent({required UserCredential userCredential}) async {
   final UserCredential userCred = userCredential;
   final userDoc = await db
@@ -273,8 +261,7 @@ Stream<Student> getStudentStream({required UserCredential userCredential}) {
     final userData = userSnapshot.data();
 
     final user = UserData.fromJson(userData!);
-    final student = Student.fromFirestore(
-        user, studentData!);
+    final student = Student.fromFirestore(user, studentData!);
     return student;
   });
 }

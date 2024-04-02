@@ -45,6 +45,17 @@ class _MyProfileFragmentState extends ConsumerState<TeacherProfileFragment>
             backgroundColor: context.appColors.backgroundColor,
             scrolledUnderElevation: 0,
             toolbarHeight: appBarHeight,
+            actions: [
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Icon(
+                  Icons.settings_outlined,
+                  size: 28,
+                  color: context.appColors.iconButton,
+                ),
+              ),
+              const Width(16),
+            ],
           ),
           Expanded(
             child: RefreshIndicator(
@@ -248,29 +259,6 @@ class _ProfileBox extends StatelessWidget {
   }
 }
 
-// final userStreamProvider = StreamProvider((ref) {
-//   final userCred = ref.watch(userCredentialProvider);
-//   return db.collection('users').doc(userCred!.user!.email).snapshots();
-// });
-//
-// final teacherStreamProvider = StreamProvider((ref) {
-//   final userCred = ref.watch(userCredentialProvider);
-//   return db
-//       .collection('users')
-//       .doc(userCred!.user!.email)
-//       .collection('type')
-//       .doc('teacher')
-//       .snapshots();
-// });
-//
-// final teacherPfStreamProvider = StreamProvider((ref) async* {
-//   final userSnapshot = ref.watch(userStreamProvider);
-//   final teacherSnapshot = ref.watch(teacherStreamProvider);
-//   final user = UserData.fromJson(userSnapshot.value!.data()!);
-//   final teacherPf = Teacher.fromFirestore(user, teacherSnapshot.value!.data()!);
-//   yield teacherPf;
-// });
-
 Future<Teacher> getTeacher({required UserCredential userCredential}) async {
   final UserCredential userCred = userCredential;
   final userDoc = await db
@@ -290,26 +278,3 @@ Future<Teacher> getTeacher({required UserCredential userCredential}) async {
   final teacher = Teacher.fromFirestore(user, teacherDoc);
   return teacher;
 }
-
-// Stream<Teacher> getTeacherStream({required UserCredential userCredential}) {
-//   final UserCredential userCred = userCredential;
-//
-//   final userDoc = db.collection('users').doc(userCred.user!.email!);
-//   final teacherDoc = db
-//       .collection('users')
-//       .doc(userCred.user!.email!)
-//       .collection('type')
-//       .doc('teacher');
-//
-//   return teacherDoc.snapshots().asyncMap((teacherSnapshot) async {
-//     final teacherData = teacherSnapshot.data();
-//
-//     final userSnapshot = await userDoc.get();
-//     final userData = userSnapshot.data();
-//
-//     final user = UserData.fromJson(userData!);
-//     final teacher = Teacher.fromFirestore(
-//         user, teacherData!); // 'user1' is a member object in user2
-//     return teacher;
-//   });
-// }

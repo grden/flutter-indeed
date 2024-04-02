@@ -118,7 +118,6 @@ class _ProfileBox extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Height(16),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
