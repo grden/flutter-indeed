@@ -83,12 +83,12 @@ class _MyProfileFragmentState extends ConsumerState<StudentProfileFragment>
                                 controller: tabController,
                                 labelStyle: const TextStyle(
                                     fontSize: 17, fontWeight: FontWeight.w500),
-                                labelColor: context.appColors.primaryText,
+                                labelColor: context.appColors.primaryColor,
                                 unselectedLabelColor:
                                     context.appColors.secondaryText,
                                 labelPadding:
                                     const EdgeInsets.symmetric(vertical: 10),
-                                indicatorColor: context.appColors.iconButton,
+                                indicatorColor: context.appColors.primaryColor,
                                 indicatorSize: TabBarIndicatorSize.tab,
                                 indicatorPadding:
                                     const EdgeInsets.symmetric(horizontal: 16),

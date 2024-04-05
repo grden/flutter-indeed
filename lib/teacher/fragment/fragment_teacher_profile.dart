@@ -115,6 +115,7 @@ class _MyProfileFragmentState extends ConsumerState<TeacherProfileFragment>
                                     title: '과목 및 시급',
                                     child: Column(
                                       children: [
+                                        if (teacher.budget != null) ...[
                                         Align(
                                           alignment: Alignment.centerLeft,
                                           child: Text(
@@ -123,7 +124,7 @@ class _MyProfileFragmentState extends ConsumerState<TeacherProfileFragment>
                                                 fontSize: 17,
                                                 fontWeight: FontWeight.w500),
                                           ),
-                                        ),
+                                        ),],
                                         const Height(12),
                                         SizedBox(
                                           width: double.infinity,

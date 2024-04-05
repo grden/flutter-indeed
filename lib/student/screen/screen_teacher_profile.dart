@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:self_project/common/constant.dart';
 import 'package:self_project/common/extension/extension_context.dart';
 import 'package:self_project/common/widget/widget_contact_button.dart';
+import 'package:self_project/common/widget/widget_info_box.dart';
 import 'package:self_project/common/widget/widget_line.dart';
 import 'package:self_project/common/widget/widget_sizedbox.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
@@ -43,7 +44,7 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen>
               ),
               Expanded(
                 child: CustomScrollView(
-                  //physics: const ClampingScrollPhysics(),
+                  physics: const ClampingScrollPhysics(),
                   slivers: [
                     _ProfileBox(
                       teacher: widget.teacher,
@@ -64,12 +65,12 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen>
                                 controller: tabController,
                                 labelStyle: const TextStyle(
                                     fontSize: 17, fontWeight: FontWeight.w500),
-                                labelColor: context.appColors.primaryText,
+                                labelColor: context.appColors.primaryColor,
                                 unselectedLabelColor:
                                     context.appColors.secondaryText,
                                 labelPadding:
                                     const EdgeInsets.symmetric(vertical: 10),
-                                indicatorColor: context.appColors.iconButton,
+                                indicatorColor: context.appColors.primaryColor,
                                 indicatorSize: TabBarIndicatorSize.tab,
                                 indicatorPadding:
                                     const EdgeInsets.symmetric(horizontal: 16),
@@ -82,11 +83,114 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen>
                               const Line(),
                             ]),
                       ),
-                      sliver: const SliverToBoxAdapter(
-                        child: Column(
-                          children: [Placeholder(), Placeholder()],
+                      sliver: SliverFillRemaining(
+                      child: TabBarView(
+                      controller: tabController,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(16),
+                          color: context.appColors.backgroundColor,
+                          child: Column(
+                            children: [
+                              InfoBox(
+                                title: '과목 및 시급',
+                                child: Column(
+                                  children: [
+                                    if (widget.teacher.budget != null) ...[
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        '시간당 ${widget.teacher.budget}만원',
+                                        style: const TextStyle(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ),],
+                                    const Height(12),
+                                    SizedBox(
+                                      width: double.infinity,
+                                      height: widget.teacher.subjects.length > 4
+                                          ? 100
+                                          : 50,
+                                      child: GridView.count(
+                                        crossAxisCount: 4,
+                                        crossAxisSpacing: 8,
+                                        mainAxisSpacing: 8,
+                                        childAspectRatio: 2,
+                                        physics:
+                                        const NeverScrollableScrollPhysics(),
+                                        children: List.generate(
+                                          widget.teacher.subjects.length,
+                                              (e) => Container(
+                                            padding:
+                                            const EdgeInsets.all(8),
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                BorderRadius.circular(
+                                                    8),
+                                                color: context.appColors
+                                                    .textFieldColor,
+                                                border: Border.all(
+                                                    color: context.appColors
+                                                        .lineColor)),
+                                            child: Center(
+                                              child: Text(
+                                                widget.teacher.subjects[e]
+                                                    .subjectString,
+                                                style: const TextStyle(
+                                                    fontSize: 17),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              const Height(16),
+                              const InfoBox(
+                                title: '소개',
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    '안녕하세요',
+                                    style: TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
                         ),
-                      ),
+                        Container(
+                          padding: const EdgeInsets.all(16),
+                          color: context.appColors.backgroundColor,
+                          child: const Center(
+                            child: Text(
+                              '아직 경력이 없습니다',
+                              style: TextStyle(
+                                fontSize: 17,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.all(16),
+                          color: context.appColors.backgroundColor,
+                          child: const Center(
+                            child: Text(
+                              '아직 평가가 없습니다',
+                              style: TextStyle(
+                                fontSize: 17,
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+              ),
                     ),
                   ],
                 ),
@@ -159,10 +263,9 @@ class _ProfileBox extends StatelessWidget {
                           height: 22,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(6),
-                              color:
-                                  teacher.user.gender != Gender.male
-                                      ? context.appColors.womanBadge
-                                      : context.appColors.manBadge),
+                              color: teacher.user.gender != Gender.male
+                                  ? context.appColors.womanBadge
+                                  : context.appColors.manBadge),
                           child: Center(
                             child: Text(
                               teacher.user.gender.genderString,
@@ -196,6 +299,15 @@ class _ProfileBox extends StatelessWidget {
                         overflow: TextOverflow.fade,
                         maxLines: 1,
                         softWrap: false,
+                      ),
+                    ),
+                    const Height(8),
+                    Text(
+                      teacher.user.locations.locationString,
+                      style: TextStyle(
+                        color: context.appColors.secondaryText,
+                        fontSize: 17,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                     const Height(16),
