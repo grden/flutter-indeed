@@ -59,18 +59,13 @@ class _SubjectSetupState extends ConsumerState<SubjectSetupT> {
                 child: GridView.count(
                   primary: true,
                   crossAxisCount: 3,
-                  //set the number of buttons in a row
                   crossAxisSpacing: 16,
-                  //set the spacing between the buttons
                   mainAxisSpacing: 16,
                   childAspectRatio: 2,
-                  //set the width-to-height ratio of the button,
                   physics: const NeverScrollableScrollPhysics(),
                   children: List.generate(isSelected.length, (newIndex) {
-                    //using Inkwell widget to create a button
                     return Tap(
                         onTap: () {
-                          //set the toggle logic
                           final isOneSelected =
                               isSelected.where((element) => element).length ==
                                   1;
@@ -89,7 +84,6 @@ class _SubjectSetupState extends ConsumerState<SubjectSetupT> {
                               }
                             }
                           });
-                          //print(isSelected);
                         },
                         child: Container(
                           //width: 20,

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:self_project/common/constant.dart';
 import 'package:self_project/common/extension/extension_context.dart';
+import 'package:self_project/common/widget/widget_info_box.dart';
 import 'package:self_project/common/widget/widget_line.dart';
 import 'package:self_project/common/widget/widget_sizedbox.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
@@ -16,7 +17,8 @@ class TeacherProfileFragment extends ConsumerStatefulWidget {
   const TeacherProfileFragment({super.key});
 
   @override
-  ConsumerState<TeacherProfileFragment> createState() => _MyProfileFragmentState();
+  ConsumerState<TeacherProfileFragment> createState() =>
+      _MyProfileFragmentState();
 }
 
 class _MyProfileFragmentState extends ConsumerState<TeacherProfileFragment>
@@ -38,102 +40,184 @@ class _MyProfileFragmentState extends ConsumerState<TeacherProfileFragment>
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-        //appBar: const ProfileAppBar(),
-        children: [
-          AppBar(
-            backgroundColor: context.appColors.backgroundColor,
-            scrolledUnderElevation: 0,
-            toolbarHeight: appBarHeight,
-            actions: [
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Icon(
-                  Icons.settings_outlined,
-                  size: 28,
-                  color: context.appColors.iconButton,
-                ),
-              ),
-              const Width(16),
-            ],
-          ),
-          Expanded(
-            child: RefreshIndicator(
-              key: _refreshIndicatorKey,
-              onRefresh: () => _refreshTeacher(userCred),
-              //edgeOffset: appBarHeight,
-              color: context.appColors.primaryColor,
-              backgroundColor: context.appColors.cardColor,
-              child: FutureBuilder(
-                future: _initTeacherData,
-                builder: (context, snapshot) {
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.none:
-                    case ConnectionState.waiting:
-                    case ConnectionState.active:
-                      {
-                        return Center(
-                          child: CircularProgressIndicator(
-                            color: context.appColors.primaryColor,
-                            backgroundColor: context.appColors.cardColor,
-                          ),
-                        );
-                      }
-                    case ConnectionState.done:
-                      {
-                        return CustomScrollView(slivers: [
-                          _ProfileBox(teacher: _teacher),
-                          SliverStickyHeader(
-                            header: Container(
-                              color: context.appColors.backgroundColor,
-                              height: 60,
-                              child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    TabBar(
-                                      onTap: (index) {
-                                        setState(() {
-                                          currentIndex = index;
-                                        });
-                                      },
-                                      controller: tabController,
-                                      labelStyle: const TextStyle(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w500),
-                                      labelColor: context.appColors.primaryText,
-                                      unselectedLabelColor:
-                                          context.appColors.secondaryText,
-                                      labelPadding: const EdgeInsets.symmetric(
-                                          vertical: 10),
-                                      indicatorColor:
-                                          context.appColors.iconButton,
-                                      indicatorSize: TabBarIndicatorSize.tab,
-                                      indicatorPadding:
-                                          const EdgeInsets.symmetric(
-                                              horizontal: 16),
-                                      tabs: const [
-                                        Text('소개'),
-                                        Text('경력'),
-                                        Text('평가'),
-                                      ],
-                                    ),
-                                    const Line(),
-                                  ]),
-                            ),
-                            sliver: const SliverToBoxAdapter(
-                              child: Column(
-                                children: [Placeholder(), Placeholder()],
-                              ),
-                            ),
-                          ),
-                        ]);
-                      }
-                  }
-                },
-              ),
+    return Column(children: [
+      AppBar(
+        backgroundColor: context.appColors.backgroundColor,
+        scrolledUnderElevation: 0,
+        toolbarHeight: appBarHeight,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: Icon(
+              Icons.settings_outlined,
+              size: 28,
+              color: context.appColors.iconButton,
             ),
           ),
-        ]);
+          const Width(16),
+        ],
+      ),
+      Expanded(
+        child: RefreshIndicator(
+          key: _refreshIndicatorKey,
+          onRefresh: () => _refreshTeacher(userCred),
+          //edgeOffset: appBarHeight,
+          color: context.appColors.primaryColor,
+          backgroundColor: context.appColors.cardColor,
+          child: FutureBuilder(
+            future: _initTeacherData,
+            builder: (context, snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.none:
+                case ConnectionState.waiting:
+                case ConnectionState.active:
+                  {
+                    return Center(
+                      child: CircularProgressIndicator(
+                        color: context.appColors.primaryColor,
+                        backgroundColor: context.appColors.cardColor,
+                      ),
+                    );
+                  }
+                case ConnectionState.done:
+                  {
+                    return CustomScrollView(slivers: [
+                      _ProfileBox(teacher: _teacher),
+                      SliverStickyHeader(
+                        header: Container(
+                          color: context.appColors.backgroundColor,
+                          height: 60,
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                TabBar(
+                                  onTap: (index) {
+                                    setState(() {
+                                      currentIndex = index;
+                                    });
+                                  },
+                                  controller: tabController,
+                                  labelStyle: const TextStyle(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w500),
+                                  labelColor: context.appColors.primaryColor,
+                                  unselectedLabelColor:
+                                      context.appColors.secondaryText,
+                                  labelPadding:
+                                      const EdgeInsets.symmetric(vertical: 10),
+                                  indicatorColor:
+                                      context.appColors.primaryColor,
+                                  indicatorSize: TabBarIndicatorSize.tab,
+                                  indicatorPadding: const EdgeInsets.symmetric(
+                                      horizontal: 16),
+                                  tabs: const [
+                                    Text('소개'),
+                                    Text('경력'),
+                                    Text('평가'),
+                                  ],
+                                ),
+                                const Line(),
+                              ]),
+                        ),
+                        sliver: SliverFillRemaining(
+                          child: TabBarView(
+                            controller: tabController,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(16),
+                                color: context.appColors.backgroundColor,
+                                child: Column(
+                                  children: [
+                                    InfoBox(
+                                      title: '과목 및 시급',
+                                      child: Column(
+                                        children: [
+                                          Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(
+                                              '시간당 ${_teacher.budget}만원',
+                                              style: const TextStyle(
+                                                  fontSize: 17,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                          ),
+                                          const Height(12),
+                                          SizedBox(
+                                            width: double.infinity,
+                                            height: _teacher.subjects.length > 4
+                                                ? 100
+                                                : 50,
+                                            child: GridView.count(
+                                              crossAxisCount: 4,
+                                              crossAxisSpacing: 8,
+                                              mainAxisSpacing: 8,
+                                              childAspectRatio: 2,
+                                              physics:
+                                                  const NeverScrollableScrollPhysics(),
+                                              children: List.generate(
+                                                _teacher.subjects.length,
+                                                (e) => Container(
+                                                  padding:
+                                                      const EdgeInsets.all(8),
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8),
+                                                      color: context.appColors
+                                                          .textFieldColor,
+                                                      border: Border.all(
+                                                          color: context
+                                                              .appColors
+                                                              .lineColor)),
+                                                  child: Center(
+                                                    child: Text(
+                                                      _teacher.subjects[e]
+                                                          .subjectString,
+                                                      style: const TextStyle(
+                                                          fontSize: 17),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    const Height(16),
+                                    const InfoBox(
+                                      title: '소개',
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          '안녕하세요',
+                                          style: TextStyle(
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                color: Colors.amber,
+                              ),
+                              Container(
+                                color: Colors.lime,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ]);
+                  }
+              }
+            },
+          ),
+        ),
+      ),
+    ]);
   }
 
   Future<void> _initTeacher(userCredential) async {
@@ -238,7 +322,7 @@ class _ProfileBox extends StatelessWidget {
                       child: Text(
                         '${addString(teacher.univ, '대')} ${teacher.major ?? ''} ${addString(teacher.studentID, '학번')}',
                         style: TextStyle(
-                          color: context.appColors.secondaryText,
+                          color: context.appColors.primaryText,
                           fontSize: 17,
                           fontWeight: FontWeight.w500,
                         ),
@@ -247,7 +331,15 @@ class _ProfileBox extends StatelessWidget {
                         softWrap: false,
                       ),
                     ),
-                    //const Height(16),
+                    const Height(8),
+                    Text(
+                      teacher.user.locations.locationString,
+                      style: TextStyle(
+                        color: context.appColors.secondaryText,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   ],
                 ),
               ),

@@ -35,7 +35,7 @@ class _StudentHomeFragmentState extends ConsumerState<StudentHomeFragment> {
               if (snapshot.hasData) {
                 List<Student> studentsList = snapshot.data!;
                 if (studentsList.isEmpty) {
-                  return Text('empty!');
+                  return const Center(child: Text('아직 프로필을 열람한 학생이 없습니다\u{1f480} ', style: TextStyle(fontSize: 19),));
                 } else {
                   return MasonryGridView.count(
                       padding: const EdgeInsets.fromLTRB(
@@ -58,7 +58,9 @@ class _StudentHomeFragmentState extends ConsumerState<StudentHomeFragment> {
               }
               if (snapshot.hasError) {
                 print(snapshot.error);
-                return Center(child: Text('Error: ${snapshot.error}'));
+                return CircularProgressIndicator(
+                  color: context.appColors.primaryColor,
+                );
               }
               if (!snapshot.hasData) {
                 return CircularProgressIndicator(
