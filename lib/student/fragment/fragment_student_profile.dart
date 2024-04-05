@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:self_project/common/constant.dart';
 import 'package:self_project/common/extension/extension_context.dart';
+import 'package:self_project/common/widget/widget_info_box.dart';
 import 'package:self_project/common/widget/widget_line.dart';
 import 'package:self_project/common/widget/widget_sizedbox.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
@@ -21,130 +22,237 @@ class StudentProfileFragment extends ConsumerStatefulWidget {
 
 class _MyProfileFragmentState extends ConsumerState<StudentProfileFragment>
     with SingleTickerProviderStateMixin {
-  final _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
   late final tabController = TabController(length: 2, vsync: this);
   int currentIndex = 0;
 
-  late final UserCredential? userCred;
-  late Student _student;
-  late Future<void> _initStudentData;
-
-  @override
-  void initState() {
-    super.initState();
-    userCred = ref.read(userCredentialProvider);
-    _initStudentData = _initStudent(userCred);
-  }
+  // late final UserCredential? userCred;
+  // late Student _student;
+  // late Future<void> _initStudentData;
+  //
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   userCred = ref.read(userCredentialProvider);
+  //   _initStudentData = _initStudent(userCred);
+  // }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-        //appBar: const ProfileAppBar(),
-        children: [
-          AppBar(
-            backgroundColor: context.appColors.backgroundColor,
-            scrolledUnderElevation: 0,
-            toolbarHeight: appBarHeight,
-            actions: [
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Icon(
-                  Icons.settings_outlined,
-                  size: 28,
-                  color: context.appColors.iconButton,
-                ),
-              ),
-              const Width(16),
-            ],
-          ),
-          Expanded(
-            child: RefreshIndicator(
-              key: _refreshIndicatorKey,
-              onRefresh: () => _refreshStudent(userCred),
-              //edgeOffset: appBarHeight,
-              color: context.appColors.primaryColor,
-              backgroundColor: context.appColors.cardColor,
-              child: FutureBuilder(
-                future: _initStudentData,
-                builder: (context, snapshot) {
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.none:
-                    case ConnectionState.waiting:
-                    case ConnectionState.active:
-                      {
-                        return Center(
-                          child: CircularProgressIndicator(
-                            color: context.appColors.primaryColor,
-                            backgroundColor: context.appColors.cardColor,
-                          ),
-                        );
-                      }
-                    case ConnectionState.done:
-                      {
-                        return CustomScrollView(slivers: [
-                          _ProfileBox(student: _student),
-                          SliverStickyHeader(
-                            header: Container(
-                              color: context.appColors.backgroundColor,
-                              height: 60,
-                              child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    TabBar(
-                                      onTap: (index) {
-                                        setState(() {
-                                          currentIndex = index;
-                                        });
-                                      },
-                                      controller: tabController,
-                                      labelStyle: const TextStyle(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w500),
-                                      labelColor: context.appColors.primaryText,
-                                      unselectedLabelColor:
-                                          context.appColors.secondaryText,
-                                      labelPadding: const EdgeInsets.symmetric(
-                                          vertical: 10),
-                                      indicatorColor:
-                                          context.appColors.iconButton,
-                                      indicatorSize: TabBarIndicatorSize.tab,
-                                      indicatorPadding:
-                                          const EdgeInsets.symmetric(
-                                              horizontal: 16),
-                                      tabs: const [
-                                        Text('소개'),
-                                        Text('평가'),
-                                      ],
-                                    ),
-                                    const Line(),
-                                  ]),
-                            ),
-                            sliver: const SliverToBoxAdapter(
-                              child: Column(
-                                children: [Placeholder(), Placeholder()],
-                              ),
-                            ),
-                          ),
-                        ]);
-                      }
-                  }
-                },
-              ),
+    UserCredential userCredential = ref.watch(userCredentialProvider)!;
+
+    return Column(children: [
+      AppBar(
+        backgroundColor: context.appColors.backgroundColor,
+        scrolledUnderElevation: 0,
+        toolbarHeight: appBarHeight,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: Icon(
+              Icons.settings_outlined,
+              size: 28,
+              color: context.appColors.iconButton,
             ),
           ),
-        ]);
+          const Width(16),
+        ],
+      ),
+      Expanded(
+        child: StreamBuilder(
+          stream: getStudentStream(userCredential: userCredential),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              Student student = snapshot.data!;
+              return CustomScrollView(
+                  physics: const ClampingScrollPhysics(),
+                  slivers: [
+                    _ProfileBox(student: student),
+                    SliverStickyHeader(
+                      header: Container(
+                        color: context.appColors.backgroundColor,
+                        height: 60,
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              TabBar(
+                                onTap: (index) {
+                                  setState(() {
+                                    currentIndex = index;
+                                  });
+                                },
+                                controller: tabController,
+                                labelStyle: const TextStyle(
+                                    fontSize: 17, fontWeight: FontWeight.w500),
+                                labelColor: context.appColors.primaryText,
+                                unselectedLabelColor:
+                                    context.appColors.secondaryText,
+                                labelPadding:
+                                    const EdgeInsets.symmetric(vertical: 10),
+                                indicatorColor: context.appColors.iconButton,
+                                indicatorSize: TabBarIndicatorSize.tab,
+                                indicatorPadding:
+                                    const EdgeInsets.symmetric(horizontal: 16),
+                                tabs: const [
+                                  Text('소개'),
+                                  Text('평가'),
+                                ],
+                              ),
+                              const Line(),
+                            ]),
+                      ),
+                      sliver: SliverFillRemaining(
+                        child: TabBarView(
+                          controller: tabController,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(16),
+                              color: context.appColors.backgroundColor,
+                              child: Column(
+                                children: [
+                                  InfoBox(
+                                    title: '과목',
+                                    child: Column(
+                                      children: [
+                                        SizedBox(
+                                          width: double.infinity,
+                                          height: student.subjects.length > 4
+                                              ? 100
+                                              : 50,
+                                          child: GridView.count(
+                                            crossAxisCount: 4,
+                                            crossAxisSpacing: 8,
+                                            mainAxisSpacing: 8,
+                                            childAspectRatio: 2,
+                                            physics:
+                                            const NeverScrollableScrollPhysics(),
+                                            children: List.generate(
+                                              student.subjects.length,
+                                                  (e) => Container(
+                                                padding:
+                                                const EdgeInsets.all(8),
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                    BorderRadius.circular(
+                                                        8),
+                                                    color: context.appColors
+                                                        .textFieldColor,
+                                                    border: Border.all(
+                                                        color: context.appColors
+                                                            .lineColor)),
+                                                child: Center(
+                                                  child: Text(
+                                                    student.subjects[e]
+                                                        .subjectString,
+                                                    style: const TextStyle(
+                                                        fontSize: 17),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  const Height(16),
+                                  InfoBox(
+                                    title: '소개',
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        student.info,
+                                        style: const TextStyle(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.all(16),
+                              color: context.appColors.backgroundColor,
+                              child: const Center(
+                                child: Text(
+                                  '아직 평가가 없습니다',
+                                  style: TextStyle(
+                                    fontSize: 17,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ]);
+            }
+            if (snapshot.hasError) {
+              print(snapshot.error);
+              return CircularProgressIndicator(
+                color: context.appColors.primaryColor,
+              );
+            }
+            if (!snapshot.hasData) {
+              return CircularProgressIndicator(
+                color: context.appColors.primaryColor,
+              );
+            } else {
+              return CircularProgressIndicator(
+                color: context.appColors.primaryColor,
+              );
+            }
+          },
+        ),
+      ),
+    ]);
   }
 
-  Future<void> _initStudent(userCredential) async {
-    final student = await getStudent(userCredential: userCredential);
-    _student = student;
+  // Future<void> _initStudent(userCredential) async {
+  //   final student = await getStudent(userCredential: userCredential);
+  //   _student = student;
+  // }
+  //
+  // Future<void> _refreshStudent(userCredential) async {
+  //   final student = await getStudent(userCredential: userCredential);
+  //   setState(() {
+  //     _student = student;
+  //   });
+  // }
+
+  Stream<UserData> getUserStream(
+      {required UserCredential userCredential}) async* {
+    final UserCredential userCred = userCredential;
+
+    final snapshot =
+        db.collection('users').doc(userCred.user!.email!).snapshots();
+
+    await for (final doc in snapshot) {
+      final user = UserData.fromJson(doc.data()!);
+      yield user;
+    }
   }
 
-  Future<void> _refreshStudent(userCredential) async {
-    final student = await getStudent(userCredential: userCredential);
-    setState(() {
-      _student = student;
-    });
+  Stream<Student> getStudentStream(
+      {required UserCredential userCredential}) async* {
+    final UserCredential userCred = userCredential;
+    final userStream = getUserStream(userCredential: userCred);
+
+    await for (final user in userStream) {
+      final studentStream = db
+          .collection('users')
+          .doc(user.email)
+          .collection('type')
+          .doc('student')
+          .snapshots();
+
+      await for (final student in studentStream) {
+        final studentPF = Student.fromFirestore(user, student.data()!);
+        print(studentPF.user.name);
+        yield studentPF;
+      }
+    }
   }
 }
 
@@ -213,6 +321,15 @@ class _ProfileBox extends StatelessWidget {
                         ),
                       ],
                     ),
+                    const Height(8),
+                    Text(
+                      student.user.locations.locationString,
+                      style: TextStyle(
+                        color: context.appColors.secondaryText,
+                        fontSize: 17,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -224,44 +341,44 @@ class _ProfileBox extends StatelessWidget {
   }
 }
 
-Future<Student> getStudent({required UserCredential userCredential}) async {
-  final UserCredential userCred = userCredential;
-  final userDoc = await db
-      .collection('users')
-      .doc(userCred.user!.email!)
-      .get()
-      .then((DocumentSnapshot doc) => doc.data() as Map<String, dynamic>);
-  final studentDoc = await db
-      .collection('users')
-      .doc(userCred.user!.email!)
-      .collection('type')
-      .doc('student')
-      .get()
-      .then((DocumentSnapshot doc) => doc.data() as Map<String, dynamic>);
-
-  final user = UserData.fromJson(userDoc);
-  final student = Student.fromFirestore(user, studentDoc);
-  return student;
-}
-
-Stream<Student> getStudentStream({required UserCredential userCredential}) {
-  final UserCredential userCred = userCredential;
-
-  final userDoc = db.collection('users').doc(userCred.user!.email!);
-  final studentDoc = db
-      .collection('users')
-      .doc(userCred.user!.email!)
-      .collection('type')
-      .doc('student');
-
-  return studentDoc.snapshots().asyncMap((studentSnapshot) async {
-    final studentData = studentSnapshot.data();
-
-    final userSnapshot = await userDoc.get();
-    final userData = userSnapshot.data();
-
-    final user = UserData.fromJson(userData!);
-    final student = Student.fromFirestore(user, studentData!);
-    return student;
-  });
-}
+// Future<Student> getStudent({required UserCredential userCredential}) async {
+//   final UserCredential userCred = userCredential;
+//   final userDoc = await db
+//       .collection('users')
+//       .doc(userCred.user!.email!)
+//       .get()
+//       .then((DocumentSnapshot doc) => doc.data() as Map<String, dynamic>);
+//   final studentDoc = await db
+//       .collection('users')
+//       .doc(userCred.user!.email!)
+//       .collection('type')
+//       .doc('student')
+//       .get()
+//       .then((DocumentSnapshot doc) => doc.data() as Map<String, dynamic>);
+//
+//   final user = UserData.fromJson(userDoc);
+//   final student = Student.fromFirestore(user, studentDoc);
+//   return student;
+// }
+//
+// Stream<Student> getStudentStream({required UserCredential userCredential}) {
+//   final UserCredential userCred = userCredential;
+//
+//   final userDoc = db.collection('users').doc(userCred.user!.email!);
+//   final studentDoc = db
+//       .collection('users')
+//       .doc(userCred.user!.email!)
+//       .collection('type')
+//       .doc('student');
+//
+//   return studentDoc.snapshots().asyncMap((studentSnapshot) async {
+//     final studentData = studentSnapshot.data();
+//
+//     final userSnapshot = await userDoc.get();
+//     final userData = userSnapshot.data();
+//
+//     final user = UserData.fromJson(userData!);
+//     final student = Student.fromFirestore(user, studentData!);
+//     return student;
+//   });
+// }
