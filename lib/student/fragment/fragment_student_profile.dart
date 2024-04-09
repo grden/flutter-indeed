@@ -25,17 +25,6 @@ class _MyProfileFragmentState extends ConsumerState<StudentProfileFragment>
   late final tabController = TabController(length: 2, vsync: this);
   int currentIndex = 0;
 
-  // late final UserCredential? userCred;
-  // late Student _student;
-  // late Future<void> _initStudentData;
-  //
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   userCred = ref.read(userCredentialProvider);
-  //   _initStudentData = _initStudent(userCred);
-  // }
-
   @override
   Widget build(BuildContext context) {
     UserCredential userCredential = ref.watch(userCredentialProvider)!;
@@ -124,16 +113,16 @@ class _MyProfileFragmentState extends ConsumerState<StudentProfileFragment>
                                             mainAxisSpacing: 8,
                                             childAspectRatio: 2,
                                             physics:
-                                            const NeverScrollableScrollPhysics(),
+                                                const NeverScrollableScrollPhysics(),
                                             children: List.generate(
                                               student.subjects.length,
-                                                  (e) => Container(
+                                              (e) => Container(
                                                 padding:
-                                                const EdgeInsets.all(8),
+                                                    const EdgeInsets.all(8),
                                                 decoration: BoxDecoration(
                                                     borderRadius:
-                                                    BorderRadius.circular(
-                                                        8),
+                                                        BorderRadius.circular(
+                                                            8),
                                                     color: context.appColors
                                                         .textFieldColor,
                                                     border: Border.all(

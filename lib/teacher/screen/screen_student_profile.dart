@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:self_project/common/constant.dart';
 import 'package:self_project/common/extension/extension_context.dart';
 import 'package:self_project/common/widget/widget_contact_button.dart';
+import 'package:self_project/common/widget/widget_info_box.dart';
 import 'package:self_project/common/widget/widget_line.dart';
 import 'package:self_project/common/widget/widget_sizedbox.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
@@ -24,7 +25,7 @@ class StudentProfileScreen extends StatefulWidget {
 
 class _StudentProfileScreenState extends State<StudentProfileScreen>
     with SingleTickerProviderStateMixin {
-  late final tabController = TabController(length: 3, vsync: this);
+  late final tabController = TabController(length: 2, vsync: this);
   int currentIndex = 0;
 
   @override
@@ -33,7 +34,6 @@ class _StudentProfileScreenState extends State<StudentProfileScreen>
       body: Container(
         color: context.appColors.backgroundColor,
         child: Column(
-          //appBar: const ProfileAppBar(),
             children: [
               AppBar(
                 backgroundColor: context.appColors.backgroundColor,
@@ -42,7 +42,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen>
               ),
               Expanded(
                 child: CustomScrollView(
-                  //physics: const ClampingScrollPhysics(),
+                  physics: const ClampingScrollPhysics(),
                   slivers: [
                     _ProfileBox(
                       student: widget.student,
@@ -74,16 +74,95 @@ class _StudentProfileScreenState extends State<StudentProfileScreen>
                                 const EdgeInsets.symmetric(horizontal: 16),
                                 tabs: const [
                                   Text('소개'),
-                                  Text('경력'),
                                   Text('평가'),
                                 ],
                               ),
                               const Line(),
                             ]),
                       ),
-                      sliver: const SliverToBoxAdapter(
-                        child: Column(
-                          children: [Placeholder(), Placeholder()],
+                      sliver: SliverFillRemaining(
+                        child: TabBarView(
+                          controller: tabController,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(16),
+                              color: context.appColors.backgroundColor,
+                              child: Column(
+                                children: [
+                                  InfoBox(
+                                    title: '과목',
+                                    child: Column(
+                                      children: [
+                                        SizedBox(
+                                          width: double.infinity,
+                                          height: widget.student.subjects.length > 4
+                                              ? 100
+                                              : 50,
+                                          child: GridView.count(
+                                            crossAxisCount: 4,
+                                            crossAxisSpacing: 8,
+                                            mainAxisSpacing: 8,
+                                            childAspectRatio: 2,
+                                            physics:
+                                            const NeverScrollableScrollPhysics(),
+                                            children: List.generate(
+                                              widget.student.subjects.length,
+                                                  (e) => Container(
+                                                padding:
+                                                const EdgeInsets.all(8),
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                    BorderRadius.circular(
+                                                        8),
+                                                    color: context.appColors
+                                                        .textFieldColor,
+                                                    border: Border.all(
+                                                        color: context.appColors
+                                                            .lineColor)),
+                                                child: Center(
+                                                  child: Text(
+                                                    widget.student.subjects[e]
+                                                        .subjectString,
+                                                    style: const TextStyle(
+                                                        fontSize: 17),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  const Height(16),
+                                  InfoBox(
+                                    title: '소개',
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        widget.student.info,
+                                        style: const TextStyle(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.all(16),
+                              color: context.appColors.backgroundColor,
+                              child: const Center(
+                                child: Text(
+                                  '아직 평가가 없습니다',
+                                  style: TextStyle(
+                                    fontSize: 17,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -163,6 +242,15 @@ class _ProfileBox extends StatelessWidget {
                               fontWeight: FontWeight.w500),
                         ),
                       ],
+                    ),
+                    const Height(8),
+                    Text(
+                      student.user.locations.locationString,
+                      style: TextStyle(
+                        color: context.appColors.secondaryText,
+                        fontSize: 17,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                     const Height(16),
                     ContactButton(
