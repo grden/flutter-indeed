@@ -42,32 +42,35 @@ class _InfoSetupState extends ConsumerState<InfoSetup> {
                   alignment: Alignment.centerLeft,
                   child: Text('현재 점수, 목표, 선호하는 수업 방식, 성격 등의 정보를 입력하여 본인과 맞는 선생님을 만나세요', style: TextStyle(fontSize: 19, fontWeight: FontWeight.w400, color: context.appColors.secondaryText),)),
               const Height(24),
-              Form(
-                key: _formKey,
-                child: TextFormField(
-                  controller: infoTextController,
-                  style: const TextStyle(fontSize: 19),
-                  maxLines: 8,
-                  decoration: InputDecoration(
-                    contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                    filled: true,
-                    fillColor: context.appColors.textFieldColor,
-                    border: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(12)),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: context.appColors.primaryColor, width: 0.6),
-                        borderRadius: BorderRadius.circular(12)),
-                    errorStyle: const TextStyle(fontSize: 15),
+              SizedBox(
+                height: 200,
+                child: Form(
+                  key: _formKey,
+                  child: TextFormField(
+                    controller: infoTextController,
+                    style: const TextStyle(fontSize: 19),
+                    maxLines: 100,
+                    decoration: InputDecoration(
+                      contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                      filled: true,
+                      fillColor: context.appColors.textFieldColor,
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(12)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: context.appColors.primaryColor, width: 0.6),
+                          borderRadius: BorderRadius.circular(12)),
+                      errorStyle: const TextStyle(fontSize: 15),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '필수 입력값입니다.';
+                      }
+                      return null;
+                    },
                   ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return '필수 입력값입니다.';
-                    }
-                    return null;
-                  },
                 ),
               ),
             ],

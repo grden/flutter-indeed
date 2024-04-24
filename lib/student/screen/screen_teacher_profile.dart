@@ -90,78 +90,81 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen>
                         Container(
                           padding: const EdgeInsets.all(16),
                           color: context.appColors.backgroundColor,
-                          child: Column(
-                            children: [
-                              InfoBox(
-                                title: '과목 및 시급',
-                                child: Column(
-                                  children: [
-                                    if (widget.teacher.budget != null) ...[
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        '시간당 ${widget.teacher.budget}만원',
-                                        style: const TextStyle(
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                    ),],
-                                    const Height(12),
-                                    SizedBox(
-                                      width: double.infinity,
-                                      height: widget.teacher.subjects.length > 4
-                                          ? 100
-                                          : 50,
-                                      child: GridView.count(
-                                        crossAxisCount: 4,
-                                        crossAxisSpacing: 8,
-                                        mainAxisSpacing: 8,
-                                        childAspectRatio: 2,
-                                        physics:
-                                        const NeverScrollableScrollPhysics(),
-                                        children: List.generate(
-                                          widget.teacher.subjects.length,
-                                              (e) => Container(
-                                            padding:
-                                            const EdgeInsets.all(8),
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                BorderRadius.circular(
-                                                    8),
-                                                color: context.appColors
-                                                    .textFieldColor,
-                                                border: Border.all(
-                                                    color: context.appColors
-                                                        .lineColor)),
-                                            child: Center(
-                                              child: Text(
-                                                widget.teacher.subjects[e]
-                                                    .subjectString,
-                                                style: const TextStyle(
-                                                    fontSize: 17),
+                          child: SingleChildScrollView(
+                            physics: const NeverScrollableScrollPhysics(),
+                            child: Column(
+                              children: [
+                                InfoBox(
+                                  title: '과목 및 시급',
+                                  child: Column(
+                                    children: [
+                                      if (widget.teacher.budget != null) ...[
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          '시간당 ${widget.teacher.budget}만원',
+                                          style: const TextStyle(
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ),],
+                                      const Height(12),
+                                      SizedBox(
+                                        width: double.infinity,
+                                        height: widget.teacher.subjects.length > 4
+                                            ? 100
+                                            : 50,
+                                        child: GridView.count(
+                                          crossAxisCount: 4,
+                                          crossAxisSpacing: 8,
+                                          mainAxisSpacing: 8,
+                                          childAspectRatio: 2,
+                                          physics:
+                                          const NeverScrollableScrollPhysics(),
+                                          children: List.generate(
+                                            widget.teacher.subjects.length,
+                                                (e) => Container(
+                                              padding:
+                                              const EdgeInsets.all(8),
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                  BorderRadius.circular(
+                                                      8),
+                                                  color: context.appColors
+                                                      .textFieldColor,
+                                                  border: Border.all(
+                                                      color: context.appColors
+                                                          .lineColor)),
+                                              child: Center(
+                                                child: Text(
+                                                  widget.teacher.subjects[e]
+                                                      .subjectString,
+                                                  style: const TextStyle(
+                                                      fontSize: 17),
+                                                ),
                                               ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              const Height(16),
-                              const InfoBox(
-                                title: '소개',
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    '안녕하세요',
-                                    style: TextStyle(
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.w500),
+                                      )
+                                    ],
                                   ),
                                 ),
-                              )
-                            ],
+                                const Height(16),
+                                const InfoBox(
+                                  title: '소개',
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      '안녕하세요',
+                                      style: TextStyle(
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         ),
                         Container(

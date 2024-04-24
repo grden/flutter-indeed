@@ -106,107 +106,9 @@ class _MyProfileFragmentState extends ConsumerState<TeacherProfileFragment>
                         child: TabBarView(
                           controller: tabController,
                           children: [
-                            Container(
-                              padding: const EdgeInsets.all(16),
-                              color: context.appColors.backgroundColor,
-                              child: Column(
-                                children: [
-                                  InfoBox(
-                                    title: '과목 및 시급',
-                                    child: Column(
-                                      children: [
-                                        if (teacher.budget != null) ...[
-                                        Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            '시간당 ${teacher.budget}만원',
-                                            style: const TextStyle(
-                                                fontSize: 17,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                        ),],
-                                        const Height(12),
-                                        SizedBox(
-                                          width: double.infinity,
-                                          height: teacher.subjects.length > 4
-                                              ? 100
-                                              : 50,
-                                          child: GridView.count(
-                                            crossAxisCount: 4,
-                                            crossAxisSpacing: 8,
-                                            mainAxisSpacing: 8,
-                                            childAspectRatio: 2,
-                                            physics:
-                                                const NeverScrollableScrollPhysics(),
-                                            children: List.generate(
-                                              teacher.subjects.length,
-                                              (e) => Container(
-                                                padding:
-                                                    const EdgeInsets.all(8),
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8),
-                                                    color: context.appColors
-                                                        .textFieldColor,
-                                                    border: Border.all(
-                                                        color: context.appColors
-                                                            .lineColor)),
-                                                child: Center(
-                                                  child: Text(
-                                                    teacher.subjects[e]
-                                                        .subjectString,
-                                                    style: const TextStyle(
-                                                        fontSize: 17),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  const Height(16),
-                                  const InfoBox(
-                                    title: '소개',
-                                    child: Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        '안녕하세요',
-                                        style: TextStyle(
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                            Container(
-                              padding: const EdgeInsets.all(16),
-                              color: context.appColors.backgroundColor,
-                              child: const Center(
-                                child: Text(
-                                  '아직 경력이 없습니다',
-                                  style: TextStyle(
-                                      fontSize: 17,
-                                      ),
-                                ),
-                              ),
-                            ),
-                            Container(
-                              padding: const EdgeInsets.all(16),
-                              color: context.appColors.backgroundColor,
-                              child: const Center(
-                                child: Text(
-                                  '아직 평가가 없습니다',
-                                  style: TextStyle(
-                                      fontSize: 17,
-                                      ),
-                                ),
-                              ),
-                            )
+                            buildInfoTab(context, teacher),
+                            buildExperienceTab(context),
+                            buildReviewTab(context)
                           ],
                         ),
                       ),
@@ -232,6 +134,107 @@ class _MyProfileFragmentState extends ConsumerState<TeacherProfileFragment>
         ),
       ),
     ]);
+  }
+
+  Container buildReviewTab(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      color: context.appColors.backgroundColor,
+      child: const Center(
+        child: Text(
+          '아직 평가가 없습니다',
+          style: TextStyle(
+            fontSize: 17,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Container buildExperienceTab(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      color: context.appColors.backgroundColor,
+      child: const Center(
+        child: Text(
+          '아직 경력이 없습니다',
+          style: TextStyle(
+            fontSize: 17,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Container buildInfoTab(BuildContext context, Teacher teacher) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      color: context.appColors.backgroundColor,
+      child: SingleChildScrollView(
+        physics: const NeverScrollableScrollPhysics(),
+        child: Column(
+          children: [
+            InfoBox(
+              title: '과목 및 시급',
+              child: Column(
+                children: [
+                  if (teacher.budget != null) ...[
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        '시간당 ${teacher.budget}만원',
+                        style: const TextStyle(
+                            fontSize: 17, fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                  ],
+                  const Height(12),
+                  SizedBox(
+                    width: double.infinity,
+                    height: teacher.subjects.length > 4 ? 100 : 50,
+                    child: GridView.count(
+                      crossAxisCount: 4,
+                      crossAxisSpacing: 8,
+                      mainAxisSpacing: 8,
+                      childAspectRatio: 2,
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: List.generate(
+                        teacher.subjects.length,
+                        (e) => Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: context.appColors.textFieldColor,
+                              border:
+                                  Border.all(color: context.appColors.lineColor)),
+                          child: Center(
+                            child: Text(
+                              teacher.subjects[e].subjectString,
+                              style: const TextStyle(fontSize: 17),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            const Height(16),
+            const InfoBox(
+              title: '소개',
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  '안녕하세요',
+                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   // Future<void> _initTeacher(userCredential) async {
