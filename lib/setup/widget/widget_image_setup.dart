@@ -1,26 +1,27 @@
 import 'dart:typed_data';
 
-import 'package:carousel_slider/carousel_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:self_project/common/constant.dart';
 import 'package:self_project/common/extension/extension_context.dart';
 import 'package:self_project/common/widget/widget_sizedbox.dart';
 import 'package:self_project/common/widget/widget_tap.dart';
 import 'package:self_project/provider/provider_user.dart';
 import 'package:self_project/setup/screen/screen_teacher_setup.dart';
 import 'package:image_picker/image_picker.dart';
+import 'dart:ui' as ui;
 
 class ImageSetup extends ConsumerStatefulWidget {
   const ImageSetup(
-    this.buttonCarouselController, {
+    this.buttonPageController, {
     super.key,
   });
 
-  final CarouselController buttonCarouselController;
+  final PageController buttonPageController;
 
   @override
   ConsumerState<ImageSetup> createState() => _ImageSetupState();
@@ -34,67 +35,70 @@ class _ImageSetupState extends ConsumerState<ImageSetup> {
 
   @override
   Widget build(BuildContext context) {
+    final availHeight = MediaQuery.of(context).size.height -
+        appBarHeight -
+        MediaQueryData.fromView(ui.PlatformDispatcher.instance.implicitView!)
+            .padding
+            .top -
+        MediaQueryData.fromView(ui.PlatformDispatcher.instance.implicitView!)
+            .padding
+            .bottom;
     return Container(
+      height: availHeight,
       padding: const EdgeInsets.all(24),
       color: context.appColors.backgroundColor,
       child: Column(
-        //mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Height(48),
-          Column(
-            children: [
-              const Height(40),
-              const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    '마지막으로, 학생들에게 보여질\n프로필 이미지를 설정해주세요.',
-                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
-                  )),
-              const Height(24),
-              Align(
-                alignment: Alignment.center,
-                child: Tap(
-                  onTap: () async {
-                    final ImagePicker picker = ImagePicker();
-                    image = await picker.pickImage(source: ImageSource.gallery);
-                    //print("${image?.name},${image?.path}");
-                    imageData = await image?.readAsBytes();
-                    setState(() {});
-                  },
-                  child: Container(
-                    width: 200,
-                    height: 200,
-                    decoration: BoxDecoration(
-                        color: context.appColors.cardColor,
-                        borderRadius: BorderRadius.circular(16),
-                        border:
-                            Border.all(color: context.appColors.primaryColor),
-                        boxShadow: [context.appShadows.cardShadow]),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: imageData == null
-                          ? Center(
-                              child: Container(
-                                width: 40,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: context.appColors.primaryColor),
-                                child: Icon(
-                                  Icons.add,
-                                  color: context.appColors.inverseText,
-                                ),
-                              ),
-                            )
-                          : Image.memory(
-                              imageData!,
-                              fit: BoxFit.fill,
+          const Align(
+            alignment: Alignment.center,
+            child: Text(
+              '학생들에게 보여질\n프로필 이미지를 설정해주세요.',
+              style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          const Height(24),
+          Align(
+            alignment: Alignment.center,
+            child: Tap(
+              onTap: () async {
+                final ImagePicker picker = ImagePicker();
+                image = await picker.pickImage(source: ImageSource.gallery);
+                //print("${image?.name},${image?.path}");
+                imageData = await image?.readAsBytes();
+                setState(() {});
+              },
+              child: Container(
+                width: 200,
+                height: 200,
+                decoration: BoxDecoration(
+                    color: context.appColors.cardColor,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: context.appColors.primaryColor),
+                    boxShadow: [context.appShadows.cardShadow]),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: imageData == null
+                      ? Center(
+                          child: Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: context.appColors.primaryColor),
+                            child: Icon(
+                              Icons.add,
+                              color: context.appColors.inverseText,
                             ),
-                    ),
-                  ),
+                          ),
+                        )
+                      : Image.memory(
+                          imageData!,
+                          fit: BoxFit.fill,
+                        ),
                 ),
-              )
-            ],
+              ),
+            ),
           ),
           const Spacer(),
           MaterialButton(
@@ -147,14 +151,21 @@ class _ImageSetupState extends ConsumerState<ImageSetup> {
         .doc('teacher')
         .set({
       'displayName': setupList[0][0].toString(),
-      'univ' : setupList[1][0].toString() != '' ? setupList[1][0].toString() : null,
-      'major' : setupList[1][1].toString() != '' ? setupList[1][1].toString() : null,
-      'studentID' : setupList[1][2].toString() != '' ? setupList[1][2].toString() : null,
+      'univ':
+          setupList[1][0].toString() != '' ? setupList[1][0].toString() : null,
+      'major':
+          setupList[1][1].toString() != '' ? setupList[1][1].toString() : null,
+      'studentID':
+          setupList[1][2].toString() != '' ? setupList[1][2].toString() : null,
       'subjects': setupList[2],
-      'budget' : setupList[3][0].toString() != '' ? setupList[3][0].toString() : null,
-      'profileImagePath' : downloadLink,
+      'budget':
+          setupList[3][0].toString() != '' ? setupList[3][0].toString() : null,
+      'profileImagePath': downloadLink,
     });
-    
-    await db.collection('users').doc(userCredential?.user?.email).update({'initialSetup' : true});
+
+    await db
+        .collection('users')
+        .doc(userCredential?.user?.email)
+        .update({'initialSetup': true});
   }
 }

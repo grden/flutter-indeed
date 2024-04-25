@@ -1,9 +1,10 @@
-import 'package:carousel_slider/carousel_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:self_project/common/constant.dart';
 import 'package:self_project/common/extension/extension_context.dart';
 import 'package:self_project/common/widget/widget_sizedbox.dart';
 import 'package:self_project/setup/screen/screen_teacher_setup.dart';
+import 'dart:ui' as ui;
 
 class UnivSetup extends StatefulWidget {
   const UnivSetup(
@@ -11,7 +12,7 @@ class UnivSetup extends StatefulWidget {
     super.key,
   });
 
-  final CarouselController buttonCarouselController;
+  final PageController buttonCarouselController;
 
   @override
   State<UnivSetup> createState() => _UnivSetupState();
@@ -25,79 +26,76 @@ class _UnivSetupState extends State<UnivSetup> {
 
   @override
   Widget build(BuildContext context) {
+    final availHeight = MediaQuery.of(context).size.height - appBarHeight - MediaQueryData.fromView(ui.PlatformDispatcher.instance.implicitView!).padding
+        .top - MediaQueryData.fromView(ui.PlatformDispatcher.instance.implicitView!).padding.bottom;
     return Container(
+      height: availHeight,
       padding: const EdgeInsets.all(24),
       color: context.appColors.backgroundColor,
       child: Column(
         //mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Height(48),
-          Column(
-            children: [
-              const Height(40),
-              const Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  '대학 정보를 입력해주세요.',
-                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
-                ),
-              ),
-              const Height(24),
-              Form(
-                key: _formKey,
-                child: Column(
+          const Align(
+            alignment: Alignment.center,
+            child: Text(
+              '대학 정보를 입력해주세요.',
+              style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
+            ),
+          ),
+          const Height(24),
+          Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                Row(
                   children: [
-                    Row(
-                      children: [
-                        Flexible(flex: 3, child: univTextFormField(context)),
-                        const Width(8),
-                        const Flexible(
-                          flex: 1,
-                          child: Text(
-                            '대학교',
-                            style: TextStyle(
-                                fontSize: 21, fontWeight: FontWeight.w500),
-                          ),
-                        ),
-                        const Width(24),
-                      ],
+                    Flexible(flex: 3, child: univTextFormField(context)),
+                    const Width(8),
+                    const Flexible(
+                      flex: 1,
+                      child: Text(
+                        '대학교',
+                        style: TextStyle(
+                            fontSize: 21, fontWeight: FontWeight.w500),
+                      ),
                     ),
-                    const Height(16),
-                    Row(
-                      children: [
-                        Flexible(flex: 3, child: majorTextFormField(context)),
-                        const Width(8),
-                        const Flexible(
-                          flex: 1,
-                          child: Text(
-                            '',
-                            style: TextStyle(fontSize: 21),
-                          ),
-                        ),
-                        const Width(24),
-                      ],
-                    ),
-                    const Height(16),
-                    Row(
-                      children: [
-                        Flexible(
-                            flex: 3, child: studentIDTextFormField(context)),
-                        const Width(8),
-                        const Flexible(
-                          flex: 1,
-                          child: Text(
-                            '학번',
-                            style: TextStyle(
-                                fontSize: 21, fontWeight: FontWeight.w500),
-                          ),
-                        ),
-                        const Width(24),
-                      ],
-                    ),
+                    const Width(24),
                   ],
                 ),
-              ),
-            ],
+                const Height(16),
+                Row(
+                  children: [
+                    Flexible(flex: 3, child: majorTextFormField(context)),
+                    const Width(8),
+                    const Flexible(
+                      flex: 1,
+                      child: Text(
+                        '',
+                        style: TextStyle(fontSize: 21),
+                      ),
+                    ),
+                    const Width(24),
+                  ],
+                ),
+                const Height(16),
+                Row(
+                  children: [
+                    Flexible(
+                        flex: 3, child: studentIDTextFormField(context)),
+                    const Width(8),
+                    const Flexible(
+                      flex: 1,
+                      child: Text(
+                        '학번',
+                        style: TextStyle(
+                            fontSize: 21, fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                    const Width(24),
+                  ],
+                ),
+              ],
+            ),
           ),
           const Spacer(),
           Consumer(builder: (context, ref, child) {
@@ -106,7 +104,7 @@ class _UnivSetupState extends State<UnivSetup> {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
                   widget.buttonCarouselController
-                      .nextPage(duration: const Duration(milliseconds: 240));
+                      .nextPage(duration: const Duration(milliseconds: 300), curve: Curves.easeOutQuart);
                   ref.read(indexStateProvider.notifier).state++;
 
                   final List<String> univInfo = [

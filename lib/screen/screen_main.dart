@@ -15,8 +15,8 @@ class MainScreen extends ConsumerStatefulWidget {
 
 class MainScreenState extends ConsumerState<MainScreen>
     with SingleTickerProviderStateMixin {
-  TabItem _currentTab = TabItem.studentHome;
-  List<TabItem> tabs = [TabItem.studentHome];
+  TabItem _currentTab = TabItem.teacherHome;
+  List<TabItem> tabs = [TabItem.teacherHome];
   final List<GlobalKey<NavigatorState>> navigatorKeys = [];
 
   int get _currentIndex => tabs.indexOf(_currentTab);
@@ -37,10 +37,10 @@ class MainScreenState extends ConsumerState<MainScreen>
     accountType = ref.read(accountTypeProvider)!;
 
     if (accountType) {
-      tabs = [TabItem.studentHome, TabItem.chat, TabItem.teacherProfile];
+      tabs = [TabItem.teacherHome, TabItem.chat, TabItem.teacherProfile];
     } else {
-      tabs = [TabItem.teacherHome, TabItem.chat, TabItem.studentProfile];
-      _currentTab = TabItem.teacherHome;
+      tabs = [TabItem.studentHome, TabItem.chat, TabItem.studentProfile];
+      _currentTab = TabItem.studentHome;
     }
 
     initNavigatorKeys();
