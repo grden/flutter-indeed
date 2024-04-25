@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,21 +25,10 @@ class _MyProfileFragmentState extends ConsumerState<TeacherProfileFragment>
   late final tabController = TabController(length: 3, vsync: this);
   int currentIndex = 0;
 
-  // late final UserCredential? userCred;
-  // late Teacher _teacher;
-  // late Future<void> _initTeacherData;
-  //
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   userCred = ref.read(userCredentialProvider);
-  //   _initTeacherData = _initTeacher(userCred);
-  // }
-
   @override
   Widget build(BuildContext context) {
     UserCredential userCredential = ref.watch(userCredentialProvider)!;
-
+    Stream<Teacher> teacherStream = getTeacherStream(userCredential: userCredential);
     return Column(children: [
       AppBar(
         backgroundColor: context.appColors.backgroundColor,
@@ -60,7 +48,7 @@ class _MyProfileFragmentState extends ConsumerState<TeacherProfileFragment>
       ),
       Expanded(
         child: StreamBuilder(
-          stream: getTeacherStream(userCredential: userCredential),
+          stream: teacherStream,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               Teacher teacher = snapshot.data!;
@@ -107,7 +95,7 @@ class _MyProfileFragmentState extends ConsumerState<TeacherProfileFragment>
                           controller: tabController,
                           children: [
                             buildInfoTab(context, teacher),
-                            buildExperienceTab(context),
+                            buildXPTab(context),
                             buildReviewTab(context)
                           ],
                         ),
@@ -116,9 +104,14 @@ class _MyProfileFragmentState extends ConsumerState<TeacherProfileFragment>
                   ]);
             }
             if (snapshot.hasError) {
-              print(snapshot.error);
-              return CircularProgressIndicator(
-                color: context.appColors.primaryColor,
+              print("Stream Error: ${snapshot.error}");
+              return TextButton(
+                child: const Center(child: Text("뭔가 문제가 생겼습니다. 재시도하기")),
+                onPressed: () {
+                  setState(() {
+                    teacherStream = getTeacherStream(userCredential: userCredential);
+                  });
+                },
               );
             }
             if (!snapshot.hasData) {
@@ -151,7 +144,7 @@ class _MyProfileFragmentState extends ConsumerState<TeacherProfileFragment>
     );
   }
 
-  Container buildExperienceTab(BuildContext context) {
+  Container buildXPTab(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
       color: context.appColors.backgroundColor,
@@ -178,7 +171,14 @@ class _MyProfileFragmentState extends ConsumerState<TeacherProfileFragment>
               title: '과목 및 시급',
               child: Column(
                 children: [
-                  if (teacher.budget != null) ...[
+                  teacher.budget == null ? const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "아직 시급을 설정하지 않았습니다",
+                        style: TextStyle(
+                        fontSize: 17, fontWeight: FontWeight.w500),
+                    ),
+                  ) :
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -187,12 +187,12 @@ class _MyProfileFragmentState extends ConsumerState<TeacherProfileFragment>
                             fontSize: 17, fontWeight: FontWeight.w500),
                       ),
                     ),
-                  ],
                   const Height(12),
                   SizedBox(
                     width: double.infinity,
-                    height: teacher.subjects.length > 4 ? 100 : 50,
+                    height: teacher.subjects.length > 4 ? 88 : 40,
                     child: GridView.count(
+                      padding: EdgeInsets.zero,
                       crossAxisCount: 4,
                       crossAxisSpacing: 8,
                       mainAxisSpacing: 8,

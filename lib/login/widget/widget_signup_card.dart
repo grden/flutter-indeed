@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:self_project/common/extension/extension_context.dart';
@@ -9,11 +8,11 @@ import 'package:self_project/model/model_user.dart';
 
 class SignupCard extends StatefulWidget {
   const SignupCard(
-    this.buttonCarouselController, {
+    this.buttonPageController, {
     super.key,
   });
 
-  final CarouselController buttonCarouselController;
+  final PageController buttonPageController;
 
   @override
   State<SignupCard> createState() => _SignupCardState();
@@ -40,7 +39,7 @@ class _SignupCardState extends State<SignupCard> {
       child: Container(
         padding: const EdgeInsets.all(24),
         width: double.infinity,
-        //height: 300,
+        height: 640,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(24),
             color: context.appColors.cardColor,
@@ -116,9 +115,9 @@ class _SignupCardState extends State<SignupCard> {
                   ),
                   const Height(4),
                   TextButton(
-                    onPressed: () => widget.buttonCarouselController
+                    onPressed: () => widget.buttonPageController
                         .previousPage(
-                            duration: const Duration(milliseconds: 160)),
+                            duration: const Duration(milliseconds: 300), curve: Curves.easeOutQuart),
                     style: ButtonStyle(
                       foregroundColor: MaterialStateProperty.all(
                           context.appColors.primaryColor),

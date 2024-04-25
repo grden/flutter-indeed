@@ -50,8 +50,9 @@ class _TeacherHomeFragmentState extends State<TeacherHomeFragment> {
                   case ConnectionState.active:
                     {
                       return Center(
-                        child: CircularProgressIndicator(color: context.appColors.primaryColor,)
-                      );
+                          child: CircularProgressIndicator(
+                        color: context.appColors.primaryColor,
+                      ));
                     }
                   case ConnectionState.done:
                     {

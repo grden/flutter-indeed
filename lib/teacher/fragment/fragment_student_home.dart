@@ -22,6 +22,19 @@ class StudentHomeFragment extends ConsumerStatefulWidget {
 
 class _StudentHomeFragmentState extends ConsumerState<StudentHomeFragment> {
   final db = FirebaseFirestore.instance;
+  Stream<List<Student>>? studentStream;
+
+  @override
+  void initState() {
+    super.initState();
+    studentStream = getStudentStream();
+  }
+
+  void retryLoad() {
+    setState(() {
+      studentStream = getStudentStream();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +43,7 @@ class _StudentHomeFragmentState extends ConsumerState<StudentHomeFragment> {
       child: Stack(
         children: [
           StreamBuilder(
-            stream: getStudentStream(),
+            stream: studentStream,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 List<Student> studentsList = snapshot.data!;
@@ -57,9 +70,10 @@ class _StudentHomeFragmentState extends ConsumerState<StudentHomeFragment> {
                 }
               }
               if (snapshot.hasError) {
-                print(snapshot.error);
-                return CircularProgressIndicator(
-                  color: context.appColors.primaryColor,
+                print("Stream Error: ${snapshot.error}");
+                return TextButton(
+                  onPressed: retryLoad,
+                  child: const Center(child: Text("뭔가 문제가 생겼습니다. 재시도하기"))
                 );
               }
               if (!snapshot.hasData) {

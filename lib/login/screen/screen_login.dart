@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:expandable_page_view/expandable_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:self_project/common/extension/extension_context.dart';
 import 'package:self_project/login/widget/widget_signin_card.dart';
@@ -13,9 +14,10 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final CarouselController buttonCarouselController = CarouselController();
+  final PageController buttonPageController = PageController();
   late final List<Widget> widgetList = [
-    SigninCard(buttonCarouselController),
-    SignupCard(buttonCarouselController)
+    SigninCard(buttonPageController),
+    SignupCard(buttonPageController)
   ];
 
   @override
@@ -44,16 +46,22 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ],
             ),
-            CarouselSlider(
-                items: widgetList,
-                options: CarouselOptions(
-                  height: 680,
-                  initialPage: 0,
-                  viewportFraction: 1,
-                  enableInfiniteScroll: false,
-                  scrollPhysics: const NeverScrollableScrollPhysics(),
-                ),
-                carouselController: buttonCarouselController),
+            ExpandablePageView.builder(
+              controller: buttonPageController,
+              itemCount: widgetList.length,
+              itemBuilder: (context, index) => widgetList[index],
+              physics: const NeverScrollableScrollPhysics(),
+            ),
+            // CarouselSlider(
+            //     items: widgetList,
+            //     options: CarouselOptions(
+            //       height: 680,
+            //       initialPage: 0,
+            //       viewportFraction: 1,
+            //       enableInfiniteScroll: false,
+            //       scrollPhysics: const NeverScrollableScrollPhysics(),
+            //     ),
+            //     carouselController: buttonCarouselController),
           ],
         ),
       ),

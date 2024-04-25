@@ -84,121 +84,129 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen>
                             ]),
                       ),
                       sliver: SliverFillRemaining(
-                      child: TabBarView(
-                      controller: tabController,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(16),
-                          color: context.appColors.backgroundColor,
-                          child: SingleChildScrollView(
-                            physics: const NeverScrollableScrollPhysics(),
-                            child: Column(
-                              children: [
-                                InfoBox(
-                                  title: '과목 및 시급',
-                                  child: Column(
-                                    children: [
-                                      if (widget.teacher.budget != null) ...[
-                                      Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          '시간당 ${widget.teacher.budget}만원',
-                                          style: const TextStyle(
-                                              fontSize: 17,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                      ),],
-                                      const Height(12),
-                                      SizedBox(
-                                        width: double.infinity,
-                                        height: widget.teacher.subjects.length > 4
-                                            ? 100
-                                            : 50,
-                                        child: GridView.count(
-                                          crossAxisCount: 4,
-                                          crossAxisSpacing: 8,
-                                          mainAxisSpacing: 8,
-                                          childAspectRatio: 2,
-                                          physics:
-                                          const NeverScrollableScrollPhysics(),
-                                          children: List.generate(
-                                            widget.teacher.subjects.length,
-                                                (e) => Container(
-                                              padding:
-                                              const EdgeInsets.all(8),
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                  BorderRadius.circular(
-                                                      8),
-                                                  color: context.appColors
-                                                      .textFieldColor,
-                                                  border: Border.all(
-                                                      color: context.appColors
-                                                          .lineColor)),
-                                              child: Center(
-                                                child: Text(
-                                                  widget.teacher.subjects[e]
-                                                      .subjectString,
-                                                  style: const TextStyle(
-                                                      fontSize: 17),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                const Height(16),
-                                const InfoBox(
-                                  title: '소개',
-                                  child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      '안녕하세요',
-                                      style: TextStyle(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
+                        child: TabBarView(
+                          controller: tabController,
+                          children: [
+                            buildInfoTab(context),
+                            buildXPTab(context),
+                            buildReviewTab(context)
+                          ],
                         ),
-                        Container(
-                          padding: const EdgeInsets.all(16),
-                          color: context.appColors.backgroundColor,
-                          child: const Center(
-                            child: Text(
-                              '아직 경력이 없습니다',
-                              style: TextStyle(
-                                fontSize: 17,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.all(16),
-                          color: context.appColors.backgroundColor,
-                          child: const Center(
-                            child: Text(
-                              '아직 평가가 없습니다',
-                              style: TextStyle(
-                                fontSize: 17,
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-              ),
+                      ),
                     ),
                   ],
                 ),
               ),
             ]),
+      ),
+    );
+  }
+
+  Container buildReviewTab(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      color: context.appColors.backgroundColor,
+      child: const Center(
+        child: Text(
+          '아직 평가가 없습니다',
+          style: TextStyle(
+            fontSize: 17,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Container buildXPTab(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      color: context.appColors.backgroundColor,
+      child: const Center(
+        child: Text(
+          '아직 경력이 없습니다',
+          style: TextStyle(
+            fontSize: 17,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Container buildInfoTab(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      color: context.appColors.backgroundColor,
+      child: SingleChildScrollView(
+        physics: const NeverScrollableScrollPhysics(),
+        child: Column(
+          children: [
+            InfoBox(
+              title: '과목 및 시급',
+              child: Column(
+                children: [
+                  widget.teacher.budget == null
+                      ? const Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "아직 시급을 설정하지 않았습니다",
+                            style: TextStyle(
+                                fontSize: 17, fontWeight: FontWeight.w500),
+                          ),
+                        )
+                      : Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            '시간당 ${widget.teacher.budget}만원',
+                            style: const TextStyle(
+                                fontSize: 17, fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                  const Height(12),
+                  SizedBox(
+                    width: double.infinity,
+                    height: widget.teacher.subjects.length > 4 ? 88 : 40,
+                    child: GridView.count(
+                      padding: EdgeInsets.zero,
+                      crossAxisCount: 4,
+                      crossAxisSpacing: 8,
+                      mainAxisSpacing: 8,
+                      childAspectRatio: 2,
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: List.generate(
+                        widget.teacher.subjects.length,
+                        (e) => Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: context.appColors.textFieldColor,
+                              border: Border.all(
+                                  color: context.appColors.lineColor)),
+                          child: Center(
+                            child: Text(
+                              widget.teacher.subjects[e].subjectString,
+                              style: const TextStyle(fontSize: 17),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            const Height(16),
+            const InfoBox(
+              title: '소개',
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  '안녕하세요',
+                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

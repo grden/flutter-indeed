@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -28,7 +27,8 @@ class _MyProfileFragmentState extends ConsumerState<StudentProfileFragment>
   @override
   Widget build(BuildContext context) {
     UserCredential userCredential = ref.watch(userCredentialProvider)!;
-
+    Stream<Student> studentStream =
+        getStudentStream(userCredential: userCredential);
     return Column(children: [
       AppBar(
         backgroundColor: context.appColors.backgroundColor,
@@ -48,7 +48,7 @@ class _MyProfileFragmentState extends ConsumerState<StudentProfileFragment>
       ),
       Expanded(
         child: StreamBuilder(
-          stream: getStudentStream(userCredential: userCredential),
+          stream: studentStream,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               Student student = snapshot.data!;
@@ -93,84 +93,8 @@ class _MyProfileFragmentState extends ConsumerState<StudentProfileFragment>
                         child: TabBarView(
                           controller: tabController,
                           children: [
-                            Container(
-                              padding: const EdgeInsets.all(16),
-                              color: context.appColors.backgroundColor,
-                              child: Column(
-                                children: [
-                                  InfoBox(
-                                    title: '과목',
-                                    child: Column(
-                                      children: [
-                                        SizedBox(
-                                          width: double.infinity,
-                                          height: student.subjects.length > 4
-                                              ? 100
-                                              : 50,
-                                          child: GridView.count(
-                                            crossAxisCount: 4,
-                                            crossAxisSpacing: 8,
-                                            mainAxisSpacing: 8,
-                                            childAspectRatio: 2,
-                                            physics:
-                                                const NeverScrollableScrollPhysics(),
-                                            children: List.generate(
-                                              student.subjects.length,
-                                              (e) => Container(
-                                                padding:
-                                                    const EdgeInsets.all(8),
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8),
-                                                    color: context.appColors
-                                                        .textFieldColor,
-                                                    border: Border.all(
-                                                        color: context.appColors
-                                                            .lineColor)),
-                                                child: Center(
-                                                  child: Text(
-                                                    student.subjects[e]
-                                                        .subjectString,
-                                                    style: const TextStyle(
-                                                        fontSize: 17),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  const Height(16),
-                                  InfoBox(
-                                    title: '소개',
-                                    child: Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        student.info,
-                                        style: const TextStyle(
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                            Container(
-                              padding: const EdgeInsets.all(16),
-                              color: context.appColors.backgroundColor,
-                              child: const Center(
-                                child: Text(
-                                  '아직 평가가 없습니다',
-                                  style: TextStyle(
-                                    fontSize: 17,
-                                  ),
-                                ),
-                              ),
-                            ),
+                            buildInfoTab(context, student),
+                            buildReviewTab(context),
                           ],
                         ),
                       ),
@@ -178,9 +102,15 @@ class _MyProfileFragmentState extends ConsumerState<StudentProfileFragment>
                   ]);
             }
             if (snapshot.hasError) {
-              print(snapshot.error);
-              return CircularProgressIndicator(
-                color: context.appColors.primaryColor,
+              print("Stream Error: ${snapshot.error}");
+              return TextButton(
+                child: const Center(child: Text("뭔가 문제가 생겼습니다. 재시도하기")),
+                onPressed: () {
+                  setState(() {
+                    studentStream =
+                        getStudentStream(userCredential: userCredential);
+                  });
+                },
               );
             }
             if (!snapshot.hasData) {
@@ -198,17 +128,81 @@ class _MyProfileFragmentState extends ConsumerState<StudentProfileFragment>
     ]);
   }
 
-  // Future<void> _initStudent(userCredential) async {
-  //   final student = await getStudent(userCredential: userCredential);
-  //   _student = student;
-  // }
-  //
-  // Future<void> _refreshStudent(userCredential) async {
-  //   final student = await getStudent(userCredential: userCredential);
-  //   setState(() {
-  //     _student = student;
-  //   });
-  // }
+  Container buildReviewTab(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      color: context.appColors.backgroundColor,
+      child: const Center(
+        child: Text(
+          '아직 평가가 없습니다',
+          style: TextStyle(
+            fontSize: 17,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Container buildInfoTab(BuildContext context, Student student) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      color: context.appColors.backgroundColor,
+      child: SingleChildScrollView(
+        physics: const NeverScrollableScrollPhysics(),
+        child: Column(
+          children: [
+            InfoBox(
+              title: '과목',
+              child: Column(
+                children: [
+                  SizedBox(
+                    width: double.infinity,
+                    height: student.subjects.length > 4 ? 88 : 40,
+                    child: GridView.count(
+                      crossAxisCount: 4,
+                      crossAxisSpacing: 8,
+                      mainAxisSpacing: 8,
+                      childAspectRatio: 2,
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: List.generate(
+                        student.subjects.length,
+                        (e) => Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: context.appColors.textFieldColor,
+                              border:
+                                  Border.all(color: context.appColors.lineColor)),
+                          child: Center(
+                            child: Text(
+                              student.subjects[e].subjectString,
+                              style: const TextStyle(fontSize: 17),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            const Height(16),
+            InfoBox(
+              title: '소개',
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  student.info,
+                  style:
+                      const TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
 
   Stream<UserData> getUserStream(
       {required UserCredential userCredential}) async* {
