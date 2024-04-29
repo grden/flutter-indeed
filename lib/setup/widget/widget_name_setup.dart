@@ -21,6 +21,7 @@ class NameSetup extends StatefulWidget {
 class _NameSetupState extends State<NameSetup> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController nameTextController = TextEditingController();
+  bool _btnEnabled = false;
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +39,9 @@ class _NameSetupState extends State<NameSetup> {
           const Height(24),
           Form(
             key: _formKey,
+            onChanged: ()=>setState(() {
+              _btnEnabled = _formKey.currentState!.validate();
+            }),
             child: TextFormField(
               controller: nameTextController,
               style: const TextStyle(fontSize: 19),
@@ -67,7 +71,7 @@ class _NameSetupState extends State<NameSetup> {
           const Spacer(),
           Consumer(builder: (context, ref, child) {
             return MaterialButton(
-              onPressed: () {
+              onPressed: _btnEnabled ? () {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
                   widget.buttonPageController
@@ -75,16 +79,17 @@ class _NameSetupState extends State<NameSetup> {
                   ref.read(indexStateProvider.notifier).state++;
                   return ref.read(setupProvider.notifier).addSetup([nameTextController.text.trim()]);
                 }
-              },
+              } : null,
               height: 48,
               minWidth: double.infinity,
               color: context.appColors.primaryColor,
+              disabledColor: context.appColors.textFieldColor,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12)),
               child: Text(
                 '다음',
                 style: TextStyle(
-                    color: context.appColors.inverseText,
+                    color: _btnEnabled ? context.appColors.inverseText : context.appColors.secondaryText,
                     fontSize: 19,
                     fontWeight: FontWeight.w700),
               ),

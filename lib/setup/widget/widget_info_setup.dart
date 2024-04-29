@@ -23,6 +23,7 @@ class InfoSetup extends ConsumerStatefulWidget {
 class _InfoSetupState extends ConsumerState<InfoSetup> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController infoTextController = TextEditingController();
+  bool _btnEnabled = false;
 
   @override
   Widget build(BuildContext context) {
@@ -65,12 +66,15 @@ class _InfoSetupState extends ConsumerState<InfoSetup> {
             child: SizedBox(
               child: Form(
                 key: _formKey,
+                onChanged: ()=>setState(() {
+                  _btnEnabled = _formKey.currentState!.validate();
+                }),
                 child: TextFormField(
                   controller: infoTextController,
                   style: const TextStyle(fontSize: 19),
                   maxLines: 100,
                   decoration: InputDecoration(
-                    hintText: "현재 점수, 목표, 선호하는 수업 방식, 성격 등의 정보를 입력하여 본인과 맞는 선생님을 만나세요.",
+                    hintText: "현재 점수, 목표, 선호하는 수업 방식, 성격 등의 정보를 작성해 본인과 맞는 선생님을 만나세요.",
                     hintStyle: TextStyle(color: context.appColors.secondaryText, fontSize: 17, fontWeight: FontWeight.w400),
                     contentPadding:
                         const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
@@ -95,10 +99,10 @@ class _InfoSetupState extends ConsumerState<InfoSetup> {
               ),
             ),
           ),
-          const Height(72),
+          const Height(240),
           Consumer(builder: (context, ref, child) {
             return MaterialButton(
-              onPressed: () {
+              onPressed: _btnEnabled ? () {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
                   ref.read(indexStateProvider.notifier).state++;
@@ -111,16 +115,17 @@ class _InfoSetupState extends ConsumerState<InfoSetup> {
 
                   context.go('/');
                 }
-              },
+              } : null,
               height: 48,
               minWidth: double.infinity,
               color: context.appColors.primaryColor,
+              disabledColor: context.appColors.textFieldColor,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12)),
               child: Text(
                 '설정 완료하기',
                 style: TextStyle(
-                    color: context.appColors.inverseText,
+                    color: _btnEnabled ? context.appColors.inverseText : context.appColors.secondaryText,
                     fontSize: 19,
                     fontWeight: FontWeight.w700),
               ),

@@ -303,7 +303,7 @@ class _ProfileBox extends StatelessWidget {
                       child: Text(
                         '${addString(teacher.univ, '대')} ${teacher.major ?? ''} ${addString(teacher.studentID, '학번')}',
                         style: TextStyle(
-                          color: context.appColors.secondaryText,
+                          color: context.appColors.primaryText,
                           fontSize: 17,
                           fontWeight: FontWeight.w500,
                         ),

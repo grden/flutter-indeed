@@ -21,6 +21,7 @@ class BudgetSetup extends StatefulWidget {
 class _BudgetSetupState extends State<BudgetSetup> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController budgetTextController = TextEditingController();
+  bool _btnEnabled = false;
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +39,9 @@ class _BudgetSetupState extends State<BudgetSetup> {
           const Height(24),
           Form(
             key: _formKey,
+            onChanged: ()=>setState(() {
+              _btnEnabled = _formKey.currentState!.validate();
+            }),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -75,6 +79,35 @@ class _BudgetSetupState extends State<BudgetSetup> {
           const Spacer(),
           Consumer(builder: (context, ref, child) {
             return MaterialButton(
+              onPressed: _btnEnabled ? () {
+                if (_formKey.currentState!.validate()) {
+                  _formKey.currentState!.save();
+                  ref.read(indexStateProvider.notifier).state++;
+
+                  widget.buttonPageController
+                      .nextPage(duration: const Duration(milliseconds: 300), curve: Curves.easeOutQuart);
+
+                  return ref.read(setupProvider.notifier).addSetup([budgetTextController.text.trim()]);
+                }
+              } : null,
+              height: 48,
+              minWidth: double.infinity,
+              color: context.appColors.primaryColor,
+              disabledColor: context.appColors.textFieldColor,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12)),
+              child: Text(
+                '다음',
+                style: TextStyle(
+                    color: _btnEnabled ? context.appColors.inverseText : context.appColors.secondaryText,
+                    fontSize: 19,
+                    fontWeight: FontWeight.w700),
+              ),
+            );
+          }),
+          const Height(8),
+          Consumer(builder: (context, ref, child) {
+            return TextButton(
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
@@ -86,17 +119,9 @@ class _BudgetSetupState extends State<BudgetSetup> {
                   return ref.read(setupProvider.notifier).addSetup([budgetTextController.text.trim()]);
                 }
               },
-              height: 48,
-              minWidth: double.infinity,
-              color: context.appColors.primaryColor,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12)),
-              child: Text(
-                '다음',
-                style: TextStyle(
-                    color: context.appColors.inverseText,
-                    fontSize: 19,
-                    fontWeight: FontWeight.w700),
+              style: TextButton.styleFrom(textStyle: const TextStyle(fontSize: 19, fontWeight: FontWeight.w500), foregroundColor: context.appColors.secondaryText),
+              child: const Text(
+                '나중에 설정할게요',
               ),
             );
           }),
