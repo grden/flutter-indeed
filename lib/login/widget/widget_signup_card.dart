@@ -127,7 +127,7 @@ class _SignupCardState extends State<SignupCard> {
                     child: const Text(
                       '뒤로가기',
                       style:
-                          TextStyle(fontSize: 19, fontWeight: FontWeight.w500),
+                          TextStyle(fontSize: 19, fontWeight: FontWeight.w500, decoration: TextDecoration.underline),
                     ),
                   )
                 ],

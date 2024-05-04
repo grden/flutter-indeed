@@ -184,20 +184,32 @@ class _SigninCardState extends State<SigninCard> {
                   //     TextStyle(fontSize: 19, fontWeight: FontWeight.w500),
                   //   ),
                   // ),
-                  TextButton(
-                    onPressed: () => widget.buttonPagelController
-                        .nextPage(duration: const Duration(milliseconds: 300), curve: Curves.easeOutQuart),
-                    style: ButtonStyle(
-                      foregroundColor: MaterialStateProperty.all(
-                          context.appColors.primaryColor),
-                      overlayColor:
-                          MaterialStateProperty.all(Colors.transparent),
-                    ),
-                    child: const Text(
-                      '계정이 없나요? 회원가입',
-                      style:
-                          TextStyle(fontSize: 19, fontWeight: FontWeight.w500),
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '계정이 없나요?',
+                        style: TextStyle(
+                            color: context.appColors.secondaryText,
+                            fontSize: 19),
+                      ),
+                      TextButton(
+                        onPressed: () => widget.buttonPagelController.nextPage(
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.easeOutQuart),
+                        style: ButtonStyle(
+                          foregroundColor: MaterialStateProperty.all(
+                              context.appColors.primaryColor),
+                          overlayColor:
+                              MaterialStateProperty.all(Colors.transparent),
+                        ),
+                        child: const Text(
+                          '회원가입',
+                          style: TextStyle(
+                              fontSize: 19, fontWeight: FontWeight.w500, decoration: TextDecoration.underline),
+                        ),
+                      ),
+                    ],
                   )
                 ],
               ),

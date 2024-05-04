@@ -7,7 +7,9 @@ abstract class AbstractThemeColors {
   
   Color get backgroundColor => const Color.fromARGB(255, 245, 245, 245);
 
-  Color get primaryColor => const Color.fromARGB(255, 0, 4, 40);
+  Color get primaryColor => const Color.fromARGB(255, 23, 68, 159);
+
+  //Color get tempColor => const Color.fromARGB(255, 0, 4, 40);
 
   Color get foregroundColor => const Color.fromARGB(153, 0, 0, 0);
 
@@ -21,13 +23,13 @@ abstract class AbstractThemeColors {
 
   Color get iconButton => const Color.fromARGB(230, 0, 0, 0);
 
-  Color get iconButtonInactivate => const Color.fromARGB(230, 0, 0, 0);
+  Color get iconButtonInactivate => secondaryText;
 
   Color get primaryText => const Color.fromARGB(230, 0, 0, 0);
 
-  Color get secondaryText => const Color.fromARGB(153, 0, 0, 0);
+  Color get secondaryText => foregroundColor;
 
-  Color get inverseText => const Color.fromARGB(255, 245, 245, 245);
+  Color get inverseText => backgroundColor;
 
   Color get womanBadge => const Color.fromARGB(153, 255, 0, 0);
 

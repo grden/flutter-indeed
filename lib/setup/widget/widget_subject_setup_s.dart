@@ -67,7 +67,6 @@ class _SubjectSetupState extends ConsumerState<SubjectSetupS> {
               //set the width-to-height ratio of the button,
               physics: const NeverScrollableScrollPhysics(),
               children: List.generate(isSelected.length, (newIndex) {
-                //using Inkwell widget to create a button
                 return Tap(
                     onTap: () {
                       //set the toggle logic

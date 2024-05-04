@@ -47,83 +47,81 @@ class _ImageSetupState extends ConsumerState<ImageSetup> {
       height: availHeight,
       padding: const EdgeInsets.all(24),
       color: context.appColors.backgroundColor,
-      child: Column(
-        children: [
-          const Align(
-            alignment: Alignment.center,
-            child: Text(
-              '학생들에게 보여질\n프로필 이미지를 설정해주세요.',
-              style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
-              textAlign: TextAlign.center,
-            ),
+      child: Column(children: [
+        const Align(
+          alignment: Alignment.center,
+          child: Text(
+            '학생들에게 보여질\n프로필 이미지를 설정해주세요.',
+            style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
+            textAlign: TextAlign.center,
           ),
-          const Height(24),
-          Align(
-            alignment: Alignment.center,
-            child: Tap(
-              onTap: () async {
-                final ImagePicker picker = ImagePicker();
-                image = await picker.pickImage(source: ImageSource.gallery);
-                //print("${image?.name},${image?.path}");
-                imageData = await image?.readAsBytes();
-                setState(() {});
-              },
-              child: Container(
-                width: 200,
-                height: 200,
-                decoration: BoxDecoration(
-                    color: context.appColors.cardColor,
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: context.appColors.primaryColor),
-                    boxShadow: [context.appShadows.cardShadow]),
-                child: ClipRRect(
+        ),
+        const Height(24),
+        Align(
+          alignment: Alignment.center,
+          child: Tap(
+            onTap: () async {
+              final ImagePicker picker = ImagePicker();
+              image = await picker.pickImage(source: ImageSource.gallery);
+              //print("${image?.name},${image?.path}");
+              imageData = await image?.readAsBytes();
+              setState(() {});
+            },
+            child: Container(
+              width: 200,
+              height: 200,
+              decoration: BoxDecoration(
+                  color: context.appColors.cardColor,
                   borderRadius: BorderRadius.circular(16),
-                  child: imageData == null
-                      ? Center(
-                          child: Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: context.appColors.primaryColor),
-                            child: Icon(
-                              Icons.add,
-                              color: context.appColors.inverseText,
-                            ),
+                  border: Border.all(color: context.appColors.primaryColor),
+                  boxShadow: [context.appShadows.cardShadow]),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: imageData == null
+                    ? Center(
+                        child: Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: context.appColors.primaryColor),
+                          child: Icon(
+                            Icons.add,
+                            color: context.appColors.inverseText,
                           ),
-                        )
-                      : Image.memory(
-                          imageData!,
-                          fit: BoxFit.fill,
                         ),
-                ),
+                      )
+                    : Image.memory(
+                        imageData!,
+                        fit: BoxFit.fill,
+                      ),
               ),
             ),
           ),
-          const Spacer(),
-          MaterialButton(
-            onPressed: () {
-              ref.read(indexStateProvider.notifier).state++;
+        ),
+        const Spacer(),
+        MaterialButton(
+          onPressed: () {
+            ref.read(indexStateProvider.notifier).state++;
 
-              addSetup();
+            addSetup();
 
-              context.go('/');
-            },
-            height: 48,
-            minWidth: double.infinity,
-            color: context.appColors.primaryColor,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-            child: Text(
-              '설정 완료하기',
-              style: TextStyle(
-                  color: context.appColors.inverseText,
-                  fontSize: 19,
-                  fontWeight: FontWeight.w700),
-            ),
-          )
-        ],
-      ),
+            context.go('/');
+          },
+          height: 48,
+          minWidth: double.infinity,
+          color: context.appColors.primaryColor,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          child: Text(
+            '설정 완료하기',
+            style: TextStyle(
+                color: context.appColors.inverseText,
+                fontSize: 19,
+                fontWeight: FontWeight.w700),
+          ),
+        )
+      ]),
     );
   }
 

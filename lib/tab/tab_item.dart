@@ -27,7 +27,7 @@ enum TabItem {
           key: ValueKey(tabName),
           isActivated ? activeIcon : inActiveIcon,
           color:
-          isActivated ? context.appColors.iconButton : context.appColors.iconButtonInactivate,
+          isActivated ? context.appColors.primaryColor : context.appColors.iconButtonInactivate,
         ),
         label: tabName);
   }
