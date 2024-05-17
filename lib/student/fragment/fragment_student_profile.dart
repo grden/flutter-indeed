@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:self_project/common/constant.dart';
 import 'package:self_project/common/extension/extension_context.dart';
-import 'package:self_project/common/widget/widget_info_box.dart';
+import 'package:self_project/common/widget/widget_profile_box.dart';
 import 'package:self_project/common/widget/widget_line.dart';
 import 'package:self_project/common/widget/widget_sizedbox.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
@@ -153,11 +153,12 @@ class _MyProfileFragmentState extends ConsumerState<StudentProfileFragment>
           children: [
             InfoBox(
               title: '과목',
+              canEdit: true,
               child: Column(
                 children: [
                   SizedBox(
                     width: double.infinity,
-                    height: student.subjects.length > 4 ? 88 : 40,
+                    height: student.subjects.length > 4 ? 92 : 44,
                     child: GridView.count(
                       crossAxisCount: 4,
                       crossAxisSpacing: 8,
@@ -189,6 +190,7 @@ class _MyProfileFragmentState extends ConsumerState<StudentProfileFragment>
             const Height(16),
             InfoBox(
               title: '소개',
+              canEdit: true,
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(

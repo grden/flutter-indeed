@@ -24,45 +24,21 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        top: false,
-        bottom: false,
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            Column(
-              children: [
-                Flexible(
-                  flex: 1,
-                  child: Container(
-                    color: context.appColors.primaryColor,
-                  ),
-                ),
-                Flexible(
-                  flex: 1,
-                  child: Container(
-                    color: context.appColors.backgroundColor,
-                  ),
-                ),
-              ],
-            ),
-            ExpandablePageView.builder(
-              controller: buttonPageController,
-              itemCount: widgetList.length,
-              itemBuilder: (context, index) => widgetList[index],
-              physics: const NeverScrollableScrollPhysics(),
-            ),
-            // CarouselSlider(
-            //     items: widgetList,
-            //     options: CarouselOptions(
-            //       height: 680,
-            //       initialPage: 0,
-            //       viewportFraction: 1,
-            //       enableInfiniteScroll: false,
-            //       scrollPhysics: const NeverScrollableScrollPhysics(),
-            //     ),
-            //     carouselController: buttonCarouselController),
-          ],
+      body: Container(
+        color: context.appColors.backgroundColor,
+        child: SafeArea(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(color: Colors.amber, height: 72, width: 240, child: const Center(child: Text("Logo")),),
+              ExpandablePageView.builder(
+                controller: buttonPageController,
+                itemCount: widgetList.length,
+                itemBuilder: (context, index) => widgetList[index],
+                physics: const NeverScrollableScrollPhysics(),
+              ),
+            ],
+          ),
         ),
       ),
     );

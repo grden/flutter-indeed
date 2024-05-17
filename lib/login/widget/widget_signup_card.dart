@@ -36,105 +36,102 @@ class _SignupCardState extends State<SignupCard> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(24),
-      child: Container(
-        padding: const EdgeInsets.all(24),
-        width: double.infinity,
-        height: 640,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(24),
-            color: context.appColors.cardColor,
-            boxShadow: [context.appShadows.cardShadow]),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  emailTextFormField(context),
-                  const Height(16),
-                  pwdTextFormField(context),
-                  const Height(16),
-                  const Line(),
-                  const Height(16),
-                  nameTextFormField(context),
-                  const Height(16),
-                  Row(
-                    children: [
-                      Expanded(child: ageTextFormField(context)),
-                      const Width(12),
-                      Expanded(child: genderDropdownButtonFormField(context)),
-                    ],
-                  ),
-                  const Height(16),
-                  locationDropdownButtonFormField(context),
-                  const Height(16),
-                  MaterialButton(
-                    onPressed: () async {
-                      // setState(() {
-                      //   onlineTime = DateTime.now();
-                      // });
-                      if (_formKey.currentState!.validate()) {
-                        _formKey.currentState!.save();
-                        final result = await signUp(
-                          emailTextController.text.trim(),
-                          pwdTextController.text.trim(),
-                          nameTextController.text.trim(),
-                          int.parse(ageTextController.text.trim()),
-                          genderDropdownValue!.trim(),
-                          locationDropdownValue!.trim(),
-                        );
-                        if (result) {
-                          if (context.mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              backgroundColor: context.appColors.primaryColor,
-                              content: Text(
-                                '성공! 해당 계정으로 로그인해주세요.',
-                                style: TextStyle(
-                                  color: context.appColors.inverseText,
-                                  fontSize: 19,
-                                ),
+      width: double.infinity,
+      height: 640,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(24),
+          color: context.appColors.backgroundColor,
+          boxShadow: [context.appShadows.cardShadow]),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                emailTextFormField(context),
+                const Height(16),
+                pwdTextFormField(context),
+                const Height(16),
+                const Line(),
+                const Height(16),
+                nameTextFormField(context),
+                const Height(16),
+                Row(
+                  children: [
+                    Expanded(child: ageTextFormField(context)),
+                    const Width(12),
+                    Expanded(child: genderDropdownButtonFormField(context)),
+                  ],
+                ),
+                const Height(16),
+                locationDropdownButtonFormField(context),
+                const Height(16),
+                MaterialButton(
+                  onPressed: () async {
+                    // setState(() {
+                    //   onlineTime = DateTime.now();
+                    // });
+                    if (_formKey.currentState!.validate()) {
+                      _formKey.currentState!.save();
+                      final result = await signUp(
+                        emailTextController.text.trim(),
+                        pwdTextController.text.trim(),
+                        nameTextController.text.trim(),
+                        int.parse(ageTextController.text.trim()),
+                        genderDropdownValue!.trim(),
+                        locationDropdownValue!.trim(),
+                      );
+                      if (result) {
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            backgroundColor: context.appColors.primaryColor,
+                            content: Text(
+                              '성공! 해당 계정으로 로그인해주세요.',
+                              style: TextStyle(
+                                color: context.appColors.inverseText,
+                                fontSize: 19,
                               ),
-                            ));
-                          }
+                            ),
+                          ));
                         }
                       }
-                    },
-                    height: 48,
-                    minWidth: double.infinity,
-                    color: context.appColors.primaryColor,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12)),
-                    child: Text(
-                      '회원가입',
-                      style: TextStyle(
-                          color: context.appColors.inverseText,
-                          fontSize: 19,
-                          fontWeight: FontWeight.w700),
-                    ),
+                    }
+                  },
+                  height: 48,
+                  minWidth: double.infinity,
+                  color: context.appColors.primaryColor,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12)),
+                  child: Text(
+                    '회원가입',
+                    style: TextStyle(
+                        color: context.appColors.inverseText,
+                        fontSize: 19,
+                        fontWeight: FontWeight.w700),
                   ),
-                  const Height(4),
-                  TextButton(
-                    onPressed: () => widget.buttonPageController
-                        .previousPage(
-                            duration: const Duration(milliseconds: 300), curve: Curves.easeOutQuart),
-                    style: ButtonStyle(
-                      foregroundColor: MaterialStateProperty.all(
-                          context.appColors.primaryColor),
-                      overlayColor:
-                          MaterialStateProperty.all(Colors.transparent),
-                    ),
-                    child: const Text(
-                      '뒤로가기',
-                      style:
-                          TextStyle(fontSize: 19, fontWeight: FontWeight.w500, decoration: TextDecoration.underline),
-                    ),
-                  )
-                ],
-              ),
-            )
-          ],
-        ),
+                ),
+                const Height(4),
+                TextButton(
+                  onPressed: () => widget.buttonPageController
+                      .previousPage(
+                          duration: const Duration(milliseconds: 300), curve: Curves.easeOutQuart),
+                  style: ButtonStyle(
+                    foregroundColor: MaterialStateProperty.all(
+                        context.appColors.primaryColor),
+                    overlayColor:
+                        MaterialStateProperty.all(Colors.transparent),
+                  ),
+                  child: const Text(
+                    '뒤로가기',
+                    style:
+                        TextStyle(fontSize: 19, fontWeight: FontWeight.w500, decoration: TextDecoration.underline),
+                  ),
+                )
+              ],
+            ),
+          )
+        ],
       ),
     );
   }

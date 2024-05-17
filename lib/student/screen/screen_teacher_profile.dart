@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:self_project/common/constant.dart';
 import 'package:self_project/common/extension/extension_context.dart';
 import 'package:self_project/common/widget/widget_contact_button.dart';
-import 'package:self_project/common/widget/widget_info_box.dart';
+import 'package:self_project/common/widget/widget_profile_box.dart';
 import 'package:self_project/common/widget/widget_line.dart';
 import 'package:self_project/common/widget/widget_sizedbox.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
@@ -106,14 +106,16 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen>
     return Container(
       padding: const EdgeInsets.all(16),
       color: context.appColors.backgroundColor,
-      child: const Center(
-        child: Text(
-          '아직 평가가 없습니다',
-          style: TextStyle(
-            fontSize: 17,
+      child: Column(
+        children: [
+          // temporary way to add reviews
+          TextButton.icon(
+            onPressed: () {},
+            icon: Icon(Icons.add_circle_outline, color: context.appColors.primaryText,),
+            label: Text('평가 작성하기', style: TextStyle(fontSize: 19, fontWeight: FontWeight.w500, color: context.appColors.primaryText),),
           ),
-        ),
-      ),
+        ],
+      )
     );
   }
 
@@ -121,14 +123,13 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen>
     return Container(
       padding: const EdgeInsets.all(16),
       color: context.appColors.backgroundColor,
-      child: const Center(
-        child: Text(
-          '아직 경력이 없습니다',
-          style: TextStyle(
-            fontSize: 17,
-          ),
-        ),
-      ),
+      child: const Column(
+        children: [
+          XPBox(subject: "수학", age: "고등학교 3학년", date: "2022.12 ~ 2023.09", period: "10개월", canEdit: false,),
+          Height(16),
+          XPBox(subject: "국어", age: "고등학교 1학년", date: "2022.12 ~ 2023.05", period: "6개월", canEdit: false,),
+        ],
+      )
     );
   }
 
@@ -142,6 +143,7 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen>
           children: [
             InfoBox(
               title: '과목 및 시급',
+              canEdit: false,
               child: Column(
                 children: [
                   widget.teacher.budget == null
@@ -164,7 +166,7 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen>
                   const Height(12),
                   SizedBox(
                     width: double.infinity,
-                    height: widget.teacher.subjects.length > 4 ? 88 : 40,
+                    height: widget.teacher.subjects.length > 4 ? 92 : 44,
                     child: GridView.count(
                       padding: EdgeInsets.zero,
                       crossAxisCount: 4,
@@ -197,6 +199,7 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen>
             const Height(16),
             const InfoBox(
               title: '소개',
+              canEdit: false,
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(

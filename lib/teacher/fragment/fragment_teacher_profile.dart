@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:self_project/common/constant.dart';
 import 'package:self_project/common/extension/extension_context.dart';
-import 'package:self_project/common/widget/widget_info_box.dart';
+import 'package:self_project/common/widget/widget_profile_box.dart';
 import 'package:self_project/common/widget/widget_line.dart';
 import 'package:self_project/common/widget/widget_sizedbox.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
@@ -148,14 +148,19 @@ class _MyProfileFragmentState extends ConsumerState<TeacherProfileFragment>
     return Container(
       padding: const EdgeInsets.all(16),
       color: context.appColors.backgroundColor,
-      child: const Center(
-        child: Text(
-          '아직 경력이 없습니다',
-          style: TextStyle(
-            fontSize: 17,
+      child: Column(
+        children: [
+          const XPBox(subject: "수학", age: "고등학교 3학년", date: "2022.12 ~ 2023.09", period: "10개월", canEdit: true,),
+          const Height(16),
+          const XPBox(subject: "국어", age: "고등학교 1학년", date: "2022.12 ~ 2023.05", period: "6개월", canEdit: true,),
+          const Height(16),
+          TextButton.icon(
+            onPressed: () {},
+            icon: Icon(Icons.add_circle_outline, color: context.appColors.primaryText,),
+            label: Text('경력 추가', style: TextStyle(fontSize: 19, fontWeight: FontWeight.w500, color: context.appColors.primaryText),),
           ),
-        ),
-      ),
+        ],
+      )
     );
   }
 
@@ -169,6 +174,7 @@ class _MyProfileFragmentState extends ConsumerState<TeacherProfileFragment>
           children: [
             InfoBox(
               title: '과목 및 시급',
+              canEdit: true,
               child: Column(
                 children: [
                   teacher.budget == null ? const Align(
@@ -190,7 +196,7 @@ class _MyProfileFragmentState extends ConsumerState<TeacherProfileFragment>
                   const Height(12),
                   SizedBox(
                     width: double.infinity,
-                    height: teacher.subjects.length > 4 ? 88 : 40,
+                    height: teacher.subjects.length > 4 ? 92 : 44,
                     child: GridView.count(
                       padding: EdgeInsets.zero,
                       crossAxisCount: 4,
@@ -223,10 +229,11 @@ class _MyProfileFragmentState extends ConsumerState<TeacherProfileFragment>
             const Height(16),
             const InfoBox(
               title: '소개',
+              canEdit: true,
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  '안녕하세요',
+                  '현재 시립대학교 컴퓨터공학과 재학중입니다.\n\n학창시절 잊지 못한 첫사랑만큼, 열정적으로 학생을 가르치겠습니다.',
                   style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
                 ),
               ),

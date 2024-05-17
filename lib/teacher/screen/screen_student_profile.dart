@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:self_project/common/constant.dart';
 import 'package:self_project/common/extension/extension_context.dart';
 import 'package:self_project/common/widget/widget_contact_button.dart';
-import 'package:self_project/common/widget/widget_info_box.dart';
+import 'package:self_project/common/widget/widget_profile_box.dart';
 import 'package:self_project/common/widget/widget_line.dart';
 import 'package:self_project/common/widget/widget_sizedbox.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
@@ -122,8 +122,9 @@ class _StudentProfileScreenState extends State<StudentProfileScreen>
           children: [
             InfoBox(
               title: '과목',
+              canEdit: false,
               child: SizedBox(
-                height: widget.student.subjects.length > 4 ? 88 : 40,
+                height: widget.student.subjects.length > 4 ? 92 : 44,
                 child: GridView.count(
                   padding: EdgeInsets.zero,
                   crossAxisCount: 4,
@@ -154,6 +155,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen>
             const Height(16),
             InfoBox(
               title: '소개',
+              canEdit: false,
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
