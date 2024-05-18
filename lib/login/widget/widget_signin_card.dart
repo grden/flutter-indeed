@@ -7,6 +7,7 @@ import 'package:self_project/common/extension/extension_context.dart';
 import 'package:self_project/common/widget/widget_sizedbox.dart';
 import 'package:self_project/model/model_user.dart';
 import 'package:self_project/provider/provider_user.dart';
+import 'package:self_project/services/auth.dart';
 
 class SigninCard extends StatefulWidget {
   const SigninCard(
@@ -22,9 +23,9 @@ class SigninCard extends StatefulWidget {
 
 class _SigninCardState extends State<SigninCard> {
   final _formKey = GlobalKey<FormState>();
-
-  TextEditingController emailTextController = TextEditingController();
-  TextEditingController pwdTextController = TextEditingController();
+  final _emailTextController = TextEditingController();
+  final _pwdTextController = TextEditingController();
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -36,184 +37,206 @@ class _SigninCardState extends State<SigninCard> {
           borderRadius: BorderRadius.circular(24),
           color: context.appColors.backgroundColor,
           boxShadow: [context.appShadows.cardShadow]),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Form(
-            key: _formKey,
-            child: Column(
+      child: isLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                TextFormField(
-                  controller: emailTextController,
-                  style: const TextStyle(fontSize: 19),
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 12, vertical: 0),
-                    filled: true,
-                    fillColor: context.appColors.textFieldColor,
-                    prefixIcon: const Icon(Icons.mail),
-                    iconColor: context.appColors.primaryText,
-                    border: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(12)),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: context.appColors.primaryColor,
-                            width: 0.6),
-                        borderRadius: BorderRadius.circular(12)),
-                    labelText: '이메일',
-                    labelStyle: TextStyle(
-                        fontSize: 19, color: context.appColors.secondaryText),
-                    errorStyle: const TextStyle(fontSize: 15),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return '이메일을 입력하세요';
-                    }
-                    return null;
-                  },
-                ),
-                const Height(16),
-                TextFormField(
-                  controller: pwdTextController,
-                  style: const TextStyle(fontSize: 19),
-                  obscureText: true,
-                  keyboardType: TextInputType.visiblePassword,
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 12, vertical: 0),
-                    filled: true,
-                    fillColor: context.appColors.textFieldColor,
-                    prefixIcon: const Icon(Icons.lock),
-                    iconColor: context.appColors.primaryText,
-                    border: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(12)),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: context.appColors.primaryColor,
-                            width: 0.6),
-                        borderRadius: BorderRadius.circular(12)),
-                    labelText: '비밀번호',
-                    labelStyle: TextStyle(
-                        fontSize: 19, color: context.appColors.secondaryText),
-                    errorStyle: const TextStyle(fontSize: 15),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return '비밀번호를 입력하세요';
-                    }
-                    return null;
-                  },
-                ),
-                const Height(16),
-                Consumer(builder: (context, ref, child) {
-                  return MaterialButton(
-                    onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
-                        _formKey.currentState!.save();
-
-                        final userCredential = await signIn(
-                            emailTextController.text.trim(),
-                            pwdTextController.text.trim());
-                        if (userCredential == null) {
-                          return;
-                        }
-
-                        ref.read(userCredentialProvider.notifier).state =
-                            userCredential;
-
-                        final UserData? user =
-                            (await ref.read(userDatabaseProvider).get())
-                                .data();
-
-                        if (context.mounted) {
-                          if (user?.accountType == null) {
-                            context.go('/login/initial');
-                          } else {
-                            if (user?.initialSetup == false) {
-                              if (user?.accountType == true) {
-                                context.go('/login/initial/teacher-setup');
-                              } else {
-                                context.go('/login/initial/student-setup');
-                              }
-                            } else {
-                              db
-                                  .collection('users')
-                                  .doc(userCredential.user?.email)
-                                  .update({
-                                'onlineTime':
-                                    Timestamp.fromDate(DateTime.now())
-                              });
-                              ref.read(accountTypeProvider.notifier).state =
-                                  user!.accountType;
-                              context.go('/');
-                            }
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        controller: _emailTextController,
+                        style: const TextStyle(fontSize: 19),
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 0),
+                          filled: true,
+                          fillColor: context.appColors.textFieldColor,
+                          prefixIcon: const Icon(Icons.mail),
+                          iconColor: context.appColors.primaryText,
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide.none,
+                              borderRadius: BorderRadius.circular(12)),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: context.appColors.primaryColor,
+                                  width: 0.6),
+                              borderRadius: BorderRadius.circular(12)),
+                          labelText: '이메일',
+                          labelStyle: TextStyle(
+                              fontSize: 19,
+                              color: context.appColors.secondaryText),
+                          errorStyle: const TextStyle(fontSize: 15),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return '이메일을 입력하세요';
                           }
-                        }
-                      }
-                    },
-                    height: 48,
-                    minWidth: double.infinity,
-                    color: context.appColors.primaryColor,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12)),
-                    child: Text(
-                      '로그인',
-                      style: TextStyle(
-                          color: context.appColors.inverseText,
-                          fontSize: 19,
-                          fontWeight: FontWeight.w700),
-                    ),
-                  );
-                }),
-                const Height(4),
-                // TextButton(
-                //   onPressed: () {},
-                //   style: ButtonStyle(
-                //     foregroundColor: MaterialStateProperty.all(
-                //         context.appColors.secondaryText),
-                //     overlayColor:
-                //     MaterialStateProperty.all(Colors.transparent),
-                //   ),
-                //   child: const Text(
-                //     '비밀번호 찾기',
-                //     style:
-                //     TextStyle(fontSize: 19, fontWeight: FontWeight.w500),
-                //   ),
-                // ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      '계정이 없나요?',
-                      style: TextStyle(
-                          color: context.appColors.secondaryText,
-                          fontSize: 19),
-                    ),
-                    TextButton(
-                      onPressed: () => widget.buttonPagelController.nextPage(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeOutQuart),
-                      style: ButtonStyle(
-                        foregroundColor: MaterialStateProperty.all(
-                            context.appColors.primaryColor),
-                        overlayColor:
-                            MaterialStateProperty.all(Colors.transparent),
+                          return null;
+                        },
                       ),
-                      child: const Text(
-                        '회원가입',
-                        style: TextStyle(
-                            fontSize: 19, fontWeight: FontWeight.w500, decoration: TextDecoration.underline),
+                      const Height(16),
+                      TextFormField(
+                        controller: _pwdTextController,
+                        style: const TextStyle(fontSize: 19),
+                        obscureText: true,
+                        keyboardType: TextInputType.visiblePassword,
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 0),
+                          filled: true,
+                          fillColor: context.appColors.textFieldColor,
+                          prefixIcon: const Icon(Icons.lock),
+                          iconColor: context.appColors.primaryText,
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide.none,
+                              borderRadius: BorderRadius.circular(12)),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: context.appColors.primaryColor,
+                                  width: 0.6),
+                              borderRadius: BorderRadius.circular(12)),
+                          labelText: '비밀번호',
+                          labelStyle: TextStyle(
+                              fontSize: 19,
+                              color: context.appColors.secondaryText),
+                          errorStyle: const TextStyle(fontSize: 15),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return '비밀번호를 입력하세요';
+                          }
+                          return null;
+                        },
                       ),
-                    ),
-                  ],
+                      const Height(16),
+                      Consumer(builder: (context, ref, child) {
+                        return MaterialButton(
+                          onPressed: () async {
+                            if (_formKey.currentState!.validate()) {
+                              _formKey.currentState!.save();
+
+                              // firebase auth signin
+                              final userCredential = await signIn(
+                                  _emailTextController.text.trim(),
+                                  _pwdTextController.text.trim());
+                              if (userCredential == null) return;
+
+                              // grpc signin method
+                              final mongoUser = await AuthService.login(
+                                  _emailTextController.text.trim(),
+                                  _pwdTextController.text.trim());
+                              if (mongoUser == null) {
+                                return;
+                              } else {
+                                print(mongoUser.email);
+                              }
+
+                              ref.read(userCredentialProvider.notifier).state =
+                                  userCredential;
+
+                              // read data from firestore with provider which holds user's auth
+                              final UserData? user =
+                                  (await ref.read(userDatabaseProvider).get())
+                                      .data();
+
+                              if (context.mounted) {
+                                if (user?.accountType == null) {
+                                  context.go('/login/initial');
+                                } else {
+                                  if (user?.initialSetup == false) {
+                                    if (user?.accountType == true) {
+                                      context
+                                          .go('/login/initial/teacher-setup');
+                                    } else {
+                                      context
+                                          .go('/login/initial/student-setup');
+                                    }
+                                  } else {
+                                    db
+                                        .collection('users')
+                                        .doc(userCredential.user?.email)
+                                        .update({
+                                      'onlineTime':
+                                          Timestamp.fromDate(DateTime.now())
+                                    });
+                                    ref
+                                        .read(accountTypeProvider.notifier)
+                                        .state = user!.accountType;
+                                    context.go('/');
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          height: 48,
+                          minWidth: double.infinity,
+                          color: context.appColors.primaryColor,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12)),
+                          child: Text(
+                            '로그인',
+                            style: TextStyle(
+                                color: context.appColors.inverseText,
+                                fontSize: 19,
+                                fontWeight: FontWeight.w700),
+                          ),
+                        );
+                      }),
+                      const Height(4),
+                      // TextButton(
+                      //   onPressed: () {},
+                      //   style: ButtonStyle(
+                      //     foregroundColor: MaterialStateProperty.all(
+                      //         context.appColors.secondaryText),
+                      //     overlayColor:
+                      //     MaterialStateProperty.all(Colors.transparent),
+                      //   ),
+                      //   child: const Text(
+                      //     '비밀번호 찾기',
+                      //     style:
+                      //     TextStyle(fontSize: 19, fontWeight: FontWeight.w500),
+                      //   ),
+                      // ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            '계정이 없나요?',
+                            style: TextStyle(
+                                color: context.appColors.secondaryText,
+                                fontSize: 19),
+                          ),
+                          TextButton(
+                            onPressed: () => widget.buttonPagelController
+                                .nextPage(
+                                    duration: const Duration(milliseconds: 300),
+                                    curve: Curves.easeOutQuart),
+                            style: ButtonStyle(
+                              foregroundColor: MaterialStateProperty.all(
+                                  context.appColors.primaryColor),
+                              overlayColor:
+                                  MaterialStateProperty.all(Colors.transparent),
+                            ),
+                            child: const Text(
+                              '회원가입',
+                              style: TextStyle(
+                                  fontSize: 19,
+                                  fontWeight: FontWeight.w500,
+                                  decoration: TextDecoration.underline),
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
                 )
               ],
             ),
-          )
-        ],
-      ),
     );
   }
 
@@ -251,5 +274,6 @@ class _SigninCardState extends State<SigninCard> {
       if (!context.mounted) return null;
       ScaffoldMessenger.of(context).showSnackBar(errorSnackBar(e.toString()));
     }
+    return null;
   }
 }
