@@ -29,17 +29,17 @@ class TeacherProfileScreen extends StatefulWidget {
 class _TeacherProfileScreenState extends State<TeacherProfileScreen>
     with SingleTickerProviderStateMixin {
   final db = FirebaseFirestore.instance;
-  List<Map<String, dynamic>> _reviewsList = [];
-  late Future<void> _initReviewsData;
+  // List<Map<String, dynamic>> _reviewsList = [];
+  // late Future<void> _initReviewsData;
 
   late final tabController = TabController(length: 3, vsync: this);
   int currentIndex = 0;
 
-  @override
-  void initState() {
-    super.initState();
-    _initReviewsData = _initReviews();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _initReviewsData = _initReviews();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -114,85 +114,132 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen>
     );
   }
 
-  Future<void> _initReviews() async {
-    final reviews = await getReviews();
-    _reviewsList = reviews;
-  }
+  // Future<void> _initReviews() async {
+  //   final reviews = await getReviews();
+  //   _reviewsList = reviews;
+  // }
 
-  Future<List<Map<String, dynamic>>> getReviews() async {
-    List<Map<String, dynamic>> reviews = [];
+  // Future<List<Map<String, dynamic>>> getReviews() async {
+  //   List<Map<String, dynamic>> reviews = [];
+  //   final reviewRef = db
+  //       .collection('users')
+  //       .doc(widget.teacher.user.email)
+  //       .collection('type')
+  //       .doc('teacher')
+  //       .collection('reviews');
+
+  //   var querySnapshot =
+  //       await reviewRef.orderBy('onlineTime', descending: true).get();
+
+  //   for (var queryDocumentSnapshot in querySnapshot.docs) {
+  //     Map<String, dynamic> data = queryDocumentSnapshot.data();
+  //     reviews.add(data);
+  //   }
+  //   return reviews;
+  // }
+
+  Container buildReviewTab(BuildContext context) {
     final reviewRef = db
         .collection('users')
         .doc(widget.teacher.user.email)
         .collection('type')
         .doc('teacher')
         .collection('reviews');
-
-    var querySnapshot =
-        await reviewRef.orderBy('onlineTime', descending: true).get();
-
-    for (var queryDocumentSnapshot in querySnapshot.docs) {
-      Map<String, dynamic> data = queryDocumentSnapshot.data();
-      reviews.add(data);
-    }
-
-    // reviewRef
-    //     .orderBy('onlineTime', descending: true)
-    //     .get()
-    //     .then((querySnapshot) {
-    //   for (var docSnapshot in querySnapshot.docs) {
-    //     reviews.add(docSnapshot.data());
-    //     print(docSnapshot.data()['content']);
-    //   }
-    // });
-
-    return reviews;
-  }
-
-  Container buildReviewTab(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
       color: context.appColors.backgroundColor,
-      child: Column(
-        children: [
-          ListView.builder(
-              shrinkWrap: true,
-              padding: EdgeInsets.zero,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: _reviewsList.length,
-              itemBuilder: (context, index) {
-                final review = _reviewsList[index];
-                return TeacherReviewBox(
-                  content: review['content'],
-                  subjects: review['subjects'],
-                  canEdit: false,
-                  gender: review['gender'],
-                  age: review['age'],
-                  teacher: widget.teacher,
-                  reviewer: review['reviewer'],
-                  reply: review['reply'] ?? "",
-                );
-              }),
-          // temporary way to add reviews
-          TextButton.icon(
-            onPressed: () {
-              GoRouter.of(context)
-                  .pushNamed('new-review', extra: widget.teacher);
-            },
-            icon: Icon(
-              Icons.add_circle_outline,
-              color: context.appColors.primaryText,
-            ),
-            label: Text(
-              '평가 작성하기',
-              style: TextStyle(
-                  fontSize: 19,
-                  fontWeight: FontWeight.w500,
-                  color: context.appColors.primaryText),
-            ),
-          ),
-        ],
+      child: StreamBuilder(
+        stream: reviewRef.snapshots(),
+        builder: (_, snapshot) {
+          if (snapshot.hasError) return Text('Error = ${snapshot.error}');
+          if (snapshot.hasData) {
+            final docs = snapshot.data!.docs;
+            return Column(
+              children: [
+                ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  padding: EdgeInsets.zero,
+                  itemCount: docs.length,
+                  itemBuilder: (_, index) {
+                    final review = docs[index].data();
+                    return TeacherReviewBox(
+                      content: review['content'],
+                      subjects: review['subjects'],
+                      canEdit: false,
+                      gender: review['gender'],
+                      age: review['age'],
+                      teacher: widget.teacher,
+                      reviewer: review['reviewer'],
+                      reply: review['reply'] ?? "",
+                    );
+                  },
+                ),
+                TextButton.icon(
+                  onPressed: () {
+                    GoRouter.of(context)
+                        .pushNamed('new-review', extra: widget.teacher);
+                  },
+                  icon: Icon(
+                    Icons.add_circle_outline,
+                    color: context.appColors.primaryText,
+                  ),
+                  label: Text(
+                    '평가 작성하기',
+                    style: TextStyle(
+                        fontSize: 19,
+                        fontWeight: FontWeight.w500,
+                        color: context.appColors.primaryText),
+                  ),
+                ),
+              ],
+            );
+          }
+          return const Center(child: CircularProgressIndicator());
+        },
       ),
+      // child: Column(
+      //   children: [
+      //     Expanded(
+      //       child: ListView.builder(
+      //           //shrinkWrap: true,
+      //           padding: EdgeInsets.zero,
+      //           physics: const NeverScrollableScrollPhysics(),
+      //           itemCount: _reviewsList.length,
+      //           itemBuilder: (context, index) {
+      //             final review = _reviewsList[index];
+      //             return TeacherReviewBox(
+      //               content: review['content'],
+      //               subjects: review['subjects'],
+      //               canEdit: false,
+      //               gender: review['gender'],
+      //               age: review['age'],
+      //               teacher: widget.teacher,
+      //               reviewer: review['reviewer'],
+      //               reply: review['reply'] ?? "",
+      //             );
+      //           }),
+      //     ),
+      //     // temporary way to add reviews
+      //     TextButton.icon(
+      //       onPressed: () {
+      //         GoRouter.of(context)
+      //             .pushNamed('new-review', extra: widget.teacher);
+      //       },
+      //       icon: Icon(
+      //         Icons.add_circle_outline,
+      //         color: context.appColors.primaryText,
+      //       ),
+      //       label: Text(
+      //         '평가 작성하기',
+      //         style: TextStyle(
+      //             fontSize: 19,
+      //             fontWeight: FontWeight.w500,
+      //             color: context.appColors.primaryText),
+      //       ),
+      //     ),
+      //   ],
+      // ),
       // child: FutureBuilder<Object>(
       //     future: getReviews(),
       //     builder: (context, snapshot) {

@@ -133,45 +133,44 @@ class _MyProfileFragmentState extends ConsumerState<TeacherProfileFragment>
 
   Container buildReviewTab(BuildContext context, Teacher teacher) {
     final userCred = ref.watch(userCredentialProvider)!;
-
     final reviewRef = db
         .collection('users')
         .doc(userCred.user?.email)
         .collection('type')
         .doc('teacher')
         .collection('reviews');
+
     return Container(
-        padding: const EdgeInsets.all(16),
-        color: context.appColors.backgroundColor,
-        child: StreamBuilder(
-          stream: reviewRef.snapshots(),
-          builder: (_, snapshot) {
-            if (snapshot.hasError) return Text('Error = ${snapshot.error}');
-
-            if (snapshot.hasData) {
-              final docs = snapshot.data!.docs;
-              return ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: docs.length,
-                itemBuilder: (_, index) {
-                  final review = docs[index].data();
-                  return TeacherReviewBox(
-                    content: review['content'],
-                    subjects: review['subjects'],
-                    canEdit: true,
-                    gender: review['gender'],
-                    age: review['age'],
-                    teacher: teacher,
-                    reviewer: review['reviewer'],
-                    reply: review['reply'] ?? "",
-                  );
-                },
-              );
-            }
-
-            return const Center(child: CircularProgressIndicator());
-          },
-        ));
+      padding: const EdgeInsets.all(16),
+      color: context.appColors.backgroundColor,
+      child: StreamBuilder(
+        stream: reviewRef.snapshots(),
+        builder: (_, snapshot) {
+          if (snapshot.hasError) return Text('Error = ${snapshot.error}');
+          if (snapshot.hasData) {
+            final docs = snapshot.data!.docs;
+            return ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: docs.length,
+              itemBuilder: (_, index) {
+                final review = docs[index].data();
+                return TeacherReviewBox(
+                  content: review['content'],
+                  subjects: review['subjects'],
+                  canEdit: true,
+                  gender: review['gender'],
+                  age: review['age'],
+                  teacher: teacher,
+                  reviewer: review['reviewer'],
+                  reply: review['reply'] ?? "",
+                );
+              },
+            );
+          }
+          return const Center(child: CircularProgressIndicator());
+        },
+      ),
+    );
   }
 
   Container buildXPTab(BuildContext context) {
