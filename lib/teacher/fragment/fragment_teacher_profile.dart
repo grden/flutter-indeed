@@ -28,7 +28,8 @@ class _MyProfileFragmentState extends ConsumerState<TeacherProfileFragment>
   @override
   Widget build(BuildContext context) {
     UserCredential userCredential = ref.watch(userCredentialProvider)!;
-    Stream<Teacher> teacherStream = getTeacherStream(userCredential: userCredential);
+    Stream<Teacher> teacherStream =
+        getTeacherStream(userCredential: userCredential);
     return Column(children: [
       AppBar(
         backgroundColor: context.appColors.backgroundColor,
@@ -96,7 +97,7 @@ class _MyProfileFragmentState extends ConsumerState<TeacherProfileFragment>
                           children: [
                             buildInfoTab(context, teacher),
                             buildXPTab(context),
-                            buildReviewTab(context)
+                            buildReviewTab(context, teacher)
                           ],
                         ),
                       ),
@@ -109,7 +110,8 @@ class _MyProfileFragmentState extends ConsumerState<TeacherProfileFragment>
                 child: const Center(child: Text("뭔가 문제가 생겼습니다. 재시도하기")),
                 onPressed: () {
                   setState(() {
-                    teacherStream = getTeacherStream(userCredential: userCredential);
+                    teacherStream =
+                        getTeacherStream(userCredential: userCredential);
                   });
                 },
               );
@@ -129,39 +131,87 @@ class _MyProfileFragmentState extends ConsumerState<TeacherProfileFragment>
     ]);
   }
 
-  Container buildReviewTab(BuildContext context) {
+  Container buildReviewTab(BuildContext context, Teacher teacher) {
+    final userCred = ref.watch(userCredentialProvider)!;
+
+    final reviewRef = db
+        .collection('users')
+        .doc(userCred.user?.email)
+        .collection('type')
+        .doc('teacher')
+        .collection('reviews');
     return Container(
-      padding: const EdgeInsets.all(16),
-      color: context.appColors.backgroundColor,
-      child: const Center(
-        child: Text(
-          '아직 평가가 없습니다',
-          style: TextStyle(
-            fontSize: 17,
-          ),
-        ),
-      ),
-    );
+        padding: const EdgeInsets.all(16),
+        color: context.appColors.backgroundColor,
+        child: StreamBuilder(
+          stream: reviewRef.snapshots(),
+          builder: (_, snapshot) {
+            if (snapshot.hasError) return Text('Error = ${snapshot.error}');
+
+            if (snapshot.hasData) {
+              final docs = snapshot.data!.docs;
+              return ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: docs.length,
+                itemBuilder: (_, index) {
+                  final review = docs[index].data();
+                  return TeacherReviewBox(
+                    content: review['content'],
+                    subjects: review['subjects'],
+                    canEdit: true,
+                    gender: review['gender'],
+                    age: review['age'],
+                    teacher: teacher,
+                    reviewer: review['reviewer'],
+                    reply: review['reply'] ?? "",
+                  );
+                },
+              );
+            }
+
+            return const Center(child: CircularProgressIndicator());
+          },
+        ));
   }
 
   Container buildXPTab(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
-      color: context.appColors.backgroundColor,
-      child: Column(
-        children: [
-          const XPBox(subject: "수학", age: "고등학교 3학년", date: "2022.12 ~ 2023.09", period: "10개월", canEdit: true,),
-          const Height(16),
-          const XPBox(subject: "국어", age: "고등학교 1학년", date: "2022.12 ~ 2023.05", period: "6개월", canEdit: true,),
-          const Height(16),
-          TextButton.icon(
-            onPressed: () {},
-            icon: Icon(Icons.add_circle_outline, color: context.appColors.primaryText,),
-            label: Text('경력 추가', style: TextStyle(fontSize: 19, fontWeight: FontWeight.w500, color: context.appColors.primaryText),),
-          ),
-        ],
-      )
-    );
+        padding: const EdgeInsets.all(16),
+        color: context.appColors.backgroundColor,
+        child: Column(
+          children: [
+            const XPBox(
+              subject: "수학",
+              age: "고등학교 3학년",
+              date: "2022.12 ~ 2023.09",
+              period: "10개월",
+              canEdit: true,
+            ),
+            const Height(16),
+            const XPBox(
+              subject: "국어",
+              age: "고등학교 1학년",
+              date: "2022.12 ~ 2023.05",
+              period: "6개월",
+              canEdit: true,
+            ),
+            const Height(16),
+            TextButton.icon(
+              onPressed: () {},
+              icon: Icon(
+                Icons.add_circle_outline,
+                color: context.appColors.primaryText,
+              ),
+              label: Text(
+                '경력 추가',
+                style: TextStyle(
+                    fontSize: 19,
+                    fontWeight: FontWeight.w500,
+                    color: context.appColors.primaryText),
+              ),
+            ),
+          ],
+        ));
   }
 
   Container buildInfoTab(BuildContext context, Teacher teacher) {
@@ -177,22 +227,23 @@ class _MyProfileFragmentState extends ConsumerState<TeacherProfileFragment>
               canEdit: true,
               child: Column(
                 children: [
-                  teacher.budget == null ? const Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "아직 시급을 설정하지 않았습니다",
-                        style: TextStyle(
-                        fontSize: 17, fontWeight: FontWeight.w500),
-                    ),
-                  ) :
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        '시간당 ${teacher.budget}만원',
-                        style: const TextStyle(
-                            fontSize: 17, fontWeight: FontWeight.w500),
-                      ),
-                    ),
+                  teacher.budget == null
+                      ? const Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "아직 시급을 설정하지 않았습니다",
+                            style: TextStyle(
+                                fontSize: 17, fontWeight: FontWeight.w500),
+                          ),
+                        )
+                      : Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            '시간당 ${teacher.budget}만원',
+                            style: const TextStyle(
+                                fontSize: 17, fontWeight: FontWeight.w500),
+                          ),
+                        ),
                   const Height(12),
                   SizedBox(
                     width: double.infinity,
@@ -211,8 +262,8 @@ class _MyProfileFragmentState extends ConsumerState<TeacherProfileFragment>
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),
                               color: context.appColors.textFieldColor,
-                              border:
-                                  Border.all(color: context.appColors.lineColor)),
+                              border: Border.all(
+                                  color: context.appColors.lineColor)),
                           child: Center(
                             child: Text(
                               teacher.subjects[e].subjectString,

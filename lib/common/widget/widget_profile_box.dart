@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:self_project/common/extension/extension_context.dart';
 import 'package:self_project/common/widget/widget_line.dart';
 import 'package:self_project/common/widget/widget_sizedbox.dart';
-import 'package:self_project/model/model_student.dart';
 import 'package:self_project/model/model_teacher.dart';
 import 'package:self_project/model/model_user.dart';
 
@@ -145,20 +145,24 @@ class XPBox extends StatelessWidget {
 
 class TeacherReviewBox extends StatelessWidget {
   final String content;
-  final String subject;
+  final String gender;
+  final int age;
+  final List<dynamic> subjects;
   final String reply;
   final Teacher teacher;
-  final Student student;
+  final String reviewer;
   final bool canEdit;
 
   const TeacherReviewBox(
       {super.key,
       required this.content,
-      required this.student,
-      required this.reply,
-      required this.subject,
+      this.reply = "",
+      required this.subjects,
       required this.teacher,
-      required this.canEdit});
+      required this.canEdit,
+      required this.gender,
+      required this.age,
+      required this.reviewer});
 
   @override
   Widget build(BuildContext context) {
@@ -177,14 +181,18 @@ class TeacherReviewBox extends StatelessWidget {
               children: [
                 Text(
                   content,
-                  style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                  style: const TextStyle(
+                      fontSize: 17, fontWeight: FontWeight.w500),
                 ),
                 if (canEdit) ...[
                   const Spacer(),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      GoRouter.of(context).pushNamed('new-reply',
+                          extra: teacher, pathParameters: {'email': reviewer});
+                    },
                     icon: Icon(
-                      Icons.edit_outlined,
+                      Icons.rate_review_outlined,
                       color: context.appColors.secondaryText,
                     ),
                     visualDensity: VisualDensity.compact,
@@ -202,46 +210,44 @@ class TeacherReviewBox extends StatelessWidget {
           const Height(12),
           const Line(),
           const Height(12),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Row(
-              children: [
-                Container(
-                  width: 22,
-                  height: 22,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(6),
-                      color: student.user.gender != Gender.male
-                          ? context.appColors.womanBadge
-                          : context.appColors.manBadge),
-                  child: Center(
-                    child: Text(
-                      student.user.gender.genderString,
-                      style: TextStyle(
-                        color: context.appColors.cardColor,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                      ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: 22,
+                height: 22,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(6),
+                    color: gender != Gender.male.genderString
+                        ? context.appColors.womanBadge
+                        : context.appColors.manBadge),
+                child: Center(
+                  child: Text(
+                    gender,
+                    style: TextStyle(
+                      color: context.appColors.cardColor,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
                 ),
-                const Width(4),
-                Text(
-                  '${student.user.age} ∙ ',
-                  style: TextStyle(
-                      color: context.appColors.secondaryText,
-                      fontSize: 19,
-                      fontWeight: FontWeight.w500),
-                ),
-                Text(
-                  subject,
-                  style: TextStyle(
-                      color: context.appColors.secondaryText,
-                      fontSize: 19,
-                      fontWeight: FontWeight.w500),
-                ),
-              ],
-            ),
+              ),
+              const Width(4),
+              Text(
+                age.toString(),
+                style: TextStyle(
+                    color: context.appColors.secondaryText,
+                    fontSize: 19,
+                    fontWeight: FontWeight.w500),
+              ),
+              Text(
+                ' ∙ ${subjects.join(', ')}',
+                style: TextStyle(
+                    color: context.appColors.secondaryText,
+                    fontSize: 19,
+                    fontWeight: FontWeight.w500),
+              ),
+            ],
           ),
           if (reply.isNotEmpty) ...[
             const Height(12),
@@ -249,7 +255,10 @@ class TeacherReviewBox extends StatelessWidget {
               width: double.infinity,
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: const BorderRadius.only(
+                      topRight: Radius.circular(16),
+                      bottomLeft: Radius.circular(16),
+                      bottomRight: Radius.circular(16)),
                   color: context.appColors.textFieldColor),
               child: Column(
                 children: [
@@ -261,7 +270,7 @@ class TeacherReviewBox extends StatelessWidget {
                           fontSize: 17, fontWeight: FontWeight.w700),
                     ),
                   ),
-                  const Height(16),
+                  const Height(12),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(

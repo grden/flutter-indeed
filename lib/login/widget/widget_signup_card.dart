@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:grpc/grpc.dart';
 import 'package:self_project/common/extension/extension_context.dart';
 import 'package:self_project/common/widget/widget_line.dart';
 import 'package:self_project/common/widget/widget_sizedbox.dart';
@@ -44,7 +43,10 @@ class _SignupCardState extends State<SignupCard> {
           color: context.appColors.backgroundColor,
           boxShadow: [context.appShadows.cardShadow]),
       child: isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? Center(
+              child: CircularProgressIndicator(
+              color: context.appColors.primaryColor,
+            ))
           : Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -439,6 +441,9 @@ class _SignupCardState extends State<SignupCard> {
 
   Future<bool> signUp(String emailAddress, String password, String name,
       int age, String gender, String locations) async {
+    setState(() {
+      isLoading = true;
+    });
     try {
       final credential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
@@ -461,6 +466,9 @@ class _SignupCardState extends State<SignupCard> {
         'accountType': null,
         'initialSetup': false
       });
+      setState(() {
+        isLoading = false;
+      });
       return true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -479,11 +487,17 @@ class _SignupCardState extends State<SignupCard> {
               .showSnackBar(errorSnackbar('올바른 이메일 형식을 입력해주세요.'));
         }
       }
+      setState(() {
+        isLoading = false;
+      });
       return false;
     } catch (e) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(errorSnackbar(e.toString()));
       }
+      setState(() {
+        isLoading = false;
+      });
       return false;
     }
   }

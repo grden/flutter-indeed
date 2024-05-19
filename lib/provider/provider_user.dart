@@ -4,7 +4,7 @@ import 'package:riverpod/riverpod.dart';
 import 'package:self_project/model/model_user.dart';
 import 'package:self_project/model/mongo/user.dart';
 
-/// FirebasAuth, FirebaseFirestore의 user 정보에 대한 provider
+/// FirebaseAuth, FirebaseFirestore의 user 정보에 대한 provider
 
 final FirebaseFirestore db = FirebaseFirestore.instance;
 
@@ -12,6 +12,8 @@ final FirebaseFirestore db = FirebaseFirestore.instance;
 final userCredentialProvider = StateProvider<UserCredential?>((ref) => null);
 
 final mongoUserProvider = StateProvider<UserModel?>((ref) => null);
+
+final accountTypeProvider = StateProvider<bool?>((ref) => null);
 
 final firestoreUserDbProvider = StateProvider((ref) {
   final mongoUser = ref.watch(mongoUserProvider);
@@ -24,6 +26,7 @@ final firestoreUserDbProvider = StateProvider((ref) {
   return firestoreUserDb;
 });
 
+// firestore에서 usercredential에 해당하는 사용자 가져와 UserData에 저장
 // 후에 asyncvalue 리턴하는 streamprovider로 변경
 final userDatabaseProvider = StateProvider((ref) {
   final userCredential = ref.watch(userCredentialProvider);
@@ -35,8 +38,6 @@ final userDatabaseProvider = StateProvider((ref) {
           toFirestore: (userData, _) => userData.toJson());
   return userDatabase;
 });
-
-final accountTypeProvider = StateProvider<bool?>((ref) => null);
 
 /*
 // FirebaseAuth instance에 접근하기 위한 provider

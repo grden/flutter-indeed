@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:self_project/common/extension/extension_context.dart';
 
 class Arrow extends StatelessWidget {
   final double size;
@@ -12,6 +13,7 @@ class Arrow extends StatelessWidget {
     return Icon(
       icon,
       size: size,
+      color: context.appColors.iconButton,
     );
   }
 
