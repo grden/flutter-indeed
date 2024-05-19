@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:self_project/chat/screen_chat.dart';
 import 'package:self_project/common/extension/extension_context.dart';
 import 'package:self_project/common/theme/custom_theme.dart';
 import 'package:self_project/common/theme/custom_theme_app.dart';
@@ -96,6 +97,12 @@ class App extends StatefulWidget {
           reviewer: state.pathParameters['email']!,
           teacher: state.extra as Teacher,
         ),
+      ),
+      GoRoute(
+        path: '/chat/:email',
+        name: 'chat',
+        builder: ((context, state) =>
+            ChatScreen(receiverEmail: state.pathParameters['email']!)),
       )
     ],
   );

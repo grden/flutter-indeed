@@ -509,7 +509,10 @@ class _ProfileBox extends StatelessWidget {
                     ContactButton(
                         textColor: context.appColors.inverseText,
                         backgroundColor: context.appColors.primaryColor,
-                        onTap: () {})
+                        onTap: () {
+                          context.pushNamed('chat',
+                              pathParameters: {'email': teacher.user.email});
+                        })
                   ],
                 ),
               ),
