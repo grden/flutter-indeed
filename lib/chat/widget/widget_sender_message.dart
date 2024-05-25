@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
+import 'package:self_project/common/extension/extension_context.dart';
+import 'package:self_project/common/widget/widget_sizedbox.dart';
 
 import '../../common/theme/custom_shape.dart';
 import '../../pb/chat.pb.dart';
@@ -18,17 +20,28 @@ class SentMessageScreen extends StatelessWidget {
     final messageTextGroup = Flexible(
         child: Row(
       mainAxisAlignment: MainAxisAlignment.end,
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Flexible(
+          child: Text(
+            timeAgoCustom(message.createdAt.toDateTime()),
+            maxLines: 2,
+            style: TextStyle(
+                color: context.appColors.secondaryText,
+                fontSize: 15,
+                fontWeight: FontWeight.w500),
+          ),
+        ),
+        const Width(12),
+        Flexible(
           child: Container(
-            padding: const EdgeInsets.all(14),
+            padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: Colors.deepPurple[900],
+              color: context.appColors.primaryColor,
               borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(18),
-                bottomLeft: Radius.circular(18),
-                bottomRight: Radius.circular(18),
+                topLeft: Radius.circular(12),
+                bottomLeft: Radius.circular(12),
+                bottomRight: Radius.circular(12),
               ),
             ),
             child: Column(
@@ -36,40 +49,25 @@ class SentMessageScreen extends StatelessWidget {
               children: [
                 Text(
                   message.message,
-                  style: const TextStyle(color: Colors.white, fontSize: 14),
+                  style: TextStyle(
+                      color: context.appColors.inverseText,
+                      fontSize: 17,
+                      fontWeight: FontWeight.w600),
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                SizedBox(
-                  width: 100,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        timeAgoCustom(message.createdAt.toDateTime()),
-                        maxLines: 2,
-                        style:
-                            const TextStyle(color: Colors.white, fontSize: 8),
-                      )
-                    ],
-                  ),
-                )
               ],
             ),
           ),
         ),
-        CustomPaint(painter: CustomShape(Colors.deepPurple.shade900)),
+        // CustomPaint(painter: CustomShape(context.appColors.primaryColor)),
       ],
     ));
 
     return Padding(
-      padding: const EdgeInsets.only(right: 18.0, left: 50, top: 15, bottom: 5),
+      padding: const EdgeInsets.only(right: 16, left: 50, top: 16, bottom: 0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          const SizedBox(height: 30),
+          const SizedBox(height: 12),
           messageTextGroup,
         ],
       ),
@@ -81,13 +79,13 @@ String timeAgoCustom(DateTime d) {
   // <-- Custom method Time Show  (Display Example  ==> 'Today 7:00 PM')     // WhatsApp Time Show Status Shimila
   Duration diff = DateTime.now().difference(d);
   if (diff.inDays > 365) {
-    return "${(diff.inDays / 365).floor()} ${(diff.inDays / 365).floor() == 1 ? "year" : "years"} ago";
+    return "${(diff.inDays / 365).floor()} ${(diff.inDays / 365).floor() == 1 ? "년" : "년"} 전";
   }
   if (diff.inDays > 30) {
-    return "${(diff.inDays / 30).floor()} ${(diff.inDays / 30).floor() == 1 ? "month" : "months"} ago";
+    return "${(diff.inDays / 30).floor()} ${(diff.inDays / 30).floor() == 1 ? "달" : "달"} 전";
   }
   if (diff.inDays > 7) {
-    return "${(diff.inDays / 7).floor()} ${(diff.inDays / 7).floor() == 1 ? "week" : "weeks"} ago";
+    return "${(diff.inDays / 7).floor()} ${(diff.inDays / 7).floor() == 1 ? "주" : "주"} 전";
   }
   if (diff.inDays > 0) {
     return DateFormat.E().add_jm().format(d);
@@ -96,7 +94,7 @@ String timeAgoCustom(DateTime d) {
     return DateFormat('jm').format(d);
   }
   if (diff.inMinutes > 0) {
-    return "${diff.inMinutes} ${diff.inMinutes == 1 ? "minute" : "minutes"} ago";
+    return "${diff.inMinutes} ${diff.inMinutes == 1 ? "분" : "분"} 전";
   }
-  return "just now";
+  return "방금";
 }

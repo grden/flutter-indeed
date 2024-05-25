@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:grpc/grpc.dart';
+import 'package:self_project/common/extension/extension_context.dart';
 
 import '../model/mongo/user.dart';
 import '../pb/chat.pb.dart';
@@ -128,78 +129,92 @@ class _ChatScreenState extends State<ChatScreen> {
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: const Text("chat"),
+        backgroundColor: context.appColors.backgroundColor,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            isLoading
-                ? loadingWidget()
-                : (error != null
-                    ? errorWidget()
-                    : messages.isNotEmpty
-                        ? Expanded(
-                            child: ListView.builder(
-                                shrinkWrap: true,
-                                controller: scrollController,
-                                itemCount: messages.length,
-                                itemBuilder: ((context, index) {
-                                  Message message = messages[index];
-                                  bool isOwn =
-                                      message.sender == AuthService.user?.email;
-                                  return isOwn
-                                      ? SentMessageScreen(
-                                          message: message,
-                                        )
-                                      : ReceivedMessageScreen(message: message);
-                                })),
-                          )
-                        : const Expanded(
-                            child: Center(
-                              child: Text(
-                                  "No message found, start conversion with 'hi'"),
+      body: Container(
+        color: context.appColors.backgroundColor,
+        child: SafeArea(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                isLoading
+                    ? loadingWidget()
+                    : (error != null
+                        ? errorWidget()
+                        : messages.isNotEmpty
+                            ? Expanded(
+                                child: ListView.builder(
+                                    shrinkWrap: true,
+                                    controller: scrollController,
+                                    itemCount: messages.length,
+                                    itemBuilder: ((context, index) {
+                                      Message message = messages[index];
+                                      bool isOwn = message.sender ==
+                                          AuthService.user?.email;
+                                      return isOwn
+                                          ? SentMessageScreen(
+                                              message: message,
+                                            )
+                                          : ReceivedMessageScreen(
+                                              message: message);
+                                    })),
+                              )
+                            : const Expanded(
+                                child: Center(
+                                  child: Text(""),
+                                ),
+                              )),
+                Container(
+                  height: 80,
+                  width: MediaQuery.of(context).size.width,
+                  color: Colors.transparent,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          padding: const EdgeInsets.only(
+                              left: 10, right: 10, bottom: 10),
+                          margin: const EdgeInsets.only(left: 10, right: 10),
+                          child: TextField(
+                            maxLines: null,
+                            controller: controller,
+                            enabled: !isLoading,
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 0),
+                              filled: true,
+                              fillColor: context.appColors.textFieldColor,
+                              iconColor: context.appColors.primaryText,
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: context.appColors.primaryColor,
+                                      width: 0.6),
+                                  borderRadius: BorderRadius.circular(12)),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: context.appColors.primaryColor,
+                                      width: 1),
+                                  borderRadius: BorderRadius.circular(12)),
+                              suffixIcon: IconButton(
+                                  onPressed: () {
+                                    _sendMessage();
+                                  },
+                                  icon: const Icon(Icons.send)),
+                              //hintText: 'Reply to this wave',
                             ),
-                          )),
-            Container(
-              height: 80,
-              width: MediaQuery.of(context).size.width,
-              color: Colors.transparent,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.only(
-                          left: 10, right: 10, bottom: 10),
-                      margin: const EdgeInsets.only(left: 10, right: 10),
-                      child: TextField(
-                        maxLines: null,
-                        controller: controller,
-                        enabled: !isLoading,
-                        decoration: InputDecoration(
-                            prefixIcon: IconButton(
-                              onPressed: () {},
-                              icon: const Icon(Icons.message),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(16),
-                                borderSide:
-                                    const BorderSide(color: Colors.black)),
-                            suffixIcon: IconButton(
-                                onPressed: () {
-                                  _sendMessage();
-                                },
-                                icon: const Icon(Icons.send)),
-                            hintText: 'Reply to this wave'),
-                        onChanged: (value) {
-                          if (value.isNotEmpty) {}
-                        },
+                            onChanged: (value) {
+                              if (value.isNotEmpty) {}
+                            },
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
@@ -207,6 +222,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   loadingWidget() => const Center(child: CircularProgressIndicator());
   errorWidget() => Center(
-      child: Text(error ?? "Something went wrong",
-          style: const TextStyle(color: Colors.red)));
+        child: Text(error ?? "Something went wrong",
+            style: TextStyle(color: context.appColors.errorColor)),
+      );
 }

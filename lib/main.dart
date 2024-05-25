@@ -12,6 +12,7 @@ import 'package:self_project/common/theme/custom_theme.dart';
 import 'package:self_project/common/theme/custom_theme_app.dart';
 import 'package:self_project/firebase_options.dart';
 import 'package:self_project/model/model_student.dart';
+import 'package:self_project/onboarding/screen_onboarding.dart';
 import 'package:self_project/screen/screen_add_review.dart';
 import 'package:self_project/setup/screen/screen_student_setup.dart';
 import 'package:self_project/student/screen/screen_teacher_profile.dart';
@@ -44,8 +45,11 @@ void main() async {
 class App extends StatefulWidget {
   static const defaultTheme = CustomTheme.lightTheme;
   final router = GoRouter(
-    initialLocation: '/login',
+    initialLocation: '/onboarding',
     routes: [
+      GoRoute(
+          path: '/onboarding',
+          builder: (context, state) => const OnboardingScreen()),
       GoRoute(
           path: '/',
           builder: (context, state) => const MainScreen(),

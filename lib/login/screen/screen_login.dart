@@ -30,7 +30,8 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(color: Colors.amber, height: 72, width: 240, child: const Center(child: Text("Logo")),),
+              Image.asset('assets/image/logo_4.png',
+                  width: 150, fit: BoxFit.contain),
               ExpandablePageView.builder(
                 controller: buttonPageController,
                 itemCount: widgetList.length,
