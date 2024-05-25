@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:grpc/grpc.dart';
 import 'package:self_project/common/extension/extension_context.dart';
+import 'package:self_project/common/widget/widget_sizedbox.dart';
 
-import '../model/mongo/user.dart';
 import '../pb/chat.pb.dart';
 import '../services/auth.dart';
 import '../services/chat_service.dart';
@@ -15,7 +15,14 @@ import 'widget/widget_sender_message.dart';
 class ChatScreen extends StatefulWidget {
   //final UserModel receiver;
   final String receiverEmail;
-  const ChatScreen({super.key, required this.receiverEmail});
+  final String name;
+  final String? profileImage;
+
+  const ChatScreen(
+      {super.key,
+      required this.receiverEmail,
+      required this.name,
+      this.profileImage});
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
@@ -128,7 +135,31 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        title: const Text("chat"),
+        titleSpacing: 0,
+        title: Row(children: [
+          Container(
+            width: 48,
+            height: 48,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: widget.profileImage != null
+                  ? Image(
+                      image: NetworkImage(widget.profileImage!),
+                      fit: BoxFit.contain,
+                    )
+                  : const Image(
+                      image: AssetImage('assets/image/default_profile.png')),
+            ),
+          ),
+          const Width(12),
+          Text(
+            widget.name,
+            style: const TextStyle(fontSize: 21, fontWeight: FontWeight.w600),
+          )
+        ]),
         backgroundColor: context.appColors.backgroundColor,
       ),
       body: Container(

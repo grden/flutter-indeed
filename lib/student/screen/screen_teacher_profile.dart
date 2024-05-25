@@ -510,8 +510,12 @@ class _ProfileBox extends StatelessWidget {
                         textColor: context.appColors.inverseText,
                         backgroundColor: context.appColors.primaryColor,
                         onTap: () {
-                          context.pushNamed('chat',
-                              pathParameters: {'email': teacher.user.email});
+                          context.pushNamed('chat', pathParameters: {
+                            'email': teacher.user.email
+                          }, extra: {
+                            'name': teacher.displayName,
+                            'profileImage': teacher.profileImagePath
+                          });
                         })
                   ],
                 ),

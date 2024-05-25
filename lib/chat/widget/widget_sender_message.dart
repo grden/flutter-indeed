@@ -52,7 +52,7 @@ class SentMessageScreen extends StatelessWidget {
                   style: TextStyle(
                       color: context.appColors.inverseText,
                       fontSize: 17,
-                      fontWeight: FontWeight.w600),
+                      fontWeight: FontWeight.w500),
                 ),
               ],
             ),

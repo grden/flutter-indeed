@@ -48,7 +48,7 @@ class ReceivedMessageScreen extends StatelessWidget {
                   style: TextStyle(
                       color: context.appColors.primaryText,
                       fontSize: 17,
-                      fontWeight: FontWeight.w600),
+                      fontWeight: FontWeight.w500),
                 ),
               ],
             ),

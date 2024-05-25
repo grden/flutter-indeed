@@ -105,8 +105,14 @@ class App extends StatefulWidget {
       GoRoute(
         path: '/chat/:email',
         name: 'chat',
-        builder: ((context, state) =>
-            ChatScreen(receiverEmail: state.pathParameters['email']!)),
+        builder: ((context, state) {
+          final data = state.extra! as Map<String, dynamic>;
+          return ChatScreen(
+            receiverEmail: state.pathParameters['email']!,
+            name: data['name'],
+            profileImage: data['profileImage'],
+          );
+        }),
       )
     ],
   );
