@@ -5,7 +5,6 @@ import 'package:self_project/chat/widget/widget_sender_message.dart';
 import 'package:self_project/common/extension/extension_context.dart';
 import 'package:self_project/common/widget/widget_sizedbox.dart';
 
-import '../../common/theme/custom_shape.dart';
 import '../../pb/chat.pb.dart';
 
 class ReceivedMessageScreen extends StatelessWidget {

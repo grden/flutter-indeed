@@ -38,6 +38,7 @@ dependencies:
   dots_indicator: ^3.0.0
   flutter_animation_progress_bar: ^2.3.1
   expandable_page_view: ^1.0.17
+  avatar_glow: ^3.0.1
 
   velocity_x: ^4.1.2
   easy_localization: ^3.0.5

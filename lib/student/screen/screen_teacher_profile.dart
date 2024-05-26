@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:self_project/common/constant.dart';
 import 'package:self_project/common/extension/extension_context.dart';
@@ -11,6 +12,8 @@ import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:self_project/model/model_teacher.dart';
 import 'package:self_project/model/model_user.dart';
 import 'package:self_project/student/widget/widget_teacher_card.dart';
+
+import '../../provider/provider_user.dart';
 
 class TeacherProfileScreen extends StatefulWidget {
   final String id;
@@ -396,7 +399,7 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen>
   }
 }
 
-class _ProfileBox extends StatelessWidget {
+class _ProfileBox extends ConsumerWidget {
   final Teacher teacher;
 
   const _ProfileBox({
@@ -404,7 +407,9 @@ class _ProfileBox extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final db = FirebaseFirestore.instance;
+
     return SliverToBoxAdapter(
       child: Column(
         children: [
@@ -510,11 +515,31 @@ class _ProfileBox extends StatelessWidget {
                         textColor: context.appColors.inverseText,
                         backgroundColor: context.appColors.primaryColor,
                         onTap: () {
+                          final chatRef = db.collection('chat');
+                          final userCredential =
+                              ref.watch(userCredentialProvider);
+                          String docName =
+                              '${teacher.user.email}-${userCredential?.user?.email}';
+
+                          chatRef.doc(docName).get().then((documentSnapshot) {
+                            if (!documentSnapshot.exists) {
+                              chatRef.doc(docName).set({
+                                'members': [
+                                  teacher.user.email,
+                                  userCredential?.user?.email
+                                ],
+                                'studentOK': false,
+                                'teacherOK': false
+                              });
+                            }
+                          });
+
                           context.pushNamed('chat', pathParameters: {
                             'email': teacher.user.email
                           }, extra: {
                             'name': teacher.displayName,
-                            'profileImage': teacher.profileImagePath
+                            'profileImage': teacher.profileImagePath,
+                            'docName': docName
                           });
                         })
                   ],

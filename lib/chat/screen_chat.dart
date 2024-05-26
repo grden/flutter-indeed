@@ -1,10 +1,15 @@
 import 'dart:async';
 
+import 'package:avatar_glow/avatar_glow.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:grpc/grpc.dart';
 import 'package:self_project/common/extension/extension_context.dart';
+import 'package:self_project/common/widget/widget_flip_loading.dart';
+import 'package:self_project/common/widget/widget_line.dart';
 import 'package:self_project/common/widget/widget_sizedbox.dart';
 
+import '../common/widget/widget_tap.dart';
 import '../pb/chat.pb.dart';
 import '../services/auth.dart';
 import '../services/chat_service.dart';
@@ -17,12 +22,14 @@ class ChatScreen extends StatefulWidget {
   final String receiverEmail;
   final String name;
   final String? profileImage;
+  final String docName;
 
   const ChatScreen(
       {super.key,
       required this.receiverEmail,
       required this.name,
-      this.profileImage});
+      this.profileImage,
+      required this.docName});
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
@@ -161,6 +168,12 @@ class _ChatScreenState extends State<ChatScreen> {
           )
         ]),
         backgroundColor: context.appColors.backgroundColor,
+        actions: [
+          // _checkButton(widget.docName),
+          // const FlipLoadingWidget.circle(),
+          _checkStreamBuilder(widget.docName),
+          const Width(16)
+        ],
       ),
       body: Container(
         color: context.appColors.backgroundColor,
@@ -196,6 +209,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                   child: Text(""),
                                 ),
                               )),
+                const Line(),
                 Container(
                   height: 80,
                   width: MediaQuery.of(context).size.width,
@@ -256,4 +270,80 @@ class _ChatScreenState extends State<ChatScreen> {
         child: Text(error ?? "Something went wrong",
             style: TextStyle(color: context.appColors.errorColor)),
       );
+
+  Widget _checkButton(String docName) {
+    return Tap(
+      onTap: () {
+        final db = FirebaseFirestore.instance;
+        final chatRef = db.collection('chat');
+        chatRef.doc(docName).update({'studentOK': true});
+      },
+      child: Container(
+        width: 36,
+        height: 36,
+        decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border:
+                Border.all(color: context.appColors.primaryColor, width: 2.4)),
+        child: Icon(
+          Icons.check,
+          color: context.appColors.primaryColor,
+        ),
+      ),
+    );
+  }
+
+  Widget _matchedButton() {
+    return AvatarGlow(
+      glowRadiusFactor: 0.6,
+      glowCount: 1,
+      glowColor: const Color.fromARGB(255, 30, 98, 190),
+      repeat: false,
+      child: Container(
+        width: 36,
+        height: 36,
+        decoration: const BoxDecoration(
+          shape: BoxShape.circle,
+          gradient: LinearGradient(colors: [
+            Color.fromARGB(255, 101, 179, 245),
+            Color.fromARGB(255, 30, 98, 190)
+          ], begin: Alignment.topLeft),
+        ),
+        child: const Icon(
+          Icons.check,
+          color: Colors.white,
+        ),
+      ),
+    );
+  }
+
+  Widget _checkStreamBuilder(String docName) {
+    final db = FirebaseFirestore.instance;
+    final chatRef = db.collection('chat').doc(docName);
+
+    return StreamBuilder(
+        stream: chatRef.snapshots(),
+        builder: (_, snapshot) {
+          if (snapshot.hasError) return Text('Error = ${snapshot.error}');
+          if (snapshot.hasData) {
+            int condition = 0;
+            final doc = snapshot.data!;
+            if (doc['studentOK'] && doc['teacherOK']) {
+              condition = 2;
+            } else if (doc['studentOK'] || doc['teacherOK']) {
+              condition = 1;
+            }
+
+            switch (condition) {
+              case 1:
+                return const FlipLoadingWidget.circle();
+              case 2:
+                return _matchedButton();
+              default:
+                return _checkButton(docName);
+            }
+          }
+          return _checkButton(docName);
+        });
+  }
 }

@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:self_project/common/extension/extension_context.dart';
 import 'package:self_project/common/widget/widget_sizedbox.dart';
 
-import '../../common/theme/custom_shape.dart';
 import '../../pb/chat.pb.dart';
 
 class SentMessageScreen extends StatelessWidget {

@@ -111,6 +111,7 @@ class App extends StatefulWidget {
             receiverEmail: state.pathParameters['email']!,
             name: data['name'],
             profileImage: data['profileImage'],
+            docName: data['docName'],
           );
         }),
       )
