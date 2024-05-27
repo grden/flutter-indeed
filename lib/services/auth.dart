@@ -1,11 +1,11 @@
 import 'dart:developer';
 
 import 'package:grpc/service_api.dart';
-import 'package:self_project/pb/login.pb.dart';
-import 'package:self_project/pb/service.pb.dart';
-import 'package:self_project/pb/signup.pb.dart';
-import 'package:self_project/pb/user.pb.dart';
-import 'package:self_project/services/grpc_service.dart';
+import '../pb/login.pb.dart';
+import '../pb/service.pb.dart';
+import '../pb/signup.pb.dart';
+import '../pb/user.pb.dart';
+import 'grpc_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/mongo/user.dart';

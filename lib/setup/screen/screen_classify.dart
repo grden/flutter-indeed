@@ -2,9 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:self_project/common/extension/extension_context.dart';
-import 'package:self_project/common/widget/widget_tap.dart';
-import 'package:self_project/provider/provider_user.dart';
+
+import '../../common/extension/extension_context.dart';
+import '../../common/widget/widget_tap.dart';
+import '../../provider/provider_user.dart';
 
 class ClassifyScreen extends ConsumerStatefulWidget {
   const ClassifyScreen({super.key});
@@ -39,7 +40,7 @@ class _ClassifyScreenState extends ConsumerState<ClassifyScreen> {
                     .doc(userCredential?.user?.email)
                     .collection('type')
                     .doc('teacher')
-                    .set({'displayName' : ''});
+                    .set({'displayName': ''});
                 ref.read(accountTypeProvider.notifier).state = true;
                 context.go('/login/initial/teacher-setup');
               },
@@ -69,7 +70,7 @@ class _ClassifyScreenState extends ConsumerState<ClassifyScreen> {
                     .doc(userCredential?.user?.email)
                     .collection('type')
                     .doc('student')
-                    .set({'displayName' : ''});
+                    .set({'displayName': ''});
                 ref.read(accountTypeProvider.notifier).state = false;
                 context.go('/login/initial/student-setup');
               },

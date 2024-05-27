@@ -24,13 +24,15 @@ class ChatScreen extends StatefulWidget {
   final String name;
   final String? profileImage;
   final String docName;
+  final bool accountType;
 
   const ChatScreen(
       {super.key,
       required this.receiverEmail,
       required this.name,
       this.profileImage,
-      required this.docName});
+      required this.docName,
+      required this.accountType});
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
@@ -172,7 +174,7 @@ class _ChatScreenState extends State<ChatScreen> {
         actions: [
           // _checkButton(widget.docName),
           // const FlipLoadingWidget.circle(),
-          _checkStreamBuilder(widget.docName),
+          _checkStreamBuilder(widget.docName, widget.accountType),
           const Width(16)
         ],
       ),
@@ -272,12 +274,16 @@ class _ChatScreenState extends State<ChatScreen> {
             style: TextStyle(color: context.appColors.errorColor)),
       );
 
-  Widget _checkButton(String docName) {
+  Widget _checkButton(String docName, bool accountType) {
     return Tap(
       onTap: () {
         final db = FirebaseFirestore.instance;
         final chatRef = db.collection('chat');
-        chatRef.doc(docName).update({'studentOK': true});
+        if (accountType) {
+          chatRef.doc(docName).update({'teacherOK': true});
+        } else {
+          chatRef.doc(docName).update({'studentOK': true});
+        }
       },
       child: Container(
         width: 36,
@@ -318,7 +324,7 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  Widget _checkStreamBuilder(String docName) {
+  Widget _checkStreamBuilder(String docName, bool accountType) {
     final db = FirebaseFirestore.instance;
     final chatRef = db.collection('chat').doc(docName);
 
@@ -337,14 +343,22 @@ class _ChatScreenState extends State<ChatScreen> {
 
             switch (condition) {
               case 1:
-                return const FlipLoadingWidget.circle();
+                return Tap(
+                    onTap: () {
+                      if (accountType) {
+                        chatRef.update({'teacherOK': true});
+                      } else {
+                        chatRef.update({'studentOK': true});
+                      }
+                    },
+                    child: const FlipLoadingWidget.circle());
               case 2:
                 return _matchedButton();
               default:
-                return _checkButton(docName);
+                return _checkButton(docName, accountType);
             }
           }
-          return _checkButton(docName);
+          return _checkButton(docName, accountType);
         });
   }
 }

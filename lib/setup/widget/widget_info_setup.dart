@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:self_project/common/constant.dart';
-import 'package:self_project/common/extension/extension_context.dart';
-import 'package:self_project/common/widget/widget_sizedbox.dart';
-import 'package:self_project/provider/provider_user.dart';
-import 'package:self_project/setup/screen/screen_student_setup.dart';
+
+import '../../common/constant.dart';
+import '../../common/extension/extension_context.dart';
+import '../../common/widget/widget_sizedbox.dart';
+import '../../provider/provider_user.dart';
+import '../screen/screen_student_setup.dart';
+
 import 'dart:ui' as ui;
 
 class InfoSetup extends ConsumerStatefulWidget {
@@ -57,36 +59,35 @@ class _InfoSetupState extends ConsumerState<InfoSetup> {
                 _btnEnabled = _formKey.currentState!.validate();
               }),
               child: TextFormField(
-                controller: infoTextController,
-                style: const TextStyle(fontSize: 19),
-                maxLines: 100,
-                decoration: InputDecoration(
-                  hintText:
-                      "현재 점수, 목표, 선호하는 수업 방식, 성격 등의 정보를 작성해 본인과 맞는 선생님을 만나세요.",
-                  hintStyle: TextStyle(
-                      color: context.appColors.secondaryText,
-                      fontSize: 17,
-                      fontWeight: FontWeight.w400),
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                  filled: true,
-                  fillColor: context.appColors.textFieldColor,
-                  border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.circular(12)),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: context.appColors.primaryColor, width: 0.6),
-                      borderRadius: BorderRadius.circular(12)),
-                  errorStyle: const TextStyle(fontSize: 15),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return '필수 입력값입니다.';
-                  }
-                  return null;
-                }
-              ),
+                  controller: infoTextController,
+                  style: const TextStyle(fontSize: 19),
+                  maxLines: 100,
+                  decoration: InputDecoration(
+                    hintText:
+                        "현재 점수, 목표, 선호하는 수업 방식, 성격 등의 정보를 작성해 본인과 맞는 선생님을 만나세요.",
+                    hintStyle: TextStyle(
+                        color: context.appColors.secondaryText,
+                        fontSize: 17,
+                        fontWeight: FontWeight.w400),
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 12, vertical: 12),
+                    filled: true,
+                    fillColor: context.appColors.textFieldColor,
+                    border: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(12)),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: context.appColors.primaryColor, width: 0.6),
+                        borderRadius: BorderRadius.circular(12)),
+                    errorStyle: const TextStyle(fontSize: 15),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return '필수 입력값입니다.';
+                    }
+                    return null;
+                  }),
             ),
           ),
         ),

@@ -1,5 +1,6 @@
 import 'package:grpc/grpc.dart';
-import 'package:self_project/pb/service.pbgrpc.dart';
+
+import '../pb/service.pbgrpc.dart';
 
 class GrpcService {
   static String host = "127.0.0.1";

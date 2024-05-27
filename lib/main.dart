@@ -6,24 +6,24 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:self_project/chat/screen_chat.dart';
-import 'package:self_project/common/extension/extension_context.dart';
-import 'package:self_project/common/theme/custom_theme.dart';
-import 'package:self_project/common/theme/custom_theme_app.dart';
-import 'package:self_project/firebase_options.dart';
-import 'package:self_project/model/model_student.dart';
-import 'package:self_project/onboarding/screen_onboarding.dart';
-import 'package:self_project/screen/screen_add_review.dart';
-import 'package:self_project/setup/screen/screen_student_setup.dart';
-import 'package:self_project/student/screen/screen_teacher_profile.dart';
-import 'package:self_project/model/model_teacher.dart';
-import 'package:self_project/setup/screen/screen_classify.dart';
-import 'package:self_project/login/screen/screen_login.dart';
-import 'package:self_project/screen/screen_main.dart';
-import 'package:self_project/setup/screen/screen_teacher_setup.dart';
-import 'package:self_project/teacher/screen/screen_student_profile.dart';
 
-import 'screen/screen_add_reply.dart';
+import 'chat/screen_chat.dart';
+import 'common/extension/extension_context.dart';
+import 'common/theme/custom_theme.dart';
+import 'common/theme/custom_theme_app.dart';
+import 'firebase_options.dart';
+import 'model/model_student.dart';
+import 'onboarding/screen_onboarding.dart';
+import 'review/screen_add_review.dart';
+import 'setup/screen/screen_student_setup.dart';
+import 'student/screen/screen_teacher_profile.dart';
+import 'model/model_teacher.dart';
+import 'setup/screen/screen_classify.dart';
+import 'login/screen/screen_login.dart';
+import 'screen/screen_main.dart';
+import 'setup/screen/screen_teacher_setup.dart';
+import 'teacher/screen/screen_student_profile.dart';
+import 'review/screen_add_reply.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -112,6 +112,7 @@ class App extends StatefulWidget {
             name: data['name'],
             profileImage: data['profileImage'],
             docName: data['docName'],
+            accountType: data['accountType'],
           );
         }),
       )

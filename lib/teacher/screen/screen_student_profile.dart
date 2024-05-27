@@ -1,15 +1,22 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:self_project/common/constant.dart';
-import 'package:self_project/common/extension/extension_context.dart';
-import 'package:self_project/common/widget/widget_contact_button.dart';
-import 'package:self_project/common/widget/widget_profile_box.dart';
-import 'package:self_project/common/widget/widget_line.dart';
-import 'package:self_project/common/widget/widget_sizedbox.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
-import 'package:self_project/model/model_student.dart';
-import 'package:self_project/model/model_user.dart';
+import 'package:go_router/go_router.dart';
+import 'package:material_dialogs/material_dialogs.dart';
+import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
 
-class StudentProfileScreen extends StatefulWidget {
+import '../../common/constant.dart';
+import '../../common/extension/extension_context.dart';
+import '../../common/widget/widget_contact_button.dart';
+import '../../common/widget/widget_profile_box.dart';
+import '../../common/widget/widget_line.dart';
+import '../../common/widget/widget_sizedbox.dart';
+import '../../model/model_student.dart';
+import '../../model/model_user.dart';
+import '../../provider/provider_user.dart';
+
+class StudentProfileScreen extends ConsumerStatefulWidget {
   final String id;
   final Student student;
 
@@ -20,11 +27,14 @@ class StudentProfileScreen extends StatefulWidget {
   });
 
   @override
-  State<StudentProfileScreen> createState() => _StudentProfileScreenState();
+  ConsumerState<StudentProfileScreen> createState() =>
+      _StudentProfileScreenState();
 }
 
-class _StudentProfileScreenState extends State<StudentProfileScreen>
+class _StudentProfileScreenState extends ConsumerState<StudentProfileScreen>
     with SingleTickerProviderStateMixin {
+  final db = FirebaseFirestore.instance;
+
   late final tabController = TabController(length: 2, vsync: this);
   int currentIndex = 0;
 
@@ -98,16 +108,111 @@ class _StudentProfileScreenState extends State<StudentProfileScreen>
   }
 
   Container buildReviewTab(BuildContext context) {
+    final reviewRef = db
+        .collection('users')
+        .doc(widget.student.user.email)
+        .collection('type')
+        .doc('student')
+        .collection('reviews');
+    final chatRef = db.collection('chat');
+    final userCredential = ref.watch(userCredentialProvider);
+    String docName =
+        '${userCredential?.user?.email}-${widget.student.user.email}';
+
     return Container(
       padding: const EdgeInsets.all(16),
       color: context.appColors.backgroundColor,
-      child: const Center(
-        child: Text(
-          '아직 평가가 없습니다',
-          style: TextStyle(
-            fontSize: 17,
-          ),
-        ),
+      child: StreamBuilder(
+        stream: reviewRef.snapshots(),
+        builder: (_, snapshot) {
+          if (snapshot.hasError) return Text('Error = ${snapshot.error}');
+          if (snapshot.hasData) {
+            final docs = snapshot.data!.docs;
+            return Column(
+              children: [
+                if (snapshot.data!.docs.isEmpty) ...[
+                  const Center(
+                    child: Text(
+                      '아직 평가가 없습니다 \u{1f480} ',
+                      style: TextStyle(fontSize: 17),
+                    ),
+                  ),
+                  const Height(12),
+                ],
+                ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  padding: EdgeInsets.zero,
+                  itemCount: docs.length,
+                  itemBuilder: (_, index) {
+                    final review = docs[index].data();
+                    return StudentReviewBox(
+                      content: review['content'],
+                      subjects: review['subjects'],
+                      canEdit: false,
+                      reviewer: review['reviewer'],
+                      reply: review['reply'] ?? "",
+                      student: widget.student,
+                      displayName: review['displayName'],
+                    );
+                  },
+                ),
+                TextButton.icon(
+                  onPressed: () {
+                    chatRef.doc(docName).get().then((documentSnapshot) {
+                      final doc = documentSnapshot.data();
+                      if (doc?['studentOK'] && doc?['teacherOK']) {
+                        // GoRouter.of(context)
+                        //     .pushNamed('new-review', extra: widget.teacher);
+                      } else {
+                        print('not matched');
+                        Dialogs.materialDialog(
+                            context: context,
+                            msg: '과외가 성사된 학생의 평가만\n작성할 수 있습니다.',
+                            msgAlign: TextAlign.center,
+                            msgStyle: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.w500,
+                                color: context.appColors.primaryText),
+                            color: Colors.white,
+                            dialogShape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                            actions: [
+                              IconsOutlineButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                text: '확인',
+                                textStyle: TextStyle(
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w600,
+                                    color: context.appColors.inverseText),
+                                color: context.appColors.primaryColor,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8)),
+                                padding: const EdgeInsets.all(12),
+                              )
+                            ]);
+                      }
+                    });
+                  },
+                  icon: Icon(
+                    Icons.add_circle_outline,
+                    color: context.appColors.primaryText,
+                  ),
+                  label: Text(
+                    '평가 작성하기',
+                    style: TextStyle(
+                        fontSize: 19,
+                        fontWeight: FontWeight.w500,
+                        color: context.appColors.primaryText),
+                  ),
+                ),
+              ],
+            );
+          }
+          return const Center(child: CircularProgressIndicator());
+        },
       ),
     );
   }
@@ -160,8 +265,8 @@ class _StudentProfileScreenState extends State<StudentProfileScreen>
                 alignment: Alignment.centerLeft,
                 child: Text(
                   widget.student.info,
-                  style:
-                      const TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                  style: const TextStyle(
+                      fontSize: 17, fontWeight: FontWeight.w500),
                 ),
               ),
             )
@@ -172,7 +277,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen>
   }
 }
 
-class _ProfileBox extends StatelessWidget {
+class _ProfileBox extends ConsumerWidget {
   final Student student;
 
   const _ProfileBox({
@@ -180,7 +285,7 @@ class _ProfileBox extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return SliverToBoxAdapter(
       child: Column(
         children: [
@@ -252,7 +357,35 @@ class _ProfileBox extends StatelessWidget {
                     ContactButton(
                         textColor: context.appColors.inverseText,
                         backgroundColor: context.appColors.primaryColor,
-                        onTap: () {})
+                        onTap: () {
+                          final chatRef = db.collection('chat');
+                          final userCredential =
+                              ref.watch(userCredentialProvider);
+                          String docName =
+                              '${userCredential?.user?.email}-${student.user.email}';
+
+                          chatRef.doc(docName).get().then((documentSnapshot) {
+                            if (!documentSnapshot.exists) {
+                              chatRef.doc(docName).set({
+                                'members': [
+                                  userCredential?.user?.email,
+                                  student.user.email,
+                                ],
+                                'studentOK': false,
+                                'teacherOK': false,
+                                'lastMsg': 'start a conversation',
+                              });
+                            }
+                          });
+
+                          context.pushNamed('chat', pathParameters: {
+                            'email': student.user.email
+                          }, extra: {
+                            'name': student.user.name,
+                            'docName': docName,
+                            'accountType': true,
+                          });
+                        })
                   ],
                 ),
               ),

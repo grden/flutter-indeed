@@ -3,15 +3,16 @@ import 'package:expandable_page_view/expandable_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:self_project/common/constant.dart';
-import 'package:self_project/common/extension/extension_context.dart';
-import 'package:self_project/common/widget/widget_arrow.dart';
-import 'package:self_project/common/widget/widget_tap.dart';
-import 'package:self_project/setup/widget/widget_budget_setup.dart';
-import 'package:self_project/setup/widget/widget_image_setup.dart';
-import 'package:self_project/setup/widget/widget_name_setup.dart';
-import 'package:self_project/setup/widget/widget_subject_setup.dart';
-import 'package:self_project/setup/widget/widget_univ_setup.dart';
+
+import '../../common/constant.dart';
+import '../../common/extension/extension_context.dart';
+import '../../common/widget/widget_arrow.dart';
+import '../../common/widget/widget_tap.dart';
+import '../widget/widget_budget_setup.dart';
+import '../widget/widget_image_setup.dart';
+import '../widget/widget_name_setup.dart';
+import '../widget/widget_subject_setup.dart';
+import '../widget/widget_univ_setup.dart';
 
 final indexStateProvider = StateProvider<int>((ref) {
   return 0;
@@ -49,7 +50,8 @@ class _SetupScreenState extends ConsumerState<TeacherSetupScreen> {
             children: [
               Container(
                 height: appBarHeight,
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 0),
                 child: Stack(
                   children: [
                     Center(
@@ -72,8 +74,11 @@ class _SetupScreenState extends ConsumerState<TeacherSetupScreen> {
                           onTap: () {
                             ref.read(indexStateProvider.notifier).state--;
                             buttonPageController.previousPage(
-                                duration: const Duration(milliseconds: 300), curve: Curves.easeOutQuart);
-                            return ref.read(setupProvider.notifier).removeSetup();
+                                duration: const Duration(milliseconds: 300),
+                                curve: Curves.easeOutQuart);
+                            return ref
+                                .read(setupProvider.notifier)
+                                .removeSetup();
                           },
                           child: const Arrow(
                             direction: AxisDirection.left,

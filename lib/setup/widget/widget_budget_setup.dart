@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:self_project/common/constant.dart';
-import 'package:self_project/common/extension/extension_context.dart';
-import 'package:self_project/common/widget/widget_sizedbox.dart';
-import 'package:self_project/setup/screen/screen_teacher_setup.dart';
+
+import '../../common/constant.dart';
+import '../../common/extension/extension_context.dart';
+import '../../common/widget/widget_sizedbox.dart';
+import '../screen/screen_teacher_setup.dart';
+
 import 'dart:ui' as ui;
 
 class BudgetSetup extends StatefulWidget {

@@ -6,13 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:self_project/common/constant.dart';
-import 'package:self_project/common/extension/extension_context.dart';
-import 'package:self_project/common/widget/widget_sizedbox.dart';
-import 'package:self_project/common/widget/widget_tap.dart';
-import 'package:self_project/provider/provider_user.dart';
-import 'package:self_project/setup/screen/screen_teacher_setup.dart';
 import 'package:image_picker/image_picker.dart';
+
+import '../../common/constant.dart';
+import '../../common/extension/extension_context.dart';
+import '../../common/widget/widget_sizedbox.dart';
+import '../../common/widget/widget_tap.dart';
+import '../../provider/provider_user.dart';
+import '../screen/screen_teacher_setup.dart';
+
 import 'dart:ui' as ui;
 
 class ImageSetup extends ConsumerStatefulWidget {

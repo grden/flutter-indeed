@@ -1,15 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:self_project/common/constant.dart';
-import 'package:self_project/common/extension/extension_context.dart';
-import 'package:self_project/common/widget/widget_profile_box.dart';
-import 'package:self_project/common/widget/widget_line.dart';
-import 'package:self_project/common/widget/widget_sizedbox.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
-import 'package:self_project/model/model_student.dart';
-import 'package:self_project/model/model_user.dart';
-import 'package:self_project/provider/provider_user.dart';
+
+import '../../common/constant.dart';
+import '../../common/extension/extension_context.dart';
+import '../../common/widget/widget_profile_box.dart';
+import '../../common/widget/widget_line.dart';
+import '../../common/widget/widget_sizedbox.dart';
+import '../../model/model_student.dart';
+import '../../model/model_user.dart';
+import '../../provider/provider_user.dart';
 
 class StudentProfileFragment extends ConsumerStatefulWidget {
   const StudentProfileFragment({super.key});
@@ -38,7 +39,7 @@ class _MyProfileFragmentState extends ConsumerState<StudentProfileFragment>
           Padding(
             padding: const EdgeInsets.all(4.0),
             child: Icon(
-              Icons.settings_outlined,
+              Icons.tune,
               size: 28,
               color: context.appColors.iconButton,
             ),
@@ -94,7 +95,7 @@ class _MyProfileFragmentState extends ConsumerState<StudentProfileFragment>
                           controller: tabController,
                           children: [
                             buildInfoTab(context, student),
-                            buildReviewTab(context),
+                            buildReviewTab(context, student),
                           ],
                         ),
                       ),
@@ -128,17 +129,51 @@ class _MyProfileFragmentState extends ConsumerState<StudentProfileFragment>
     ]);
   }
 
-  Container buildReviewTab(BuildContext context) {
+  Container buildReviewTab(BuildContext context, Student student) {
+    final userCred = ref.watch(userCredentialProvider)!;
+    final reviewRef = db
+        .collection('users')
+        .doc(userCred.user?.email)
+        .collection('type')
+        .doc('student')
+        .collection('reviews');
+
     return Container(
       padding: const EdgeInsets.all(16),
       color: context.appColors.backgroundColor,
-      child: const Center(
-        child: Text(
-          '아직 평가가 없습니다',
-          style: TextStyle(
-            fontSize: 17,
-          ),
-        ),
+      child: StreamBuilder(
+        stream: reviewRef.snapshots(),
+        builder: (_, snapshot) {
+          if (snapshot.hasError) return Text('Error = ${snapshot.error}');
+          if (snapshot.hasData) {
+            if (snapshot.data!.docs.isEmpty) {
+              return const Center(
+                  child: Text(
+                '아직 평가가 없습니다 \u{1f480} ',
+                style: TextStyle(fontSize: 17),
+              ));
+            } else {
+              final docs = snapshot.data!.docs;
+              return ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: docs.length,
+                itemBuilder: (_, index) {
+                  final review = docs[index].data();
+                  return StudentReviewBox(
+                    content: review['content'],
+                    subjects: review['subjects'],
+                    canEdit: true,
+                    reviewer: review['reviewer'],
+                    reply: review['reply'] ?? "",
+                    student: student,
+                    displayName: review['displayName'],
+                  );
+                },
+              );
+            }
+          }
+          return const Center(child: CircularProgressIndicator());
+        },
       ),
     );
   }
@@ -172,8 +207,8 @@ class _MyProfileFragmentState extends ConsumerState<StudentProfileFragment>
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),
                               color: context.appColors.textFieldColor,
-                              border:
-                                  Border.all(color: context.appColors.lineColor)),
+                              border: Border.all(
+                                  color: context.appColors.lineColor)),
                           child: Center(
                             child: Text(
                               student.subjects[e].subjectString,
@@ -195,8 +230,8 @@ class _MyProfileFragmentState extends ConsumerState<StudentProfileFragment>
                 alignment: Alignment.centerLeft,
                 child: Text(
                   student.info,
-                  style:
-                      const TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                  style: const TextStyle(
+                      fontSize: 17, fontWeight: FontWeight.w500),
                 ),
               ),
             )

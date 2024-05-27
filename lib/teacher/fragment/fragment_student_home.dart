@@ -4,20 +4,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:self_project/common/constant.dart';
-import 'package:self_project/common/extension/extension_context.dart';
-import 'package:self_project/model/model_student.dart';
-import 'package:self_project/model/model_user.dart';
-import 'package:self_project/teacher/widget/widget_student_card.dart';
-import 'package:self_project/common/widget/widget_home_appbar.dart';
-import 'package:self_project/common/widget/widget_tap.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+
+import '../../common/constant.dart';
+import '../../common/extension/extension_context.dart';
+import '../../model/model_student.dart';
+import '../../model/model_user.dart';
+import '../widget/widget_student_card.dart';
+import '../../common/widget/widget_home_appbar.dart';
+import '../../common/widget/widget_tap.dart';
 
 class StudentHomeFragment extends ConsumerStatefulWidget {
   const StudentHomeFragment({super.key});
 
   @override
-  ConsumerState<StudentHomeFragment> createState() => _StudentHomeFragmentState();
+  ConsumerState<StudentHomeFragment> createState() =>
+      _StudentHomeFragmentState();
 }
 
 class _StudentHomeFragmentState extends ConsumerState<StudentHomeFragment> {
@@ -48,7 +50,11 @@ class _StudentHomeFragmentState extends ConsumerState<StudentHomeFragment> {
               if (snapshot.hasData) {
                 List<Student> studentsList = snapshot.data!;
                 if (studentsList.isEmpty) {
-                  return const Center(child: Text('아직 프로필을 열람한 학생이 없습니다\u{1f480} ', style: TextStyle(fontSize: 19),));
+                  return const Center(
+                      child: Text(
+                    '아직 프로필을 열람한 학생이 없습니다 \u{1f480} ',
+                    style: TextStyle(fontSize: 19),
+                  ));
                 } else {
                   return MasonryGridView.count(
                       padding: const EdgeInsets.fromLTRB(
@@ -72,9 +78,8 @@ class _StudentHomeFragmentState extends ConsumerState<StudentHomeFragment> {
               if (snapshot.hasError) {
                 print("Stream Error: ${snapshot.error}");
                 return TextButton(
-                  onPressed: retryLoad,
-                  child: const Center(child: Text("뭔가 문제가 생겼습니다. 재시도하기"))
-                );
+                    onPressed: retryLoad,
+                    child: const Center(child: Text("뭔가 문제가 생겼습니다. 재시도하기")));
               }
               if (!snapshot.hasData) {
                 return CircularProgressIndicator(
@@ -156,18 +161,19 @@ class _StudentHomeFragmentState extends ConsumerState<StudentHomeFragment> {
     await for (final users in userStream) {
       students = [];
       for (final user in users) {
-            final student = await db
-                .collection('users')
-                .doc(user.email)
-                .collection('type')
-                .doc('student')
-                .get();
+        final student = await db
+            .collection('users')
+            .doc(user.email)
+            .collection('type')
+            .doc('student')
+            .get();
 
-            final studentPF = Student.fromFirestore(user, student.data()!);
-            print(studentPF.user.name);
-            students.add(studentPF);
+        final studentPF = Student.fromFirestore(user, student.data()!);
+        print(studentPF.user.name);
+        students.add(studentPF);
       }
-      print("student profiles list: ${students.map((e) => e.user.name).toList()}");
+      print(
+          "student profiles list: ${students.map((e) => e.user.name).toList()}");
       yield students;
     }
   }

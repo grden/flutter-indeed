@@ -168,6 +168,15 @@ class _TeacherProfileScreenState extends ConsumerState<TeacherProfileScreen>
             final docs = snapshot.data!.docs;
             return Column(
               children: [
+                if (snapshot.data!.docs.isEmpty) ...[
+                  const Center(
+                    child: Text(
+                      '아직 평가가 없습니다 \u{1f480} ',
+                      style: TextStyle(fontSize: 17),
+                    ),
+                  ),
+                  const Height(12),
+                ],
                 ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
@@ -572,7 +581,8 @@ class _ProfileBox extends ConsumerWidget {
                                   userCredential?.user?.email
                                 ],
                                 'studentOK': false,
-                                'teacherOK': false
+                                'teacherOK': false,
+                                'lastMsg': 'start a conversation',
                               });
                             }
                           });
@@ -582,7 +592,8 @@ class _ProfileBox extends ConsumerWidget {
                           }, extra: {
                             'name': teacher.displayName,
                             'profileImage': teacher.profileImagePath,
-                            'docName': docName
+                            'docName': docName,
+                            'accountType': false,
                           });
                         })
                   ],

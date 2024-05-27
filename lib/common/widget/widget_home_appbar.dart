@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:self_project/common/constant.dart';
-import 'package:self_project/common/extension/extension_context.dart';
-import 'package:self_project/common/widget/widget_sizedbox.dart';
+
+import '../constant.dart';
+import '../extension/extension_context.dart';
+import 'widget_sizedbox.dart';
 
 class HomeAppBar extends StatefulWidget {
   const HomeAppBar({super.key});
@@ -31,7 +32,7 @@ class _HomeAppBarState extends State<HomeAppBar> {
           Padding(
             padding: const EdgeInsets.all(4.0),
             child: Icon(
-              Icons.settings_outlined,
+              Icons.tune,
               size: 28,
               color: context.appColors.iconButton,
             ),

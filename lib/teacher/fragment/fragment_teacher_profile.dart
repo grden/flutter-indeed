@@ -1,16 +1,17 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:self_project/common/constant.dart';
-import 'package:self_project/common/extension/extension_context.dart';
-import 'package:self_project/common/widget/widget_profile_box.dart';
-import 'package:self_project/common/widget/widget_line.dart';
-import 'package:self_project/common/widget/widget_sizedbox.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
-import 'package:self_project/model/model_teacher.dart';
-import 'package:self_project/model/model_user.dart';
-import 'package:self_project/provider/provider_user.dart';
-import 'package:self_project/student/widget/widget_teacher_card.dart';
+
+import '../../common/constant.dart';
+import '../../common/extension/extension_context.dart';
+import '../../common/widget/widget_profile_box.dart';
+import '../../common/widget/widget_line.dart';
+import '../../common/widget/widget_sizedbox.dart';
+import '../../model/model_teacher.dart';
+import '../../model/model_user.dart';
+import '../../provider/provider_user.dart';
+import '../../student/widget/widget_teacher_card.dart';
 
 class TeacherProfileFragment extends ConsumerStatefulWidget {
   const TeacherProfileFragment({super.key});
@@ -39,7 +40,7 @@ class _MyProfileFragmentState extends ConsumerState<TeacherProfileFragment>
           Padding(
             padding: const EdgeInsets.all(4.0),
             child: Icon(
-              Icons.settings_outlined,
+              Icons.tune,
               size: 28,
               color: context.appColors.iconButton,
             ),
@@ -148,24 +149,32 @@ class _MyProfileFragmentState extends ConsumerState<TeacherProfileFragment>
         builder: (_, snapshot) {
           if (snapshot.hasError) return Text('Error = ${snapshot.error}');
           if (snapshot.hasData) {
-            final docs = snapshot.data!.docs;
-            return ListView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: docs.length,
-              itemBuilder: (_, index) {
-                final review = docs[index].data();
-                return TeacherReviewBox(
-                  content: review['content'],
-                  subjects: review['subjects'],
-                  canEdit: true,
-                  gender: review['gender'],
-                  age: review['age'],
-                  teacher: teacher,
-                  reviewer: review['reviewer'],
-                  reply: review['reply'] ?? "",
-                );
-              },
-            );
+            if (snapshot.data!.docs.isEmpty) {
+              return const Center(
+                  child: Text(
+                '아직 평가가 없습니다 \u{1f480} ',
+                style: TextStyle(fontSize: 17),
+              ));
+            } else {
+              final docs = snapshot.data!.docs;
+              return ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: docs.length,
+                itemBuilder: (_, index) {
+                  final review = docs[index].data();
+                  return TeacherReviewBox(
+                    content: review['content'],
+                    subjects: review['subjects'],
+                    canEdit: true,
+                    gender: review['gender'],
+                    age: review['age'],
+                    teacher: teacher,
+                    reviewer: review['reviewer'],
+                    reply: review['reply'] ?? "",
+                  );
+                },
+              );
+            }
           }
           return const Center(child: CircularProgressIndicator());
         },
@@ -177,39 +186,42 @@ class _MyProfileFragmentState extends ConsumerState<TeacherProfileFragment>
     return Container(
         padding: const EdgeInsets.all(16),
         color: context.appColors.backgroundColor,
-        child: Column(
-          children: [
-            const XPBox(
-              subject: "수학",
-              age: "고등학교 3학년",
-              date: "2022.12 ~ 2023.09",
-              period: "10개월",
-              canEdit: true,
-            ),
-            const Height(16),
-            const XPBox(
-              subject: "국어",
-              age: "고등학교 1학년",
-              date: "2022.12 ~ 2023.05",
-              period: "6개월",
-              canEdit: true,
-            ),
-            const Height(16),
-            TextButton.icon(
-              onPressed: () {},
-              icon: Icon(
-                Icons.add_circle_outline,
-                color: context.appColors.primaryText,
+        child: SingleChildScrollView(
+          physics: const NeverScrollableScrollPhysics(),
+          child: Column(
+            children: [
+              const XPBox(
+                subject: "수학",
+                age: "고등학교 3학년",
+                date: "2022.12 ~ 2023.09",
+                period: "10개월",
+                canEdit: true,
               ),
-              label: Text(
-                '경력 추가',
-                style: TextStyle(
-                    fontSize: 19,
-                    fontWeight: FontWeight.w500,
-                    color: context.appColors.primaryText),
+              const Height(16),
+              const XPBox(
+                subject: "국어",
+                age: "고등학교 1학년",
+                date: "2022.12 ~ 2023.05",
+                period: "6개월",
+                canEdit: true,
               ),
-            ),
-          ],
+              const Height(16),
+              TextButton.icon(
+                onPressed: () {},
+                icon: Icon(
+                  Icons.add_circle_outline,
+                  color: context.appColors.primaryText,
+                ),
+                label: Text(
+                  '경력 추가',
+                  style: TextStyle(
+                      fontSize: 19,
+                      fontWeight: FontWeight.w500,
+                      color: context.appColors.primaryText),
+                ),
+              ),
+            ],
+          ),
         ));
   }
 

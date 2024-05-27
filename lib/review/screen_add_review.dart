@@ -87,12 +87,9 @@ class _AddReviewScreenState extends ConsumerState<AddReviewScreen> {
                         child: GridView.count(
                           primary: true,
                           crossAxisCount: 4,
-                          //set the number of buttons in a row
                           crossAxisSpacing: 12,
-                          //set the spacing between the buttons
                           mainAxisSpacing: 12,
                           childAspectRatio: 2,
-                          //set the width-to-height ratio of the button,
                           physics: const NeverScrollableScrollPhysics(),
                           children:
                               List.generate(isSelected.length, (newIndex) {
@@ -120,7 +117,6 @@ class _AddReviewScreenState extends ConsumerState<AddReviewScreen> {
                                       }
                                     }
                                   });
-                                  //print(isSelected);
                                 },
                                 child: Container(
                                   //width: 20,
