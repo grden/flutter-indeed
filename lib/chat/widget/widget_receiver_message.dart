@@ -1,10 +1,11 @@
 import 'dart:math' as math; // import this
 
 import 'package:flutter/material.dart';
-import 'package:self_project/chat/widget/widget_sender_message.dart';
-import 'package:self_project/common/extension/extension_context.dart';
-import 'package:self_project/common/widget/widget_sizedbox.dart';
 
+import 'widget_sender_message.dart';
+
+import '../../common/extension/extension_context.dart';
+import '../../common/widget/widget_sizedbox.dart';
 import '../../pb/chat.pb.dart';
 
 class ReceivedMessageScreen extends StatelessWidget {

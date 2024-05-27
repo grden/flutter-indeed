@@ -2,11 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:self_project/common/constant.dart';
-import 'package:self_project/common/extension/extension_context.dart';
-import 'package:self_project/common/widget/widget_arrow.dart';
-import 'package:self_project/common/widget/widget_sizedbox.dart';
 
+import '../common/constant.dart';
+import '../common/extension/extension_context.dart';
+import '../common/widget/widget_arrow.dart';
+import '../common/widget/widget_sizedbox.dart';
 import '../common/widget/widget_tap.dart';
 import '../model/enums.dart';
 import '../model/model_teacher.dart';

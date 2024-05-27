@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:self_project/tab/tab_item.dart';
+
+import 'tab_item.dart';
 
 class TabNavigator extends StatelessWidget {
   const TabNavigator({

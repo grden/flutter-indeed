@@ -4,16 +4,17 @@ import 'package:avatar_glow/avatar_glow.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:grpc/grpc.dart';
-import 'package:self_project/common/extension/extension_context.dart';
-import 'package:self_project/common/widget/widget_flip_loading.dart';
-import 'package:self_project/common/widget/widget_line.dart';
-import 'package:self_project/common/widget/widget_sizedbox.dart';
 
+import '../common/extension/extension_context.dart';
+import '../common/widget/widget_flip_loading.dart';
+import '../common/widget/widget_line.dart';
+import '../common/widget/widget_sizedbox.dart';
 import '../common/widget/widget_tap.dart';
 import '../pb/chat.pb.dart';
 import '../services/auth.dart';
 import '../services/chat_service.dart';
 import '../services/grpc_service.dart';
+
 import 'widget/widget_receiver_message.dart';
 import 'widget/widget_sender_message.dart';
 

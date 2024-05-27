@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:self_project/common/extension/extension_context.dart';
-import 'package:self_project/common/widget/widget_sizedbox.dart';
+
+import '../common/extension/extension_context.dart';
+import '../common/widget/widget_sizedbox.dart';
 
 import 'data_onboarding.dart';
 
@@ -101,7 +102,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             style: TextStyle(
                               fontWeight: FontWeight.w700,
                               fontSize: 17,
-                              color: context.appColors.primaryText,
+                              color: context.appColors.secondaryText,
                             ),
                           ),
                         ),
@@ -198,13 +199,13 @@ class OnboardingWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         ClipPath(
-          clipper: ArcClipper(),
+          //clipper: ArcClipper(),
           child: Stack(
             children: [
               Container(
                 height: size.height * 0.55,
-                decoration: BoxDecoration(
-                  color: context.appColors.primaryColor,
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(255, 228, 237, 254),
                 ),
               ),
               Positioned(

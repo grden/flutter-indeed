@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:riverpod/riverpod.dart';
-import 'package:self_project/model/model_user.dart';
-import 'package:self_project/model/mongo/user.dart';
+
+import '../model/model_user.dart';
+import '../model/mongo/user.dart';
 
 /// FirebaseAuth, FirebaseFirestore의 user 정보에 대한 provider
 

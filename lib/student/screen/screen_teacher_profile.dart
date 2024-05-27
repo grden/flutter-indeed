@@ -2,20 +2,23 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:self_project/common/constant.dart';
-import 'package:self_project/common/extension/extension_context.dart';
-import 'package:self_project/common/widget/widget_contact_button.dart';
-import 'package:self_project/common/widget/widget_profile_box.dart';
-import 'package:self_project/common/widget/widget_line.dart';
-import 'package:self_project/common/widget/widget_sizedbox.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
-import 'package:self_project/model/model_teacher.dart';
-import 'package:self_project/model/model_user.dart';
-import 'package:self_project/student/widget/widget_teacher_card.dart';
+import 'package:material_dialogs/dialogs.dart';
+import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
 
+import '../../common/constant.dart';
+import '../../common/extension/extension_context.dart';
+import '../../common/widget/widget_contact_button.dart';
+import '../../common/widget/widget_profile_box.dart';
+import '../../common/widget/widget_line.dart';
+import '../../common/widget/widget_sizedbox.dart';
+import '../../model/model_teacher.dart';
+import '../../model/model_user.dart';
 import '../../provider/provider_user.dart';
 
-class TeacherProfileScreen extends StatefulWidget {
+import '../widget/widget_teacher_card.dart';
+
+class TeacherProfileScreen extends ConsumerStatefulWidget {
   final String id;
   final Teacher teacher;
 
@@ -26,10 +29,11 @@ class TeacherProfileScreen extends StatefulWidget {
   });
 
   @override
-  State<TeacherProfileScreen> createState() => _TeacherProfileScreenState();
+  ConsumerState<TeacherProfileScreen> createState() =>
+      _TeacherProfileScreenState();
 }
 
-class _TeacherProfileScreenState extends State<TeacherProfileScreen>
+class _TeacherProfileScreenState extends ConsumerState<TeacherProfileScreen>
     with SingleTickerProviderStateMixin {
   final db = FirebaseFirestore.instance;
   // List<Map<String, dynamic>> _reviewsList = [];
@@ -148,6 +152,11 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen>
         .collection('type')
         .doc('teacher')
         .collection('reviews');
+    final chatRef = db.collection('chat');
+    final userCredential = ref.watch(userCredentialProvider);
+    String docName =
+        '${widget.teacher.user.email}-${userCredential?.user?.email}';
+
     return Container(
       padding: const EdgeInsets.all(16),
       color: context.appColors.backgroundColor,
@@ -180,8 +189,42 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen>
                 ),
                 TextButton.icon(
                   onPressed: () {
-                    GoRouter.of(context)
-                        .pushNamed('new-review', extra: widget.teacher);
+                    chatRef.doc(docName).get().then((documentSnapshot) {
+                      final doc = documentSnapshot.data();
+                      if (doc?['studentOK'] && doc?['teacherOK']) {
+                        GoRouter.of(context)
+                            .pushNamed('new-review', extra: widget.teacher);
+                      } else {
+                        print('not matched');
+                        Dialogs.materialDialog(
+                            context: context,
+                            msg: '과외가 성사된 선생님의 평가만\n작성할 수 있습니다.',
+                            msgAlign: TextAlign.center,
+                            msgStyle: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.w500,
+                                color: context.appColors.primaryText),
+                            color: Colors.white,
+                            dialogShape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                            actions: [
+                              IconsOutlineButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                text: '확인',
+                                textStyle: TextStyle(
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w600,
+                                    color: context.appColors.inverseText),
+                                color: context.appColors.primaryColor,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8)),
+                                padding: const EdgeInsets.all(12),
+                              )
+                            ]);
+                      }
+                    });
                   },
                   icon: Icon(
                     Icons.add_circle_outline,

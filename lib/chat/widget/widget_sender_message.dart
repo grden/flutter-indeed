@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
-import 'package:self_project/common/extension/extension_context.dart';
-import 'package:self_project/common/widget/widget_sizedbox.dart';
 
+import '../../common/extension/extension_context.dart';
+import '../../common/widget/widget_sizedbox.dart';
 import '../../pb/chat.pb.dart';
 
 class SentMessageScreen extends StatelessWidget {

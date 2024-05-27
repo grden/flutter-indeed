@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:self_project/common/extension/extension_context.dart';
-import 'package:self_project/provider/provider_user.dart';
-import 'package:self_project/tab/tab_item.dart';
-import 'package:self_project/tab/tab_navigator.dart';
 import 'package:velocity_x/velocity_x.dart';
+
+import '../common/extension/extension_context.dart';
+import '../provider/provider_user.dart';
+import '../tab/tab_item.dart';
+import '../tab/tab_navigator.dart';
 
 class MainScreen extends ConsumerStatefulWidget {
   const MainScreen({super.key});
@@ -110,13 +111,14 @@ class MainScreenState extends ConsumerState<MainScreen>
           topRight: Radius.circular(bottomNavigationBarBorderRadius),
         ),
         child: BottomNavigationBar(
-          backgroundColor: context.appColors.backgroundColor,
+          backgroundColor: context.appColors.cardColor,
           items: navigationBarItems(context),
           currentIndex: _currentIndex,
           selectedItemColor: context.appColors.primaryColor,
           unselectedItemColor: context.appColors.iconButtonInactivate,
           selectedLabelStyle: TextStyle(color: context.appColors.primaryColor),
-          unselectedLabelStyle: TextStyle(color: context.appColors.iconButtonInactivate),
+          unselectedLabelStyle:
+              TextStyle(color: context.appColors.iconButtonInactivate),
           onTap: _handleOnTapNavigationBarItem,
           showSelectedLabels: true,
           showUnselectedLabels: true,
