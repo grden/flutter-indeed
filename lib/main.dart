@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:self_project/screen/screen_setting.dart';
 
 import 'chat/screen_chat.dart';
 import 'common/extension/extension_context.dart';
@@ -115,7 +116,10 @@ class App extends StatefulWidget {
             accountType: data['accountType'],
           );
         }),
-      )
+      ),
+      GoRoute(
+          path: '/setting',
+          builder: ((context, state) => const SettingScreen()))
     ],
   );
 
