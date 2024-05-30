@@ -1,18 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
+import 'widget_tap.dart';
 import '../constant.dart';
 import '../extension/extension_context.dart';
 import 'widget_sizedbox.dart';
 
-class HomeAppBar extends StatefulWidget {
+class HomeAppBar extends StatelessWidget {
   const HomeAppBar({super.key});
 
-  @override
-  State<HomeAppBar> createState() => _HomeAppBarState();
-}
-
-class _HomeAppBarState extends State<HomeAppBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -21,20 +18,26 @@ class _HomeAppBarState extends State<HomeAppBar> {
       child: Row(
         children: [
           const Spacer(),
-          const Padding(
-            padding: EdgeInsets.all(4.0),
-            child: Icon(
-              CupertinoIcons.search,
-              size: 28,
-            ),
-          ),
-          const Width(8),
           Padding(
             padding: const EdgeInsets.all(4.0),
             child: Icon(
-              Icons.tune,
+              CupertinoIcons.search,
               size: 28,
               color: context.appColors.iconButton,
+            ),
+          ),
+          const Width(8),
+          Tap(
+            onTap: () {
+              context.push('/setting');
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Icon(
+                Icons.tune,
+                size: 28,
+                color: context.appColors.iconButton,
+              ),
             ),
           ),
           const Width(16),

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 
-import '../../common/constant.dart';
+import '../../common/widget/widget_profile_appbar.dart';
 import '../../common/extension/extension_context.dart';
 import '../../common/widget/widget_profile_box.dart';
 import '../../common/widget/widget_line.dart';
@@ -32,22 +32,7 @@ class _MyProfileFragmentState extends ConsumerState<TeacherProfileFragment>
     Stream<Teacher> teacherStream =
         getTeacherStream(userCredential: userCredential);
     return Column(children: [
-      AppBar(
-        backgroundColor: context.appColors.backgroundColor,
-        scrolledUnderElevation: 0,
-        toolbarHeight: appBarHeight,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: Icon(
-              Icons.tune,
-              size: 28,
-              color: context.appColors.iconButton,
-            ),
-          ),
-          const Width(16),
-        ],
-      ),
+      const ProfileAppBar(),
       Expanded(
         child: StreamBuilder(
           stream: teacherStream,
