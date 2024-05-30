@@ -71,7 +71,23 @@ class _ChatScreenState extends State<ChatScreen> {
         if (value.message.contains("has joined the room.")) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('${widget.receiverEmail} has joined now.'),
+              content: Text(
+                '${widget.name}님이 현재 온라인입니다.',
+                textAlign: TextAlign.center,
+                style:
+                    const TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+              ),
+              dismissDirection: DismissDirection.up,
+              behavior: SnackBarBehavior.floating,
+              margin: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).size.height - 210,
+                  left: 16,
+                  right: 16),
+              duration: const Duration(milliseconds: 1800),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12)),
+              padding: const EdgeInsets.all(12),
+              backgroundColor: const Color.fromARGB(255, 30, 98, 190),
             ),
           );
         }
@@ -110,7 +126,10 @@ class _ChatScreenState extends State<ChatScreen> {
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Failed to get messages: $error'),
+          content: Text(
+            'Failed to get messages: $error',
+            style: const TextStyle(fontSize: 17),
+          ),
         ),
       );
     } finally {
@@ -147,28 +166,30 @@ class _ChatScreenState extends State<ChatScreen> {
       appBar: AppBar(
         titleSpacing: 0,
         title: Row(children: [
-          Container(
-            width: 48,
-            height: 48,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
+          if (!widget.accountType) ...[
+            Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: widget.profileImage != null
+                    ? Image(
+                        image: NetworkImage(widget.profileImage!),
+                        fit: BoxFit.contain,
+                      )
+                    : const Image(
+                        image: AssetImage('assets/image/default_profile.png')),
+              ),
             ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: widget.profileImage != null
-                  ? Image(
-                      image: NetworkImage(widget.profileImage!),
-                      fit: BoxFit.contain,
-                    )
-                  : const Image(
-                      image: AssetImage('assets/image/default_profile.png')),
-            ),
-          ),
+          ],
           const Width(12),
           Text(
             widget.name,
             style: const TextStyle(fontSize: 21, fontWeight: FontWeight.w600),
-          )
+          ),
         ]),
         backgroundColor: context.appColors.backgroundColor,
         actions: [
@@ -249,7 +270,6 @@ class _ChatScreenState extends State<ChatScreen> {
                                     _sendMessage();
                                   },
                                   icon: const Icon(Icons.send)),
-                              //hintText: 'Reply to this wave',
                             ),
                             onChanged: (value) {
                               if (value.isNotEmpty) {}
@@ -270,7 +290,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   loadingWidget() => const Center(child: CircularProgressIndicator());
   errorWidget() => Center(
-        child: Text(error ?? "Something went wrong",
+        child: Text(error ?? "에러",
             style: TextStyle(color: context.appColors.errorColor)),
       );
 
