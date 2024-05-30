@@ -59,7 +59,7 @@ class _StudentHomeFragmentState extends ConsumerState<StudentHomeFragment> {
                   return MasonryGridView.count(
                       padding: const EdgeInsets.fromLTRB(
                           16, appBarHeight + 16, 16, 60),
-                      crossAxisCount: 2,
+                      crossAxisCount: 1,
                       mainAxisSpacing: 16,
                       crossAxisSpacing: 16,
                       itemCount: studentsList.length,

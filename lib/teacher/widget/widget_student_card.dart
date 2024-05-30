@@ -22,19 +22,17 @@ class BuildStudentCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Expanded(
-                child: Text(
-                  student.user.name,
-                  style: TextStyle(
-                      color: context.appColors.primaryText,
-                      fontSize: 17,
-                      fontWeight: FontWeight.w700),
-                  overflow: TextOverflow.fade,
-                  maxLines: 1,
-                  softWrap: false,
-                ),
+              Text(
+                student.user.name,
+                style: TextStyle(
+                    color: context.appColors.primaryText,
+                    fontSize: 17,
+                    fontWeight: FontWeight.w700),
+                overflow: TextOverflow.fade,
+                maxLines: 1,
+                softWrap: false,
               ),
-              const Width(4),
+              const Width(8),
               Container(
                 width: 18,
                 height: 18,
@@ -64,7 +62,7 @@ class BuildStudentCard extends StatelessWidget {
               ),
             ],
           ),
-          const Height(4),
+          const Height(8),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -91,8 +89,32 @@ class BuildStudentCard extends StatelessWidget {
                 ),
               ),
             ],
-          )
+          ),
+          const Height(8),
           //Text('${teacherProfiles[index].univ ?? ''} ${teacherProfiles[index].major ?? ''}'),
+          TextField(
+            style: const TextStyle(fontSize: 15),
+            decoration: InputDecoration(
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
+              filled: true,
+              fillColor: context.appColors.cardColor,
+              suffixIcon:
+                  IconButton(onPressed: () {}, icon: const Icon(Icons.send)),
+              iconColor: context.appColors.primaryColor,
+              border: OutlineInputBorder(
+                  borderSide: BorderSide.none,
+                  borderRadius: BorderRadius.circular(12)),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color: context.appColors.primaryColor, width: 0.6),
+                  borderRadius: BorderRadius.circular(12)),
+              hintText: '메시지를 보내보세요.',
+              labelStyle: TextStyle(
+                  fontSize: 17, color: context.appColors.secondaryText),
+              errorStyle: const TextStyle(fontSize: 15),
+            ),
+          ),
         ],
       ),
     );
@@ -101,6 +123,6 @@ class BuildStudentCard extends StatelessWidget {
 
 String addString<T>(T? input, String backString, [String frontString = '']) {
   String output =
-  input != null ? frontString + input.toString() + backString : '';
+      input != null ? frontString + input.toString() + backString : '';
   return output;
 }
