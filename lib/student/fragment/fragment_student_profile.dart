@@ -174,6 +174,7 @@ class _MyProfileFragmentState extends ConsumerState<StudentProfileFragment>
             InfoBox(
               title: '과목',
               canEdit: true,
+              accountType: student.user.accountType!,
               child: Column(
                 children: [
                   SizedBox(
@@ -211,6 +212,7 @@ class _MyProfileFragmentState extends ConsumerState<StudentProfileFragment>
             InfoBox(
               title: '소개',
               canEdit: true,
+              accountType: student.user.accountType!,
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(

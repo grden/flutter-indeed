@@ -72,13 +72,17 @@ class _ChatFragmentState extends ConsumerState<StudentChatFragment> {
                       child: const Center(child: Text("뭔가 문제가 생겼습니다. 재시도하기")));
                 }
                 if (!snapshot.hasData) {
-                  return CircularProgressIndicator(
-                    color: context.appColors.primaryColor,
-                  );
+                  return const Center(
+                      child: Text(
+                    '채팅 기록이 없습니다.',
+                    style: TextStyle(fontSize: 19),
+                  ));
                 } else {
-                  return CircularProgressIndicator(
-                    color: context.appColors.primaryColor,
-                  );
+                  return const Center(
+                      child: Text(
+                    '채팅 기록이 없습니다.',
+                    style: TextStyle(fontSize: 19),
+                  ));
                 }
               }),
         )

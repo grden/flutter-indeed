@@ -380,6 +380,7 @@ class _TeacherProfileScreenState extends ConsumerState<TeacherProfileScreen>
             InfoBox(
               title: '과목 및 시급',
               canEdit: false,
+              accountType: widget.teacher.user.accountType!,
               child: Column(
                 children: [
                   widget.teacher.budget == null
@@ -433,14 +434,16 @@ class _TeacherProfileScreenState extends ConsumerState<TeacherProfileScreen>
               ),
             ),
             const Height(16),
-            const InfoBox(
+            InfoBox(
               title: '소개',
               canEdit: false,
+              accountType: widget.teacher.user.accountType!,
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  '안녕하세요',
-                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                  widget.teacher.info!,
+                  style: const TextStyle(
+                      fontSize: 17, fontWeight: FontWeight.w500),
                 ),
               ),
             )

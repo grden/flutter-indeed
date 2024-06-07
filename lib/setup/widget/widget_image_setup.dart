@@ -161,6 +161,7 @@ class _ImageSetupState extends ConsumerState<ImageSetup> {
       'budget':
           setupList[3][0].toString() != '' ? setupList[3][0].toString() : null,
       'profileImagePath': downloadLink,
+      'info': '아직 소개가 없습니다'
     });
 
     await db

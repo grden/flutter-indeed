@@ -221,6 +221,7 @@ class _MyProfileFragmentState extends ConsumerState<TeacherProfileFragment>
             InfoBox(
               title: '과목 및 시급',
               canEdit: true,
+              accountType: teacher.user.accountType!,
               child: Column(
                 children: [
                   teacher.budget == null
@@ -274,14 +275,16 @@ class _MyProfileFragmentState extends ConsumerState<TeacherProfileFragment>
               ),
             ),
             const Height(16),
-            const InfoBox(
+            InfoBox(
               title: '소개',
               canEdit: true,
+              accountType: teacher.user.accountType!,
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  '현재 시립대학교 컴퓨터공학과 재학중입니다.\n\n학창시절 잊지 못한 첫사랑만큼, 열정적으로 학생을 가르치겠습니다.',
-                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                  teacher.info!,
+                  style: const TextStyle(
+                      fontSize: 17, fontWeight: FontWeight.w500),
                 ),
               ),
             )

@@ -146,10 +146,10 @@ class _StudentHomeFragmentState extends ConsumerState<StudentHomeFragment> {
       users = [];
       for (var doc in query.docs) {
         final user = UserData.fromJson(doc.data());
-        print(user.name);
+        //print(user.name);
         users.add(user);
       }
-      print('users data list: ${users.map((e) => e.name).toList()}');
+      //print('users data list: ${users.map((e) => e.name).toList()}');
       yield users;
     }
   }

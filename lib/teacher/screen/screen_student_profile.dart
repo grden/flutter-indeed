@@ -228,6 +228,7 @@ class _StudentProfileScreenState extends ConsumerState<StudentProfileScreen>
             InfoBox(
               title: '과목',
               canEdit: false,
+              accountType: widget.student.user.accountType!,
               child: SizedBox(
                 height: widget.student.subjects.length > 4 ? 92 : 44,
                 child: GridView.count(
@@ -261,6 +262,7 @@ class _StudentProfileScreenState extends ConsumerState<StudentProfileScreen>
             InfoBox(
               title: '소개',
               canEdit: false,
+              accountType: widget.student.user.accountType!,
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(

@@ -21,8 +21,10 @@ ChatData _$ChatDataFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ChatData {
   List<String> get members => throw _privateConstructorUsedError;
-  set members(List<String> value) => throw _privateConstructorUsedError;
-  String get lastMsg => throw _privateConstructorUsedError;
+  set members(List<String> value) =>
+      throw _privateConstructorUsedError; // index 0 = teacher, index 1 = student
+  String get lastMsg =>
+      throw _privateConstructorUsedError; // index 0 = teacher, index 1 = student
   set lastMsg(String value) => throw _privateConstructorUsedError;
   @JsonKey(fromJson: _lastTimeFromJson)
   DateTime get lastTime => throw _privateConstructorUsedError;
@@ -139,6 +141,7 @@ class _$ChatDataImpl implements _ChatData {
 
   @override
   List<String> members;
+// index 0 = teacher, index 1 = student
   @override
   String lastMsg;
   @override
@@ -177,8 +180,8 @@ abstract class _ChatData implements ChatData {
   @override
   List<String> get members;
   set members(List<String> value);
-  @override
-  String get lastMsg;
+  @override // index 0 = teacher, index 1 = student
+  String get lastMsg; // index 0 = teacher, index 1 = student
   set lastMsg(String value);
   @override
   @JsonKey(fromJson: _lastTimeFromJson)

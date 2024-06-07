@@ -12,12 +12,14 @@ class InfoBox extends StatelessWidget {
   final String title;
   final Widget child;
   final bool canEdit;
+  final bool accountType;
 
   const InfoBox(
       {super.key,
       required this.child,
       required this.title,
-      required this.canEdit});
+      required this.canEdit,
+      required this.accountType});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +44,10 @@ class InfoBox extends StatelessWidget {
                 if (canEdit) ...[
                   const Spacer(),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      GoRouter.of(context)
+                          .pushNamed('edit-info', extra: accountType);
+                    },
                     icon: Icon(
                       Icons.edit_outlined,
                       color: context.appColors.secondaryText,

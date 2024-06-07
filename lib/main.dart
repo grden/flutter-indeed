@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:self_project/screen/screen_setting.dart';
+import 'package:self_project/screen/screen_edit_info.dart';
 
 import 'chat/screen_chat.dart';
 import 'common/extension/extension_context.dart';
@@ -101,6 +102,13 @@ class App extends StatefulWidget {
         builder: (context, state) => AddReplyScreen(
           reviewer: state.pathParameters['email']!,
           teacher: state.extra as Teacher,
+        ),
+      ),
+      GoRoute(
+        path: '/edit-info',
+        name: 'edit-info',
+        builder: (context, state) => EditInfoScreen(
+          accountType: state.extra as bool,
         ),
       ),
       GoRoute(

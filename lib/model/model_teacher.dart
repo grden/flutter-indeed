@@ -25,16 +25,17 @@ sealed class Teacher with _$Teacher {
   factory Teacher.fromJson(Map<String, dynamic> json) =>
       _$TeacherFromJson(json);
 
-  factory Teacher.fromFirestore(
-          UserData user, Map<String, dynamic> json) =>
+  factory Teacher.fromFirestore(UserData user, Map<String, dynamic> json) =>
       Teacher(
         user: user,
         displayName: json['displayName'],
-        subjects: json['subjects'].map<Subject>((e) => Subject.fromValue(e)).toList(),
+        subjects:
+            json['subjects'].map<Subject>((e) => Subject.fromValue(e)).toList(),
         profileImagePath: json['profileImagePath'],
         univ: json['univ'],
         major: json['major'],
         studentID: json['studentID'],
         budget: json['budget'],
+        info: json['info'],
       );
 }
