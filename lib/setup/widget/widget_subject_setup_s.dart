@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:self_project/common/constant.dart';
-import 'package:self_project/common/extension/extension_context.dart';
-import 'package:self_project/common/widget/widget_sizedbox.dart';
-import 'package:self_project/common/widget/widget_tap.dart';
-import 'package:self_project/model/enums.dart';
-import 'package:self_project/setup/screen/screen_student_setup.dart';
+
+import '../../common/constant.dart';
+import '../../common/extension/extension_context.dart';
+import '../../common/widget/widget_sizedbox.dart';
+import '../../common/widget/widget_tap.dart';
+import '../../model/enums.dart';
+import '../screen/screen_student_setup.dart';
+
 import 'dart:ui' as ui;
 
 class SubjectSetupS extends ConsumerStatefulWidget {
   const SubjectSetupS(
-      this.buttonPageController, {
-        super.key,
-      });
+    this.buttonPageController, {
+    super.key,
+  });
 
   final PageController buttonPageController;
 
@@ -35,8 +37,14 @@ class _SubjectSetupState extends ConsumerState<SubjectSetupS> {
 
   @override
   Widget build(BuildContext context) {
-    final availHeight = MediaQuery.of(context).size.height - appBarHeight - MediaQueryData.fromView(ui.PlatformDispatcher.instance.implicitView!).padding
-        .top - MediaQueryData.fromView(ui.PlatformDispatcher.instance.implicitView!).padding.bottom;
+    final availHeight = MediaQuery.of(context).size.height -
+        appBarHeight -
+        MediaQueryData.fromView(ui.PlatformDispatcher.instance.implicitView!)
+            .padding
+            .top -
+        MediaQueryData.fromView(ui.PlatformDispatcher.instance.implicitView!)
+            .padding
+            .bottom;
     return Container(
       height: availHeight,
       padding: const EdgeInsets.all(24),
@@ -47,8 +55,7 @@ class _SubjectSetupState extends ConsumerState<SubjectSetupS> {
             alignment: Alignment.center,
             child: Text(
               '배우고자 하는\n과목을 선택해주세요.',
-              style: TextStyle(
-                  fontSize: 28, fontWeight: FontWeight.w600),
+              style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
               textAlign: TextAlign.center,
             ),
           ),
@@ -71,16 +78,15 @@ class _SubjectSetupState extends ConsumerState<SubjectSetupS> {
                     onTap: () {
                       //set the toggle logic
                       final isOneSelected =
-                          isSelected.where((element) => element).length ==
-                              1;
+                          isSelected.where((element) => element).length == 1;
 
                       if (isOneSelected && isSelected[newIndex]) return;
 
                       setState(() {
                         // looping through the list of booleans
                         for (int index = 0;
-                        index < isSelected.length;
-                        index++) {
+                            index < isSelected.length;
+                            index++) {
                           // checking for the index value
                           if (index == newIndex) {
                             // toggle between the old index and new index value
@@ -119,8 +125,9 @@ class _SubjectSetupState extends ConsumerState<SubjectSetupS> {
           Consumer(builder: (context, ref, child) {
             return MaterialButton(
               onPressed: () {
-                widget.buttonPageController
-                    .nextPage(duration: const Duration(milliseconds: 300), curve: Curves.easeOutQuart);
+                widget.buttonPageController.nextPage(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeOutQuart);
                 ref.read(indexStateProvider.notifier).state++;
 
                 for (int i = 0; i < subjectList.length; i++) {

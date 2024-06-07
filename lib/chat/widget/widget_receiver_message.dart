@@ -22,13 +22,6 @@ class ReceivedMessageScreen extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        // Transform(
-        //   alignment: Alignment.center,
-        //   transform: Matrix4.rotationY(math.pi),
-        //   child: CustomPaint(
-        //     painter: CustomShape(Colors.grey.shade300),
-        //   ),
-        // ),
         Flexible(
           child: Container(
             padding: const EdgeInsets.all(12),

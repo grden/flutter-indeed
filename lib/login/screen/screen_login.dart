@@ -1,9 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:expandable_page_view/expandable_page_view.dart';
 import 'package:flutter/material.dart';
-import 'package:self_project/common/extension/extension_context.dart';
-import 'package:self_project/login/widget/widget_signin_card.dart';
-import 'package:self_project/login/widget/widget_signup_card.dart';
+
+import '../../common/extension/extension_context.dart';
+import '../widget/widget_signin_card.dart';
+import '../widget/widget_signup_card.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

@@ -1,8 +1,9 @@
-import 'package:self_project/common/theme/abstract_theme_shadows.dart';
-import 'package:self_project/common/theme/light_app_colors.dart';
-import 'package:self_project/common/theme/abstract_theme_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:self_project/common/theme/light_app_shadows.dart';
+
+import 'abstract_theme_shadows.dart';
+import 'light_app_colors.dart';
+import 'abstract_theme_colors.dart';
+import 'light_app_shadows.dart';
 
 enum CustomTheme {
   lightTheme(LightAppColors(), LightAppShadows());

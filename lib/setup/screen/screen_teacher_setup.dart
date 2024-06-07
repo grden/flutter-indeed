@@ -98,16 +98,6 @@ class _SetupScreenState extends ConsumerState<TeacherSetupScreen> {
                   physics: const NeverScrollableScrollPhysics(),
                 ),
               ),
-              // CarouselSlider(
-              //     items: widgetList,
-              //     options: CarouselOptions(
-              //       height: 600,
-              //       initialPage: 0,
-              //       viewportFraction: 1,
-              //       enableInfiniteScroll: false,
-              //       scrollPhysics: const NeverScrollableScrollPhysics(),
-              //     ),
-              //     carouselController: buttonCarouselController)
             ],
           ),
         ),

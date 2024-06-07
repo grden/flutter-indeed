@@ -458,23 +458,3 @@ class _ProfileBox extends StatelessWidget {
     );
   }
 }
-
-// Future<Teacher> getTeacher({required UserCredential userCredential}) async {
-//   final UserCredential userCred = userCredential;
-//   final userDoc = await db
-//       .collection('users')
-//       .doc(userCred.user!.email!)
-//       .get()
-//       .then((DocumentSnapshot doc) => doc.data() as Map<String, dynamic>);
-//   final teacherDoc = await db
-//       .collection('users')
-//       .doc(userCred.user!.email!)
-//       .collection('type')
-//       .doc('teacher')
-//       .get()
-//       .then((DocumentSnapshot doc) => doc.data() as Map<String, dynamic>);
-//
-//   final user = UserData.fromJson(userDoc);
-//   final teacher = Teacher.fromFirestore(user, teacherDoc);
-//   return teacher;
-// }

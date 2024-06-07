@@ -90,40 +90,6 @@ class _StudentHomeFragmentState extends ConsumerState<StudentHomeFragment> {
                   color: context.appColors.primaryColor,
                 );
               }
-              // switch (snapshot.connectionState) {
-              //   case ConnectionState.none:
-              //     {
-              //       return Text('none');
-              //     }
-              //   case ConnectionState.waiting:
-              //   case ConnectionState.active:
-              //     {
-              //       return const Center(
-              //         child: Text('잠시 기다려 주세요'),
-              //       );
-              //     }
-              //   case ConnectionState.done:
-              //     {
-              //       List<Student> studentsList = snapshot.data!;
-              //       return MasonryGridView.count(
-              //           padding: const EdgeInsets.fromLTRB(
-              //               16, appBarHeight + 16, 16, 60),
-              //           crossAxisCount: 2,
-              //           mainAxisSpacing: 16,
-              //           crossAxisSpacing: 16,
-              //           itemCount: studentsList.length,
-              //           itemBuilder: (context, index) {
-              //             final student = studentsList[index];
-              //             return Tap(
-              //                 onTap: () {
-              //                   context.goNamed('student-profile',
-              //                       extra: student,
-              //                       pathParameters: {'id': student.user.id});
-              //                 },
-              //                 child: BuildStudentCard(student));
-              //           });
-              //     }
-              // }
             },
           ),
           const HomeAppBar(),

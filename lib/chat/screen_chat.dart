@@ -97,7 +97,6 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void addMessage(String message) {
-    // Simulate adding a message to the stream when a button is clicked
     final req = SendMessageRequest(
       message: message,
       receiver: widget.receiverEmail,

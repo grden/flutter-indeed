@@ -9,7 +9,6 @@ import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 
 import '../common/extension/extension_context.dart';
 import '../common/widget/widget_arrow.dart';
-import '../common/widget/widget_sizedbox.dart';
 import '../common/widget/widget_tap.dart';
 import '../common/constant.dart';
 import '../services/auth.dart';

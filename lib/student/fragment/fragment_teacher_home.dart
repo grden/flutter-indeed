@@ -1,14 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:self_project/common/constant.dart';
-import 'package:self_project/common/extension/extension_context.dart';
-import 'package:self_project/model/model_teacher.dart';
-import 'package:self_project/model/model_user.dart';
-import 'package:self_project/common/widget/widget_home_appbar.dart';
-import 'package:self_project/common/widget/widget_tap.dart';
-import 'package:self_project/student/widget/widget_teacher_card.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+
+import '../../common/constant.dart';
+import '../../common/extension/extension_context.dart';
+import '../../model/model_teacher.dart';
+import '../../model/model_user.dart';
+import '../../common/widget/widget_home_appbar.dart';
+import '../../common/widget/widget_tap.dart';
+import '../widget/widget_teacher_card.dart';
 
 class TeacherHomeFragment extends StatefulWidget {
   const TeacherHomeFragment({super.key});

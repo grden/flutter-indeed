@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:self_project/common/extension/extension_context.dart';
-import 'package:self_project/common/widget/widget_line.dart';
-import 'package:self_project/common/widget/widget_sizedbox.dart';
-import 'package:self_project/model/model_teacher.dart';
-import 'package:self_project/model/model_user.dart';
 
+import '../extension/extension_context.dart';
+import 'widget_line.dart';
+import 'widget_sizedbox.dart';
+import '../../model/model_teacher.dart';
+import '../../model/model_user.dart';
 import '../../model/model_student.dart';
 
 class InfoBox extends StatelessWidget {

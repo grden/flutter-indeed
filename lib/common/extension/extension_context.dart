@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:self_project/common/theme/abstract_theme_colors.dart';
-import 'package:self_project/common/theme/abstract_theme_shadows.dart';
-import 'package:self_project/common/theme/custom_theme.dart';
-import 'package:self_project/common/theme/custom_theme_holder.dart';
+
+import '../theme/abstract_theme_colors.dart';
+import '../theme/abstract_theme_shadows.dart';
+import '../theme/custom_theme.dart';
+import '../theme/custom_theme_holder.dart';
 
 extension ContextExtension on BuildContext {
   double width(double widthSize) {

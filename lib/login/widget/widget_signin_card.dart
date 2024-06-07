@@ -3,11 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:self_project/common/extension/extension_context.dart';
-import 'package:self_project/common/widget/widget_sizedbox.dart';
-import 'package:self_project/model/model_user.dart';
-import 'package:self_project/provider/provider_user.dart';
-import 'package:self_project/services/auth.dart';
+
+import '../../common/extension/extension_context.dart';
+import '../../common/widget/widget_sizedbox.dart';
+import '../../model/model_user.dart';
+import '../../provider/provider_user.dart';
+import '../../services/auth.dart';
 
 class SigninCard extends StatefulWidget {
   const SigninCard(
@@ -188,20 +189,6 @@ class _SigninCardState extends State<SigninCard> {
                         );
                       }),
                       const Height(4),
-                      // TextButton(
-                      //   onPressed: () {},
-                      //   style: ButtonStyle(
-                      //     foregroundColor: MaterialStateProperty.all(
-                      //         context.appColors.secondaryText),
-                      //     overlayColor:
-                      //     MaterialStateProperty.all(Colors.transparent),
-                      //   ),
-                      //   child: const Text(
-                      //     '비밀번호 찾기',
-                      //     style:
-                      //     TextStyle(fontSize: 19, fontWeight: FontWeight.w500),
-                      //   ),
-                      // ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

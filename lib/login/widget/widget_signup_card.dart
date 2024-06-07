@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:self_project/common/extension/extension_context.dart';
-import 'package:self_project/common/widget/widget_line.dart';
-import 'package:self_project/common/widget/widget_sizedbox.dart';
-import 'package:self_project/model/model_user.dart';
-import 'package:self_project/services/auth.dart';
+
+import '../../common/extension/extension_context.dart';
+import '../../common/widget/widget_line.dart';
+import '../../common/widget/widget_sizedbox.dart';
+import '../../model/model_user.dart';
+import '../../services/auth.dart';
 
 class SignupCard extends StatefulWidget {
   const SignupCard(
@@ -29,8 +30,6 @@ class _SignupCardState extends State<SignupCard> {
   String? genderDropdownValue;
   String? locationDropdownValue;
   bool isLoading = false;
-
-  //DateTime? onlineTime;
 
   @override
   Widget build(BuildContext context) {
@@ -75,71 +74,8 @@ class _SignupCardState extends State<SignupCard> {
                       const Height(16),
                       MaterialButton(
                         onPressed: () async {
-                          // setState(() {
-                          //   onlineTime = DateTime.now();
-                          // });
                           if (_formKey.currentState!.validate()) {
                             _formKey.currentState!.save();
-
-                            // try {
-                            //   setState(() {
-                            //     isLoading = true;
-                            //   });
-
-                            //   // text값으로 mongodb 계정 생성
-                            //   final mongoUser = await AuthService.signup(
-                            //       _emailTextController.text.trim(),
-                            //       _pwdTextController.text.trim(),
-                            //       _nameTextController.text.trim());
-
-                            //   // email값의 doc 이름으로 firestore에 doc생성하여 text값 저장
-                            //   final firestoreUser = {
-                            //     'id': mongoUser?.id ?? '',
-                            //     'email': mongoUser?.email ?? '',
-                            //     'name': _nameTextController.text.trim(),
-                            //     'age':
-                            //         int.parse(_ageTextController.text.trim()),
-                            //     'gender': genderDropdownValue!.trim(),
-                            //     'locations': locationDropdownValue!.trim(),
-                            //     'onlineTime':
-                            //         Timestamp.fromDate(DateTime.now()),
-                            //     //'onlineTime': DateTime.now().millisecondsSinceEpoch,
-                            //     'accountType': null,
-                            //     'initialSetup': false
-                            //   };
-
-                            //   await db
-                            //       .collection('users')
-                            //       .doc(_emailTextController.text.trim())
-                            //       .set(firestoreUser)
-                            //       .onError((error, _) => print(error));
-
-                            //   if (mongoUser != null) {
-                            //     if (context.mounted) {
-                            //       ScaffoldMessenger.of(context)
-                            //           .showSnackBar(SnackBar(
-                            //         backgroundColor:
-                            //             context.appColors.primaryColor,
-                            //         content: Text(
-                            //           '성공! 해당 계정으로 로그인해주세요.',
-                            //           style: TextStyle(
-                            //             color: context.appColors.inverseText,
-                            //             fontSize: 19,
-                            //           ),
-                            //         ),
-                            //       ));
-                            //     }
-                            //   }
-                            // } on GrpcError catch (error) {
-                            //   ScaffoldMessenger.of(context).showSnackBar(
-                            //       errorSnackbar(error.message.toString()));
-                            // } finally {
-                            //   if (mounted) {
-                            //     setState(() {
-                            //       isLoading = false;
-                            //     });
-                            //   }
-                            // }
 
                             final result = await signUp(
                               _emailTextController.text.trim(),

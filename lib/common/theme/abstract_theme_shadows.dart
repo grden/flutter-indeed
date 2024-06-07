@@ -10,14 +10,6 @@ abstract class AbstractThemeShadows {
         color: Colors.black,
       );
 
-  BoxShadow get buttonShadowSmall;
-
-  BoxShadow get textShadow;
-
-  BoxShadow get defaultShadow;
-
-  BoxShadow get thickTextShadow;
-
   BoxShadow get cardShadow => const BoxShadow(
         //offset: Offset(0, 0),
         blurRadius: 16,

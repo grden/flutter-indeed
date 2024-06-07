@@ -39,27 +39,3 @@ final userDatabaseProvider = StateProvider((ref) {
           toFirestore: (userData, _) => userData.toJson());
   return userDatabase;
 });
-
-/*
-// FirebaseAuth instance에 접근하기 위한 provider
-final firebaseAuthProvider =
-Provider<FirebaseAuth>((ref) => FirebaseAuth.instance);
-
-// Firebase auth의 authStateChanges 메서드로 auth의 state 변화 확인하여 변화 시 Stream의 형태로 watch하기 위한 provider
-final authStateChangesProvider = StreamProvider<User?>((ref) async* {
-  final firebaseAuth = ref.watch(firebaseAuthProvider);
-  // authStateChanges는 현재 User 혹은 null을 리턴 -> null check 필수
-  yield* firebaseAuth.authStateChanges();
-});
-
-// Firestore에서 현재 User와 일치하는 'users' collection의 데이터 접근하기 위한 provider
-final databaseProvider = Provider((ref) {
-  final authUser = ref.watch(authStateChangesProvider);
-
-  if (authUser.value?.uid != null) {
-    // 현재 User의 uid 값과 일치하는 id를 갖는 user 찾아서 리턴 -> 리턴값은
-    return db.collection('users').where('id', isEqualTo: authUser.value!.uid);
-  }
-  return null;
-});
-*/

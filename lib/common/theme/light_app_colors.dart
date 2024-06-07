@@ -1,4 +1,4 @@
-import 'package:self_project/common/theme/abstract_theme_colors.dart';
+import 'abstract_theme_colors.dart';
 
 class LightAppColors extends AbstractThemeColors {
   const LightAppColors();
