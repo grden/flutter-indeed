@@ -583,6 +583,7 @@ class _ProfileBox extends ConsumerWidget {
                                 'studentOK': false,
                                 'teacherOK': false,
                                 'lastMsg': 'start a conversation',
+                                'lastTime': Timestamp.fromDate(DateTime.now())
                               });
                             }
                           });

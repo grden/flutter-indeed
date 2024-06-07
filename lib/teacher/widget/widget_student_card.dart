@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:self_project/common/extension/extension_context.dart';
-import 'package:self_project/common/widget/widget_sizedbox.dart';
-import 'package:self_project/model/model_student.dart';
-import 'package:self_project/model/model_user.dart';
+
+import '../../common/extension/extension_context.dart';
+import '../../common/widget/widget_sizedbox.dart';
+import '../../model/model_student.dart';
+import '../../model/model_user.dart';
 
 class BuildStudentCard extends StatelessWidget {
   final Student student;
@@ -103,11 +104,16 @@ class BuildStudentCard extends StatelessWidget {
                   IconButton(onPressed: () {}, icon: const Icon(Icons.send)),
               iconColor: context.appColors.primaryColor,
               border: OutlineInputBorder(
-                  borderSide: BorderSide.none,
+                  borderSide: BorderSide(
+                      color: context.appColors.secondaryText, width: 0.6),
+                  borderRadius: BorderRadius.circular(12)),
+              enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color: context.appColors.secondaryText, width: 0.6),
                   borderRadius: BorderRadius.circular(12)),
               focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
-                      color: context.appColors.primaryColor, width: 0.6),
+                      color: context.appColors.secondaryText, width: 0.6),
                   borderRadius: BorderRadius.circular(12)),
               hintText: '메시지를 보내보세요.',
               labelStyle: TextStyle(

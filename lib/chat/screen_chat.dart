@@ -103,6 +103,14 @@ class _ChatScreenState extends State<ChatScreen> {
       receiver: widget.receiverEmail,
     );
     streamController.sink.add(req);
+
+    final db = FirebaseFirestore.instance;
+    final chatRef = db.collection('chat');
+
+    if (message != 'join_chat') {
+      chatRef.doc(widget.docName).update(
+          {'lastMsg': message, 'lastTime': Timestamp.fromDate(DateTime.now())});
+    }
   }
 
   void _sendMessage() {
@@ -164,6 +172,7 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         titleSpacing: 0,
         title: Row(children: [
           if (!widget.accountType) ...[
@@ -178,7 +187,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 child: widget.profileImage != null
                     ? Image(
                         image: NetworkImage(widget.profileImage!),
-                        fit: BoxFit.contain,
+                        fit: BoxFit.cover,
                       )
                     : const Image(
                         image: AssetImage('assets/image/default_profile.png')),
@@ -207,7 +216,9 @@ class _ChatScreenState extends State<ChatScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 isLoading
-                    ? loadingWidget()
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
                     : (error != null
                         ? errorWidget()
                         : messages.isNotEmpty
@@ -288,7 +299,6 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  loadingWidget() => const Center(child: CircularProgressIndicator());
   errorWidget() => Center(
         child: Text(error ?? "에러",
             style: TextStyle(color: context.appColors.errorColor)),

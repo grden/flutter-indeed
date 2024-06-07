@@ -75,7 +75,7 @@ class SentMessageScreen extends StatelessWidget {
 }
 
 String timeAgoCustom(DateTime d) {
-  // <-- Custom method Time Show  (Display Example  ==> 'Today 7:00 PM')     // WhatsApp Time Show Status Shimila
+  // <-- Custom method Time Show  (Display Example  ==> 'Today 7:00 PM')
   Duration diff = DateTime.now().difference(d);
   if (diff.inDays > 365) {
     return "${(diff.inDays / 365).floor()} ${(diff.inDays / 365).floor() == 1 ? "년" : "년"} 전";

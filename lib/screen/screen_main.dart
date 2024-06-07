@@ -38,9 +38,9 @@ class MainScreenState extends ConsumerState<MainScreen>
     accountType = ref.read(accountTypeProvider)!;
 
     if (accountType) {
-      tabs = [TabItem.teacherHome, TabItem.chat, TabItem.teacherProfile];
+      tabs = [TabItem.teacherHome, TabItem.teacherChat, TabItem.teacherProfile];
     } else {
-      tabs = [TabItem.studentHome, TabItem.chat, TabItem.studentProfile];
+      tabs = [TabItem.studentHome, TabItem.studentChat, TabItem.studentProfile];
       _currentTab = TabItem.studentHome;
     }
 
