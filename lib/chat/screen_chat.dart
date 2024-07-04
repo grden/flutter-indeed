@@ -11,9 +11,9 @@ import '../common/widget/widget_line.dart';
 import '../common/widget/widget_sizedbox.dart';
 import '../common/widget/widget_tap.dart';
 import '../pb/chat.pb.dart';
-import '../services/auth.dart';
-import '../services/chat_service.dart';
-import '../services/grpc_service.dart';
+import '../services/service_auth.dart';
+import '../services/service_chat.dart';
+import '../services/service_grpc.dart';
 
 import 'widget/widget_receiver_message.dart';
 import 'widget/widget_sender_message.dart';

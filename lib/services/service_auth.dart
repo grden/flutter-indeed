@@ -5,7 +5,7 @@ import '../pb/login.pb.dart';
 import '../pb/service.pb.dart';
 import '../pb/signup.pb.dart';
 import '../pb/user.pb.dart';
-import 'grpc_service.dart';
+import 'service_grpc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/mongo/user.dart';

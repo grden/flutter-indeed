@@ -11,7 +11,7 @@ import '../common/extension/extension_context.dart';
 import '../common/widget/widget_arrow.dart';
 import '../common/widget/widget_tap.dart';
 import '../common/constant.dart';
-import '../services/auth.dart';
+import '../services/service_auth.dart';
 
 class SettingScreen extends ConsumerWidget {
   const SettingScreen({super.key});

@@ -6,7 +6,7 @@ import '../../common/extension/extension_context.dart';
 import '../../common/widget/widget_line.dart';
 import '../../common/widget/widget_sizedbox.dart';
 import '../../model/model_user.dart';
-import '../../services/auth.dart';
+import '../../services/service_auth.dart';
 
 class SignupCard extends StatefulWidget {
   const SignupCard(
