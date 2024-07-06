@@ -13,5 +13,5 @@ Mobile application project for 2024 FSSP. This repository contains only back-end
 
 ## Copyright
 
-Referenced following library:
+Referenced following library:<br>
 Wtf-is-grpc, https://github.com/Djsmk123/Wtf-is-grpc, MIT license.
