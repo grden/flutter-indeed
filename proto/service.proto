@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "github.com/grden/indeed/server/pb";
+
+import "user.proto";
+import "login.proto";
+import "signup.proto";
+import "chat.proto";
+
+message EmptyRequest{
+    
+}
+
+service GrpcServerService {
+    rpc SignUp(SignupRequestMessage) returns (SignupResponseMessage){};
+    rpc Login(LoginRequestMessage) returns (LoginResponseMessage){};
+    
+    rpc GetUser(EmptyRequest) returns (GetUserResponse) {};
+    rpc GetUsers(UsersListRequest) returns (ListUserMessage) {};
+
+    rpc SendMessage(stream SendMessageRequest) returns (stream Message){};
+    rpc GetAllMessage(GetAllMessagesRequest) returns (GetAllMessagesResponse){};
+}
