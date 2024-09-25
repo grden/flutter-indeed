@@ -11,7 +11,7 @@ Mobile application project for 2024 FSSP. This repository contains only back-end
 ## Demo
 
 You can watch demo video of all the available features here:</br>
-[https://www.youtube.com/watch?v=vGuIFKCO9vs](https://youtu.be/vGuIFKCO9vs?si=VZl5tT8zyKzqoOuL&t=533), 08:54~12:20
+[https://www.youtube.com/watch?v=vGuIFKCO9vs](https://youtu.be/vGuIFKCO9vs?si=VZl5tT8zyKzqoOuL&t=533) (Korean), 08:54~12:20
 
 ## Copyright
 
