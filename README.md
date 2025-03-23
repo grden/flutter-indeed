@@ -1,6 +1,6 @@
 # indeed: tutor matching platform
 
-Mobile application project for 2024 FSSP.
+Full-stack mobile application project for 2024 FSSP.
 
 ## 1. Technology Stack
 
@@ -18,11 +18,12 @@ Mobile application project for 2024 FSSP.
 
 ## 2. System Architecture
 
-![과연 최종4](https://github.com/user-attachments/assets/74fbee22-cb04-481a-9c20-eb5149ad7e15)
+![system-architecture](https://github.com/user-attachments/assets/79e2daf3-896b-4a7d-b6ec-9e178a5a331b)
+
 
 ## 3. Demo
 
-You can watch demo video of all the available features here:</br>
+You can watch video demo of all the available features here:</br>
 [https://www.youtube.com/watch?v=vGuIFKCO9vs](https://youtu.be/vGuIFKCO9vs?si=VZl5tT8zyKzqoOuL&t=533) (Korean), 08:54~12:20
 
 ## 4. Copyright
