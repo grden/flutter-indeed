@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "github.com/grden/indeed/server/pb";
+
+import "google/protobuf/timestamp.proto";
+
+message Message{
+    string id=1;
+    string sender=2;
+    string receiver=3;
+    string message=4;
+    google.protobuf.Timestamp created_at = 5;
+}
+
+message SendMessageRequest{
+    string message=1;
+    string receiver=2;
+}
+
+
+message GetAllMessagesRequest{
+    string receiver=1;
+}
+
+message GetAllMessagesResponse{
+    repeated Message messages=1;
+}
