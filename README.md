@@ -1,19 +1,31 @@
 # indeed: tutor matching platform
 
-Mobile application project for 2024 FSSP. This repository contains only back-end part of the project, which is built using GRPC and written in golang.
+Mobile application project for 2024 FSSP.
 
-## About
+## 1. Technology Stack
 
-![과연 최종3](https://github.com/user-attachments/assets/a5e94cbe-26a1-4685-b0a0-cd0357795b11)
-![과연 최종](https://github.com/grden/flutter-indeed/assets/2589809/18fdb6cb-d7e4-48b5-9313-50f50a4ae26c)
+**Frontend**<br>
+<img src="https://img.shields.io/badge/dart-0175C2?style=for-the-badge&logo=dart&logoColor=white"><img src="https://img.shields.io/badge/1.21.3-515151?style=for-the-badge">&nbsp;&nbsp;
+<img src="https://img.shields.io/badge/flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white"><img src="https://img.shields.io/badge/15.1.7-515151?style=for-the-badge">
+
+**Backend**<br>
+<img src="https://img.shields.io/badge/go-00ADD8?style=for-the-badge&logo=go&logoColor=white"><img src="https://img.shields.io/badge/1.21.3-515151?style=for-the-badge">&nbsp;&nbsp;
+<img src="https://img.shields.io/badge/grpc-2da6b0?style=for-the-badge&logo=grpc&logoColor=white"><img src="https://img.shields.io/badge/1.21.3-515151?style=for-the-badge">
+
+**Database**<br>
+<img src="https://img.shields.io/badge/mongodb-47A248?style=for-the-badge&logo=mongodb&logoColor=white"><img src="https://img.shields.io/badge/8.0.31-515151?style=for-the-badge">
+
+
+## 2. System Architecture
+
 ![과연 최종4](https://github.com/user-attachments/assets/74fbee22-cb04-481a-9c20-eb5149ad7e15)
 
-## Demo
+## 3. Demo
 
 You can watch demo video of all the available features here:</br>
 [https://www.youtube.com/watch?v=vGuIFKCO9vs](https://youtu.be/vGuIFKCO9vs?si=VZl5tT8zyKzqoOuL&t=533) (Korean), 08:54~12:20
 
-## Copyright
+## 4. Copyright
 
-This project referenced following repository:<br>
+This project partially referenced following repository:<br>
 Wtf-is-grpc, https://github.com/Djsmk123/Wtf-is-grpc, MIT license.
