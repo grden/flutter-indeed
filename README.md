@@ -16,7 +16,50 @@ Full-stack mobile application project for 2024 FSSP.
 <img src="https://img.shields.io/badge/mongodb-47A248?style=for-the-badge&logo=mongodb&logoColor=white"><img src="https://img.shields.io/badge/8.0.31-515151?style=for-the-badge">
 
 
-## 2. System Architecture
+## 2. Getting Started
+
+### Prerequisites
+
+**Frontend**
+- Flutter SDK (v15.1.7 or later)
+- Dart SDK (v1.21.3 or later)
+
+**Backend**
+- Go (v1.19 or later)
+- Protocol Buffers compiler
+- MongoDB (v8.0.31 or later)
+- Evans (optional, for gRPC testing)
+
+### How to Start
+
+1. **Backend Setup**
+   ```bash
+   # Start MongoDB
+   mongod --dbpath <your-db-path>
+
+   # Install dependencies
+   cd backend
+   go mod download
+   go mod tidy
+
+   # Run the backend server
+   go run main.go
+   ```
+   The server will start on port 9090.
+
+2. **Frontend Setup**
+   ```bash
+   cd frontend
+   
+   # Install dependencies
+   flutter pub get
+
+   # Run the app
+   flutter run
+   ```
+   Select your target device when prompted.
+
+## 3. System Architecture
 
 ![Image](https://github.com/user-attachments/assets/0d261c56-cdbc-401d-b766-d3ebb398f57b)
 
