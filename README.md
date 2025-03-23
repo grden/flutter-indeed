@@ -18,15 +18,13 @@ Full-stack mobile application project for 2024 FSSP.
 
 ## 2. System Architecture
 
-![system-architecture](https://github.com/user-attachments/assets/79e2daf3-896b-4a7d-b6ec-9e178a5a331b)
-
+![Image](https://github.com/user-attachments/assets/0d261c56-cdbc-401d-b766-d3ebb398f57b)
 
 ## 3. Demo
 
 You can watch video demo of all the available features here:</br>
 [https://www.youtube.com/watch?v=vGuIFKCO9vs](https://youtu.be/vGuIFKCO9vs?si=VZl5tT8zyKzqoOuL&t=533) (Korean), 08:54~12:20
 
-## 4. Copyright
+<br>
 
-This project partially referenced following repository:<br>
-Wtf-is-grpc, https://github.com/Djsmk123/Wtf-is-grpc, MIT license.
+_This project partially referenced following repository: https://github.com/Djsmk123/Wtf-is-grpc, MIT license._
