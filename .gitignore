@@ -1,0 +1,57 @@
+# Global
+.DS_Store
+.idea/
+.vscode/
+
+# Frontend (Flutter) specific
+frontend/*.class
+frontend/*.log
+frontend/*.pyc
+frontend/*.swp
+frontend/.atom/
+frontend/.buildlog/
+frontend/.history
+frontend/.svn/
+frontend/migrate_working_dir/
+
+# Frontend IntelliJ related
+frontend/*.iml
+frontend/*.ipr
+frontend/*.iws
+
+# Frontend Flutter/Dart/Pub related
+frontend/**/doc/api/
+frontend/**/ios/Flutter/.last_build_id
+frontend/.dart_tool/
+frontend/.flutter-plugins
+frontend/.flutter-plugins-dependencies
+frontend/.pub-cache/
+frontend/.pub/
+frontend/build/
+
+# Frontend Symbolication related
+frontend/app.*.symbols
+
+# Frontend Obfuscation related
+frontend/app.*.map.json
+
+# Frontend Android Studio build artifacts
+frontend/android/app/debug
+frontend/android/app/profile
+frontend/android/app/release
+
+# Backend specific
+backend/tmp/
+backend/logs/
+
+# Backend Go specific
+backend/*.exe
+backend/*.exe~
+backend/*.dll
+backend/*.so
+backend/*.dylib
+backend/*.test
+backend/*.out
+
+# Backend Generated files
+backend/pb/*.go
